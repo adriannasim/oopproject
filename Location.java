@@ -7,6 +7,8 @@ public class Location {
     }
 
     Location(String locationName){
+        //random id
+        this.locationName = locationName;
 
     }
 
@@ -15,6 +17,7 @@ public class Location {
     }
 
     public void editLocation(String locationName){
+        this.locationName = locationName;
 
     }
 
