@@ -108,3 +108,10 @@ public class Driver1 {
 CRUD train schedules (Train, Schedule, Location)
 CRUD train ticket  
 CRUD FnB (FoodAndBeverage, Snacks, Drinks)*/
+
+// Train modification (update, delete)
+// Schedule modification  (update, add, delete)
+// Train location modification  (update, add, delete)
+
+// Snacks modification (update, add, delete)
+// Drinks modification (update, add, delete)
