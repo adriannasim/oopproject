@@ -3,46 +3,23 @@ import java.io.*;
 
 public class DriverAdr {
     public static void main(String[] args) {
+        /*START OF HEADER*/
         //variables declaration
-        int choice, loop = 1;
+        
 
-        //objects declaration
-        Scanner input = new Scanner(System.in);
+        //objects/instances declaration
+        Scanner input = new Scanner(System.in); //scanner
+        Menu menu = new Menu(); //menu
+        /*END OF HEADER*/
 
-        //print menu
-        System.out.printf("=================================\n");
-        System.out.printf("Welcome to Train Ticketing System\n");
-        System.out.printf("=================================\n");
-        System.out.printf("%-13s%s\n"," ", "MENU");
-        System.out.printf("=================================\n");
-        System.out.printf("1. User Login\n");
-        System.out.printf("2. Admin Login\n");
-        System.out.printf("3. Exit\n");
-        System.out.printf("=================================\n >");
+        /*START OF MAIN PROGRAM*/
+        //call printMenu function
+        menu.printMenu();
+        /*END OF MAIN PROGRAM*/
 
-        //accept user input
-        choice = input.nextInt();
-
-        //invoke classes based on user's input
-        while (loop == 1) {
-            switch(choice) {
-                case 1:
-                    System.out.printf("User Login\n");
-                    //UserLogin();
-                    break;
-                case 2:
-                    System.out.printf("Admin Login\n");
-                    //AdminLogin();
-                    break;
-                case 3:
-                    System.out.printf("Quit\n");
-                    //QuitProgram();
-                    break;
-                default:
-                    System.out.printf("Invalid input, please enter your choice again.\n");
-            }
-        }
+        /*START OF FOOTER*/
         //close scanner
         input.close();
+        /*END OF FOOTER*/
     }
 }
