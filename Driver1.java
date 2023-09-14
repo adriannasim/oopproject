@@ -4,7 +4,7 @@ CRUD train schedules (Train, Schedule, Location)
 CRUD train ticket  
 CRUD FnB (FoodAndBeverage, Snacks, Drinks)*/
 
-// Train modification           (update, delete)
+// Train modification           (update, add, delete)
 // Schedule modification        (update, add, delete)
 // Train location modification  (update, add, delete)
 
