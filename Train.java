@@ -1,27 +1,27 @@
 public class Train{
     private int trainNo;
-    private String trainType;
+    private String trainName;
     private String trainModel;
     private static int nextTrainNo = 2900;
     private String status;
 
     public Train(){
         trainNo = 0;
-        trainType = "Undefined";
+        trainName = "Undefined";
         trainModel = "Undefined";
     }
 
-    public Train(int trainNo,String trainType, String trainModel, String status){
+    public Train(int trainNo,String trainName, String trainModel, String status){
         this.trainNo = trainNo;
-        this.trainType = trainType;
+        this.trainName = trainName;
         this.trainModel = trainModel;  
         this.status = status;
-        nextTrainNo++;
+        nextTrainNo = trainNo+1;
     }
 
-    public Train(String trainType, String trainModel, String status){
+    public Train(String trainName, String trainModel, String status){
         trainNo = nextTrainNo;
-        this.trainType = trainType;
+        this.trainName = trainName;
         this.trainModel = trainModel;  
         this.status = status;
         nextTrainNo++;
@@ -35,8 +35,8 @@ public class Train{
         return trainNo;
     }
 
-    public String getTrainType(){
-        return trainType;
+    public String getTrainName(){
+        return trainName;
     }
 
     public String getTrainModel(){
@@ -51,8 +51,8 @@ public class Train{
         this.trainNo = trainNo;
     }
 
-    public void editTrainType(String trainType){
-        this.trainType = trainType;
+    public void editTrainName(String trainName){
+        this.trainName = trainName;
     }
 
     public void editTrainModel(String trainModel){
@@ -64,7 +64,7 @@ public class Train{
     }
 
     public String toString(){
-           return "Train No: " + trainNo + "\nTrain Type: " + trainType + "\nTrain Model: " + trainModel + "\nTrain status: " + status;
+           return "Train No: " + trainNo + "\nTrain Name: " + trainName + "\nTrain Model: " + trainModel + "\nTrain status: " + status;
     }
 
 }

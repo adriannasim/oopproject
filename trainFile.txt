@@ -1,12 +1,12 @@
 2901
 ETS
 ABC123
-In service
+In maintenance
 2902
 Komuter
 AAA1001
-In maintenance
+In service
 2903
 Komuter
 ASS1234
-Out of service
+In service
