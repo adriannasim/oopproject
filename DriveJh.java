@@ -4,17 +4,20 @@ import java.io.*;
 public class DriveJh {
     public static void main(String[] args) throws FileNotFoundException {
         ArrayList<Train> trainList;
+        ArrayList<TrainStation> stationList;
         String userInput = "";
         Scanner scanner = new Scanner(System.in);
         boolean cont = true;
         // Invoke readTrainFromFile() method to read train information from the file
        trainList = readTrainFromFile("trainFile.txt");
+       // Invoke readStationFromFile() method to read station information from the file
+       stationList = readStationFromFile("stationFile.txt");
 
        do{
            System.out.println("1. Train Information Modification");
            System.out.println("2. Schedule Modification");
            System.out.println("3. Train Station Information Modification");
-           System.out.println("3. Food and Beverage Information Modification");
+           System.out.println("4. Food and Beverage Information Modification");
            System.out.println("( Enter '#' to go back)");
 
            do{
@@ -28,7 +31,7 @@ public class DriveJh {
                } else if (userInput.equals("2")) {
                    //scheduleModification();
                } else if (userInput.equals("3")) {
-                   stationModification();
+                   stationModification(stationList, scanner);
                } else if (userInput.equals("#")) {
                    // Handle going back
                    cont = false;
@@ -80,6 +83,48 @@ public class DriveJh {
         return write;
     }
 
+    // Method to read the Train Station information from a file & store it into stationList ArrayList<TrainStation>
+   public static ArrayList<TrainStation> readStationFromFile(String filename) throws FileNotFoundException {
+         ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
+         File file = new File(filename);
+
+         if (file.exists()) {
+             try (Scanner inputFile = new Scanner(file)) {
+                  while (inputFile.hasNext()) {
+                      String locationId = inputFile.nextLine();
+                      String locationName = inputFile.nextLine();
+                      int numOfPlatform = inputFile.nextInt();
+                      inputFile.nextLine(); // Consume newline
+                      String status = inputFile.nextLine();
+                      stationList.add(new TrainStation(locationId, locationName, numOfPlatform, status));
+                  }
+            }
+        }
+        return stationList;
+    }
+
+    // Method to write the train station information to a file 
+   public static boolean writeStationIntoFile(ArrayList<TrainStation> stationList) throws FileNotFoundException {
+        boolean write = false;
+        try {
+            FileWriter fwrite = new FileWriter("stationFile.txt", false);
+            try (Writer output = new BufferedWriter(fwrite)) {
+                for(int i=0; i<stationList.size(); i++){
+                    output.write(stationList.get(i).getLocationId() + "\n");
+                    output.write(stationList.get(i).getLocationName() + "\n");
+                    output.write(stationList.get(i).getNumOfPlatform() + "\n");
+                    output.write(stationList.get(i).getStatus() + "\n");
+                }
+                write = true;
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
+        return write;
+    }
+
+
+
     // Method to modify train information
     public static void trainModification(ArrayList<Train> trainList, Scanner scanner) throws FileNotFoundException {
         String userInput = "";
@@ -88,8 +133,9 @@ public class DriveJh {
         while(cont==true){
             // Display the user option menu
             System.out.println("1. View existing train information");
-            System.out.println("2. Add a new train");
+            System.out.println("2. Add a new train information");
             System.out.println("3. Delete an existing train information");
+            System.out.println("4. Update an existing train information");
             System.out.println("#. Exit");
            
             do{
@@ -106,6 +152,8 @@ public class DriveJh {
                     addTrain(trainList, scanner);
                 } else if (userInput.equals("3")) {
                     deleteTrain(trainList, scanner);
+                } else if (userInput.equals("4")) {
+                    updateTrainInfo(trainList, scanner);
                 } else if (userInput.equals("#")) {
                     cont = false;
                     break; // Exit the loop
@@ -113,7 +161,7 @@ public class DriveJh {
                     System.out.println("Invalid option. Please enter (1/2/3/4/#).");
                 }
                 
-            }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("#"));
+            }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
         }
     }
 
@@ -137,6 +185,59 @@ public class DriveJh {
         tempTrain = null;    
     }
 
+    public static void updateTrainInfo(ArrayList<Train> trainList, Scanner scanner) throws FileNotFoundException {
+        int trainNo;
+        String newName;
+        int userInput;
+        boolean found = false;
+        boolean updated = false;
+
+        scanner.nextLine();
+        System.out.println("Search the train that needs to be updated");
+        do {
+            System.out.print("Train No > ");
+            trainNo = scanner.nextInt();
+
+            for (int i = 0; i < trainList.size(); i++) {
+                if (trainNo==trainList.get(i).getTrainNo()) {
+                    found = true;
+                    System.out.println(trainList.get(i).toString());
+                    System.out.println("The field that can be updated :");
+                    System.out.println("1. Train Name");
+                    System.out.println("2. Go back");
+
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        
+                        userInput = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (userInput == 1) {
+                            System.out.print("New train name > ");
+                            newName = scanner.nextLine();
+                            trainList.get(i).chnageTrainName(newName);
+                        } else if (userInput == 2){
+                            break; // Exit the loop
+                        }else {
+                            System.out.println("Invalid option. Please enter (1).");
+                        }
+                    } while (userInput != 1 && userInput != 2);
+
+                    updated = writeTrainIntoFile(trainList);
+
+                 }
+            }
+
+            if (!found) {
+                System.out.println("Train not found. Please search again.");
+            }
+
+            
+            if (updated){
+                System.out.println("Train information has updated.");
+            }
+        } while (!found);  
+    }
 
     public static void deleteTrain(ArrayList<Train> trainList, Scanner scanner) throws FileNotFoundException {
         int trainNoInput;
@@ -174,5 +275,163 @@ public class DriveJh {
             }
         } while (!found);
     }
+
+
+    // Method to modify train information
+    public static void stationModification(ArrayList<TrainStation> stationList, Scanner scanner) throws FileNotFoundException {
+        String userInput = "";
+        boolean cont = true;
+    
+        while (cont) {
+            // Display the user option menu
+            System.out.println("1. View existing train station information");
+            System.out.println("2. Add a new train station information");
+            System.out.println("3. Update train station information");
+            System.out.println("4. Delete an existing train station information");
+            System.out.println("#. Exit");
+    
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.next();
+               
+                if (userInput.equals("1")) {
+                    for (int i = 0; i < stationList.size(); i++) {
+                        System.out.println(stationList.get(i).toString());
+                        System.out.println();
+                    }
+                } else if (userInput.equals("2")) {
+                    addStation(stationList, scanner);
+                } else if (userInput.equals("3")) {
+                    updateStationInfo(stationList, scanner);
+                } else if (userInput.equals("4")) {
+                    deleteStation(stationList, scanner);
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                }
+    
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+        }
+    }
+
+    // Method to add a new train information
+    public static void addStation(ArrayList<TrainStation> stationList, Scanner scanner) throws FileNotFoundException {
+        boolean added = false;
+        scanner.nextLine();
+        System.out.print("Enter station name > ");
+        String locationName = scanner.nextLine(); // Read the train name
+    
+        System.out.print("Enter number of platform available > ");
+        int numOfPlatform = scanner.nextInt(); // Read the train model
+
+        TrainStation tempStation = new TrainStation(locationName, numOfPlatform);
+        stationList.add(tempStation);
+        added = writeStationIntoFile(stationList);
+        if (added == true){
+            System.out.println("Station has added.");
+        }
+        tempStation = null;    
+    }
+    
+    public static void updateStationInfo(ArrayList<TrainStation> stationList, Scanner scanner) throws FileNotFoundException {
+        String locationName;
+        String newName;
+        int num;
+        int userInput;
+        boolean found = false;
+        boolean updated = false;
+
+        scanner.nextLine();
+        System.out.println("Search the station that needs to be updated");
+        do {
+            System.out.print("Station Name > ");
+            locationName = scanner.nextLine();
+
+            for (int i = 0; i < stationList.size(); i++) {
+                if (locationName.equals(stationList.get(i).getLocationName())) {
+                    found = true;
+                    System.out.println(stationList.get(i).toString());
+                    System.out.println("Select a field to update :");
+                    System.out.println("1. Station name");
+                    System.out.println("2. Number of platform");
+
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        
+                        userInput = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (userInput == 1) {
+                            System.out.print("New station name > ");
+                            newName = scanner.nextLine();
+                            stationList.get(i).changeLocationName(newName);
+                        } else if (userInput == 2) {
+                            System.out.print("New number of platform > ");
+                            num = scanner.nextInt();
+                            stationList.get(i).changeNumOfPlatform(num);
+                        } else if (userInput == 3) {
+                            
+                        } else {
+                            System.out.println("Invalid option. Please enter (1/2/3).");
+                        }
+                    } while (userInput != 1 && userInput != 2 && userInput != 3);
+
+                 }
+            }
+
+            if (!found) {
+                System.out.println("Train station not found. Please search again.");
+            }
+
+            updated = writeStationIntoFile(stationList);
+            if (updated){
+                System.out.println("Train station information has updated.");
+            }else{
+                System.out.println("Update failed.");
+            }
+        } while (!found);  
+    }
+
+    public static void deleteStation(ArrayList<TrainStation> stationList, Scanner scanner) throws FileNotFoundException {
+        String locationName;
+        boolean found = false;
+        boolean deleted = false;
+        String userInput;
+    
+        scanner.nextLine();
+        System.out.println("Search the station that needs to be deleted");
+        do {
+            System.out.print("Station name > ");
+            locationName = scanner.nextLine();
+    
+            for (int i = 0; i < stationList.size(); i++) {
+                if (locationName.equals(stationList.get(i).getLocationName())) {
+                    found = true;
+                    System.out.println("Station found. Are you sure to delete the station information as shown below? (Y-Yes/N-No)  ");
+                    System.out.println(stationList.get(i).toString());
+                    System.out.print("Enter your option > ");
+                    userInput = scanner.next();
+    
+                    if (userInput.equalsIgnoreCase("Y")) {
+                        stationList.remove(i); // Remove the train from the list
+                        deleted = writeStationIntoFile(stationList);
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
+                
+                    break; // Exit the loop since we found and processed the train
+                }
+            }
+            if (deleted == true) {
+                System.out.println("Station has been removed.");
+            }
+            if (!found) {
+                System.out.println("Station not found. Please search again.");
+            }
+        } while (!found);
+    }
+
 
 }

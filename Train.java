@@ -43,6 +43,10 @@ public class Train{
         return status;
     }
 
+    public void chnageTrainName(String trainName){
+        this.trainName = trainName;
+    }
+
     public void changeTrainStatus(String status){
         this.status = status;
     }
