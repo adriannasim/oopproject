@@ -3,25 +3,20 @@ public class Location {
     private String locationName;
 
     Location(){
-
+        locationId = "Undefined";
+        locationName = "Undefined";
     }
 
     Location(String locationName){
-        //random id
+        locationId = locationName.charAt(0) + String.valueOf((int) (1000 + (Math.random() * (2000 - 1000 + 1))));
         this.locationName = locationName;
-
     }
 
-    public void deleteLocation(){
-
-    }
-
-    public void editLocation(String locationName){
+    public void changeLocationName(String locationName){
         this.locationName = locationName;
-
     }
 
     public String toString(){
-        return "";
+        return "Location Id : " + locationId + "\nLocation Name : " + locationName +"\n";
     }
 }

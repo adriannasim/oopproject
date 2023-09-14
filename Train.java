@@ -19,16 +19,12 @@ public class Train{
         nextTrainNo = trainNo+1;
     }
 
-    public Train(String trainName, String trainModel, String status){
+    public Train(String trainName, String trainModel){
         trainNo = nextTrainNo;
         this.trainName = trainName;
         this.trainModel = trainModel;  
-        this.status = status;
+        status = "Not in use";
         nextTrainNo++;
-    }
-
-    public void deleteTrain(String trainNo){
-
     }
 
     public int getTrainNo(){
@@ -45,18 +41,6 @@ public class Train{
 
     public String getTrainStatus(){
         return status;
-    }
-
-    public void editTrainNo(int trainNo){
-        this.trainNo = trainNo;
-    }
-
-    public void editTrainName(String trainName){
-        this.trainName = trainName;
-    }
-
-    public void editTrainModel(String trainModel){
-        this.trainModel = trainModel;
     }
 
     public void changeTrainStatus(String status){
