@@ -101,7 +101,7 @@ public class Driver1{
                 } else if (userInput.equals("3")) {
                     addTrain(trainList, scanner);
                 } else if (userInput.equals("4")) {
-                    // Delete train functionality
+                    deleteTrain(trainList, scanner);
                 } else if (userInput.equals("#")) {
                     cont = false;
                     break; // Exit the loop
@@ -228,8 +228,55 @@ public class Driver1{
         }
     }
 
+
+    public static void deleteTrain(ArrayList<Train> trainList, Scanner scanner) {
+        int trainNoInput;
+        boolean found = false;
+        String userInput;
     
-
-
+        System.out.println("Search the train that needs to be deleted");
+    
+        do {
+            System.out.print("Train No > ");
+            trainNoInput = scanner.nextInt();
+    
+            for (int i = 0; i < trainList.size(); i++) {
+                if (trainNoInput == trainList.get(i).getTrainNo()) {
+                    found = true;
+                    System.out.println("Train found. Are you sure to delete the train information as shown below? (Y-Yes/N-No)  ");
+                    System.out.println(trainList.get(i).toString());
+                    System.out.print("Enter your option > ");
+                    userInput = scanner.next();
+    
+                    if (userInput.equalsIgnoreCase("Y")) {
+                        trainList.remove(i); // Remove the train from the list
+    
+                        try (FileWriter fwrite = new FileWriter("trainFile.txt", false);
+                             Writer output = new BufferedWriter(fwrite)) {
+                            for (Train train : trainList) {
+                                output.write(train.getTrainNo() + "\n");
+                                output.write(train.getTrainName() + "\n");
+                                output.write(train.getTrainModel() + "\n");
+                                output.write(train.getTrainStatus() + "\n");
+                            }
+                        } catch (IOException e) {
+                            System.err.println("Error writing to the file: " + e.getMessage());
+                            // Handle this error more gracefully
+                        }
+    
+                        System.out.println("The train has been removed.");
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
+    
+                    break; // Exit the loop since we found and processed the train
+                }
+            }
+    
+            if (!found) {
+                System.out.println("Train not found. Please search again.");
+            }
+        } while (!found);
+    }
 
 }
