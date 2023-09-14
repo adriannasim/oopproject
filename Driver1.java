@@ -1,195 +1,282 @@
-import java.util.*;
-import java.io.*;
-public class Driver1 {
-
-    // Methos below is to read the train information from file & store into trainList ArrayList<Train>
-    public static ArrayList<Train> readTrainFromFile(String filename) throws FileNotFoundException{
-            // ArrayList<Train> object creation (object named as trainList)
-            ArrayList<Train> trainList = new ArrayList<Train>();
-            // File object creation (object named as file)
-            File file = new File(filename);
-            // Scanner object declaration (object reference named as inputFile)
-            Scanner inputFile;
-            // Variables declared to store the Train properties read from file
-            int trainNo;
-            String trainType;
-            String trainModel;
-            String status;
-
-            if(file.exists()){
-                // Create an Scanner object and assign to the inputFile object reference
-                inputFile = new Scanner(file);
-                while(inputFile.hasNext()){
-                    // Read the file content line by line into the variables
-                    trainNo = inputFile.nextInt();
-                    inputFile.nextLine();
-                    trainType = inputFile.nextLine();
-                    trainModel = inputFile.nextLine();
-                    status = inputFile.nextLine();
-                    // Create Train object and add to ArrayList<Train> - trainList
-                    trainList.add(new Train(trainNo, trainType, trainModel, status));
-                }
-            }   
-        return trainList;
-    }
-
-    // Method below is the main function
-public static void main(String[] args) throws FileNotFoundException{
-        // ArrayList<Train> object declaration (object reference named as trainList)
-        ArrayList<Train> trainList;
-        // Variable declared to store user input
-        String userInput="";
-        // Invoke readTrainFromFile() method
-        trainList = readTrainFromFile("trainFile.txt");
-        
-        // Use try-with-resources to automatically close the Scanner
-        try (Scanner input = new Scanner(System.in)) {
-            do{
-                  // Display the user option menu
-                  System.out.println("1. Train Information Modification");
-                  System.out.println("2. Schedule Modification");
-                  System.out.println("3. Train Station Information Modification");
-                  System.out.println("( Enter '#' to go back)");
-                  do {
-                      // Accept user input
-                      System.out.print("Enter your option > ");
-                
-                      userInput = input.nextLine().trim(); // Read the whole line and trim
-
-                    //Compare user input and invoke specific method
-                if (userInput.equals("1")) {
-                    trainModification(trainList, input);
-                } else if (userInput.equals("2")) {
-                    scheduleModification();
-                } else if (userInput.equals("3")) {
-                    stationModification();
-                } else if (userInput.equals("#")) {
-
-                } else {
-                    System.out.println("Invalid option. Please enter (1/2/3/#).");
-                }
-            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("#"));
-        }while(!userInput.equals("#"));
-        } // Scanner will be automatically closed here
-    
-    }
-
-    // Method below is to modify the train information
-    public static void trainModification(ArrayList<Train> trainList, Scanner input) {
-        String userInput = "";
-    
-        while (!userInput.equals("#")) { // Exit the loop when userInput is "#"
-            // Display the user option menu
-            System.out.println("1. View existing train information");
-            System.out.println("2. Modify existing train information");
-            System.out.println("3. Add a new train");
-            System.out.println("4. Delete existing train information");
-            System.out.println("#. Exit");
-    
-            System.out.print("Enter your option > ");
-            userInput = input.next().trim();
-    
-            // Compare user input and invoke specific method
-            if (userInput.equals("1")) {
-                for (int i = 0; i < trainList.size(); i++) {
-                    System.out.println(trainList.get(i).toString());
-                    System.out.println();
-                }
-            } else if (userInput.equals("2")) {
-                updateTrainInfo(trainList);
-            } else if (userInput.equals("3")) {
-                // Add new train functionality
-            } else if (userInput.equals("4")) {
-                // Delete train functionality
-            } else if (!userInput.equals("#")) { // Check if userInput is not "#"
-                System.out.println("Invalid option. Please enter (1/2/3/4/#).");
-            }
-        }
-
-    }
-
-    public static void updateTrainInfo(ArrayList<Train> trainList) {
-        int trainNoInput;
-        int statusSelection;
-        boolean found = false;
-    
-        try (Scanner input = new Scanner(System.in)) {
-            System.out.println("Search the train that needs to be updated");
-    
-            do {
-                System.out.print("Train No > ");
-                trainNoInput = input.nextInt();
-    
-                // Search for the train with the given train number
-                for (int i = 0; i < trainList.size(); i++) {
-                    if (trainNoInput == trainList.get(i).getTrainNo()) {
-                        found = true;
-                        System.out.println(trainList.get(i).toString());
-                        System.out.println("Update the train status");
-                        System.out.println("1. In service");
-                        System.out.println("2. Out of service");
-                        System.out.println("3. In maintenance");
-    
-                        do {
-                            System.out.print("Enter option in number stated above > ");
-                            statusSelection = input.nextInt();
-    
-                            // Update the train status based on the user's selection
-                            if (statusSelection == 1) {
-                                trainList.get(i).changeTrainStatus("In service");
-                            } else if (statusSelection == 2) {
-                                trainList.get(i).changeTrainStatus("Out of service");
-                            } else if (statusSelection == 3) {
-                                trainList.get(i).changeTrainStatus("In maintenance");
-                            } else {
-                                System.out.println("Invalid option. Please enter (1/2/3).");
-                            }
-                        } while (statusSelection != 1 && statusSelection != 2 && statusSelection != 3);
-    
-                        // Write the updated train information to the file
-                        try {
-                            FileWriter fwrite = new FileWriter("trainFile.txt", false);
-                            try (Writer output = new BufferedWriter(fwrite)) {
-                                for (int j = 0; j < trainList.size(); j++) {
-                                    output.write(trainList.get(j).getTrainNo() + "\n");
-                                    output.write(trainList.get(j).getTrainType() + "\n");
-                                    output.write(trainList.get(j).getTrainModel() + "\n");
-                                    output.write(trainList.get(j).getTrainStatus() + "\n");
-                                }
-                            }
-                        } catch (IOException e) {
-                            System.err.println("Error writing to the file: " + e.getMessage());
-                            // You may want to handle this error more gracefully, e.g., by logging it.
-                        }
-                    }
-                }
-    
-                if (!found) {
-                    System.out.println("Train not found. Please search again.");
-                }
-            } while (!found);
-        } // Scanner will be automatically closed here
-    }
-    
-
-    public static void scheduleModification() {
-        // Implement your schedule modification logic here
-    }
-
-    public static void stationModification() {
-        // Implement your station modification logic here
-    }
-}
-
 /*Staff CRUD
 =============
 CRUD train schedules (Train, Schedule, Location)
 CRUD train ticket  
 CRUD FnB (FoodAndBeverage, Snacks, Drinks)*/
 
-// Train modification (update, delete)
-// Schedule modification  (update, add, delete)
+// Train modification           (update, delete)
+// Schedule modification        (update, add, delete)
 // Train location modification  (update, add, delete)
 
-// Snacks modification (update, add, delete)
-// Drinks modification (update, add, delete)
+// Snacks modification          (update, add, delete)
+// Drinks modification          (update, add, delete)
+
+import java.util.*;
+import java.io.*;
+
+public class Driver1{
+    public static void main(String[] args) throws FileNotFoundException {
+         ArrayList<Train> trainList;
+         String userInput = "";
+         Scanner scanner = new Scanner(System.in);
+         boolean cont = true;
+         // Invoke readTrainFromFile() method to read train information from the file
+        trainList = readTrainFromFile("trainFile.txt");
+
+        do{
+            System.out.println("1. Train Information Modification");
+            System.out.println("2. Schedule Modification");
+            System.out.println("3. Train Station Information Modification");
+            System.out.println("( Enter '#' to go back)");
+
+            do{
+                System.out.print("Enter your option > ");
+                userInput = "";
+                userInput = scanner.next();
+                
+                // Compare user input and invoke specific method
+                if (userInput.equals("1")) {
+                    trainModification(trainList, scanner);
+                } else if (userInput.equals("2")) {
+                    //scheduleModification();
+                } else if (userInput.equals("3")) {
+                    //stationModification();
+                } else if (userInput.equals("#")) {
+                    // Handle going back
+                    cont = false;
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/3/#).");
+                }
+            }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("#"));
+
+        }while(cont==true);
+    }
+
+    // Method to read the train information from a file & store it into trainList ArrayList<Train>
+    public static ArrayList<Train> readTrainFromFile(String filename) throws FileNotFoundException {
+        ArrayList<Train> trainList = new ArrayList<Train>();
+        File file = new File(filename);
+
+        if (file.exists()) {
+            try (Scanner inputFile = new Scanner(file)) {
+                while (inputFile.hasNext()) {
+                    int trainNo = inputFile.nextInt();
+                    inputFile.nextLine(); // Consume newline
+                    String trainName = inputFile.nextLine();
+                    String trainModel = inputFile.nextLine();
+                    String status = inputFile.nextLine();
+                    trainList.add(new Train(trainNo, trainName, trainModel, status));
+                }
+            }
+        }
+        return trainList;
+    }
+
+
+    // Method to modify train information
+    public static void trainModification(ArrayList<Train> trainList, Scanner scanner) {
+        String userInput = "";
+        boolean cont = true;
+
+        while(cont==true){
+            // Display the user option menu
+            System.out.println("1. View existing train information");
+            System.out.println("2. Modify existing train information");
+            System.out.println("3. Add a new train");
+            System.out.println("4. Delete existing train information");
+            System.out.println("#. Exit");
+           
+            do{
+                System.out.print("Enter your option > ");
+                userInput = "";
+                userInput = scanner.next();
+
+                if (userInput.equals("1")) {
+                    for (int i = 0; i < trainList.size(); i++) {
+                        System.out.println(trainList.get(i).toString());
+                        System.out.println();
+                    }
+                } else if (userInput.equals("2")) {
+                    updateTrainInfo(trainList, scanner);
+                } else if (userInput.equals("3")) {
+                    addTrain(trainList, scanner);
+                } else if (userInput.equals("4")) {
+                    deleteTrain(trainList, scanner);
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                }
+                
+            }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+        }
+    }
+
+
+    // Method to update train information
+    public static void updateTrainInfo(ArrayList<Train> trainList, Scanner scanner) {
+        int trainNoInput;
+        int statusSelection;
+        boolean found = false;
+
+        System.out.println("Search the train that needs to be updated");
+
+        do {
+            System.out.print("Train No > ");
+            trainNoInput = scanner.nextInt();
+
+            for (int i = 0; i < trainList.size(); i++) {
+                if (trainNoInput == trainList.get(i).getTrainNo()) {
+                    found = true;
+                    System.out.println(trainList.get(i).toString());
+                    System.out.println("Update the train status");
+                    System.out.println("1. In service");
+                    System.out.println("2. Out of service");
+                    System.out.println("3. In maintenance");
+
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        statusSelection = scanner.nextInt();
+
+                        if (statusSelection == 1) {
+                            trainList.get(i).changeTrainStatus("In service");
+                        } else if (statusSelection == 2) {
+                            trainList.get(i).changeTrainStatus("Out of service");
+                        } else if (statusSelection == 3) {
+                            trainList.get(i).changeTrainStatus("In maintenance");
+                        } else {
+                            System.out.println("Invalid option. Please enter (1/2/3).");
+                        }
+                    } while (statusSelection != 1 && statusSelection != 2 && statusSelection != 3);
+
+                    // Write the updated train information to the file
+                    try {
+                        FileWriter fwrite = new FileWriter("trainFile.txt", false);
+                        try (Writer output = new BufferedWriter(fwrite)) {
+                            for (int j = 0; j < trainList.size(); j++) {
+                                output.write(trainList.get(j).getTrainNo() + "\n");
+                                output.write(trainList.get(j).getTrainName() + "\n");
+                                output.write(trainList.get(j).getTrainModel() + "\n");
+                                output.write(trainList.get(j).getTrainStatus() + "\n");
+                            }
+                            System.out.println("The train information has updated.");
+                        }
+                    } catch (IOException e) {
+                        System.err.println("Error writing to the file: " + e.getMessage());
+                             // You may want to handle this error more gracefully, e.g., by logging it.
+                    }
+                 }
+            }
+
+            if (!found) {
+                System.out.println("Train not found. Please search again.");
+            }
+        } while (!found);      
+    }
+
+
+    // Method to add a new train information
+    public static void addTrain(ArrayList<Train> trainList, Scanner scanner) {
+        scanner.nextLine();
+        System.out.print("Enter train name > ");
+        String trainName = scanner.nextLine(); // Read the train name
+    
+        System.out.print("Enter train model > ");
+        String trainModel = scanner.nextLine(); // Read the train model
+    
+        int statusSelection;
+        String status = "";
+        System.out.println("Select the train status");
+        System.out.println("1. In service");
+        System.out.println("2. Out of service");
+        System.out.println("3. In maintenance");
+    
+        do {
+            System.out.print("Enter option in number stated above > ");
+            statusSelection = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+    
+            if (statusSelection == 1) {
+                status = "In service";
+            } else if (statusSelection == 2) {
+                status = "Out of service";
+            } else if (statusSelection == 3) {
+                status = "In maintenance";
+            } else {
+                System.out.println("Invalid option. Please enter (1/2/3).");
+            }
+        } while (statusSelection != 1 && statusSelection != 2 && statusSelection != 3);
+    
+        // Write the added train information to the file
+        try {
+            FileWriter fwrite = new FileWriter("trainFile.txt", true);
+            try (Writer output = new BufferedWriter(fwrite)) {
+                Train tempTrain = new Train(trainName, trainModel, status);
+                trainList.add(tempTrain);
+                output.write(tempTrain.getTrainNo() + "\n");
+                output.write(tempTrain.getTrainName() + "\n");
+                output.write(tempTrain.getTrainModel() + "\n");
+                output.write(tempTrain.getTrainStatus() + "\n");
+                tempTrain = null;
+    
+                System.out.println("The train has been added.");
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+            // You may want to handle this error more gracefully, e.g., by logging it.
+        }
+    }
+
+
+    public static void deleteTrain(ArrayList<Train> trainList, Scanner scanner) {
+        int trainNoInput;
+        boolean found = false;
+        String userInput;
+    
+        System.out.println("Search the train that needs to be deleted");
+    
+        do {
+            System.out.print("Train No > ");
+            trainNoInput = scanner.nextInt();
+    
+            for (int i = 0; i < trainList.size(); i++) {
+                if (trainNoInput == trainList.get(i).getTrainNo()) {
+                    found = true;
+                    System.out.println("Train found. Are you sure to delete the train information as shown below? (Y-Yes/N-No)  ");
+                    System.out.println(trainList.get(i).toString());
+                    System.out.print("Enter your option > ");
+                    userInput = scanner.next();
+    
+                    if (userInput.equalsIgnoreCase("Y")) {
+                        trainList.remove(i); // Remove the train from the list
+    
+                        try (FileWriter fwrite = new FileWriter("trainFile.txt", false);
+                             Writer output = new BufferedWriter(fwrite)) {
+                            for (Train train : trainList) {
+                                output.write(train.getTrainNo() + "\n");
+                                output.write(train.getTrainName() + "\n");
+                                output.write(train.getTrainModel() + "\n");
+                                output.write(train.getTrainStatus() + "\n");
+                            }
+                        } catch (IOException e) {
+                            System.err.println("Error writing to the file: " + e.getMessage());
+                            // Handle this error more gracefully
+                        }
+    
+                        System.out.println("The train has been removed.");
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
+    
+                    break; // Exit the loop since we found and processed the train
+                }
+            }
+    
+            if (!found) {
+                System.out.println("Train not found. Please search again.");
+            }
+        } while (!found);
+    }
+
+}
