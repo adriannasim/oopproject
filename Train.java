@@ -31,6 +31,22 @@ public class Train{
 
     }
 
+    public int getTrainNo(){
+        return trainNo;
+    }
+
+    public String getTrainType(){
+        return trainType;
+    }
+
+    public String getTrainModel(){
+        return trainModel;
+    }
+
+    public String getTrainStatus(){
+        return status;
+    }
+
     public void editTrainNo(int trainNo){
         this.trainNo = trainNo;
     }

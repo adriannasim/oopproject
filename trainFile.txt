@@ -9,4 +9,4 @@ In maintenance
 2903
 Komuter
 ASS1234
-In service
+Out of service
