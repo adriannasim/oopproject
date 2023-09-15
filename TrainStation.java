@@ -1,4 +1,6 @@
-public class TrainStation{
+import java.io.Serializable;
+
+public class TrainStation implements Serializable{
       private String locationId;
       private String locationName;
       private int numOfPlatform;

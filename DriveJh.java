@@ -2,11 +2,13 @@ import java.util.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 public class DriveJh {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         ArrayList<Train> trainList;
         ArrayList<TrainStation> stationList;
+        ArrayList<Schedule> scheduleList;
         String userInput = "";
         Scanner scanner = new Scanner(System.in);
         boolean cont = true;
@@ -14,6 +16,7 @@ public class DriveJh {
        trainList = readTrainFromFile("trainFile.txt");
        // Invoke readStationFromFile() method to read station information from the file
        stationList = readStationFromFile("stationFile.txt");
+       scheduleList = readScheduleFromFile("scheduleFile.txt");
 
        do{
            System.out.println("1. Train Information Modification");
@@ -31,7 +34,7 @@ public class DriveJh {
                if (userInput.equals("1")) {
                    trainModification(trainList, scanner);
                } else if (userInput.equals("2")) {
-                   //scheduleModification();
+                   sheduleModification(scheduleList, scanner, stationList, trainList);
                } else if (userInput.equals("3")) {
                    stationModification(stationList, scanner);
                } else if (userInput.equals("#")) {
@@ -125,28 +128,57 @@ public class DriveJh {
         return write;
     }
 
-    // Method to read the Train Station information from a file & store it into stationList ArrayList<TrainStation>
-   public static ArrayList<Schedule> readScheduleFromFile(String filename) throws Exception {
-         ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
-         File file = new File(filename);
-
-         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-         Schedule s = (Schedule)ois.readObject();
-         ois.close();
-         scheduleList.add(s);
-         return scheduleList;
+    public static ArrayList<Schedule> readScheduleFromFile(String filename) throws Exception {
+        ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+        File file = new File(filename);
+        ObjectInputStream input = null; // Declare outside the try block
+    
+        try {
+            input = new ObjectInputStream(new FileInputStream(file));
+    
+            while (true) {
+                try {
+                    Schedule s = (Schedule) input.readObject();
+                    scheduleList.add(s);
+                } catch (EOFException eofe) {
+                    break;
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+        
+        return scheduleList;
     }
+    
 
-    public static boolean writeScheduleIntoFile(String filename) throws Exception{
+    public static boolean writeScheduleIntoFile(String filename, ArrayList<Schedule> scheduleList) {
         boolean write = false;
         File file = new File(filename);
-        Schedule s = new Schedule("BM", "PB", 09:00:00, null, null, 0)
-
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
-        oos.writeObject(s);
-        oos.close();
+    
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            for (int i = 0; i < scheduleList.size(); i++) {
+                oos.writeObject(scheduleList.get(i));
+            }
+            write = true; // Set write to true if writing is successful
+        } catch (IOException e) {
+            // Handle any IOException that might occur during writing
+            e.printStackTrace();
+            // write remains false if an error occurs
+        }
+    
         return write;
-    }
+    }    
 
 
 
@@ -459,7 +491,7 @@ public class DriveJh {
     }
 
     // Method to modify schedule information
-    public static void sheduleModification(ArrayList<Schedule> scheduleList, Scanner scanner) throws FileNotFoundException {
+    public static void sheduleModification(ArrayList<Schedule> scheduleList, Scanner scanner, ArrayList<TrainStation> stationList, ArrayList<Train> trainList) throws Exception {
         String userInput = "";
         boolean cont = true;
     
@@ -481,9 +513,9 @@ public class DriveJh {
                         System.out.println();
                     }
                 } else if (userInput.equals("2")) {
-                    addSchedule(scheduleList, scanner);
+                    addSchedule(scheduleList, scanner, stationList, trainList);
                 } else if (userInput.equals("3")) {
-                    updateSchedule(scheduleList, scanner);
+                    //updateSchedule(scheduleList, scanner);
                 } else if (userInput.equals("4")) {
                     deleteSchedule(scheduleList, scanner);
                 } else if (userInput.equals("#")) {
@@ -498,29 +530,113 @@ public class DriveJh {
     }
 
     // Method to add a new train information
-    public static void addSchedule(ArrayList<Schedule> scheduleList, Scanner scanner) throws FileNotFoundException {
-        String departLocation;
-        String arriveLocation;
-        LocalDateTime deparTime;
-        LocalDateTime arriveTime;
+    public static void addSchedule(ArrayList<Schedule> scheduleList, Scanner scanner, ArrayList<TrainStation> stationList, ArrayList<Train> trainList) throws Exception {
+        TrainStation departLocation;
+        TrainStation arriveLocation;
+        LocalTime departTime = LocalTime.of(0,0);
+        LocalTime arriveTime = LocalTime.of(0,0);
         Train trainOperated;
         double ticketPrice;
+        String userInput = "";
 
         boolean added = false;
         scanner.nextLine();
-        System.out.print("Enter station name > ");
-        String locationName = scanner.nextLine(); 
-    
-        System.out.print("Enter number of platform available > ");
-        int numOfPlatform = scanner.nextInt(); 
-
-        TrainStation tempStation = new TrainStation(locationName, numOfPlatform);
-        scheduleList.add(tempStation);
-        added = writeStationIntoFile(scheduleList);
-        if (added == true){
-            System.out.println("Station has added.");
+        System.out.println("Select a departure station : ");
+        for (int i = 0; i < stationList.size(); i++) {
+                System.out.println((i+1) + ". " + stationList.get(i).getLocationName());
         }
-        tempStation = null;    
+        System.out.print("Enter the station number stated above > ");
+        userInput = scanner.nextLine(); 
+        int uIn = Integer.parseInt(userInput);
+        departLocation = stationList.get(uIn-1);
+
+        System.out.println("Select an arrival station : ");
+        for (int i = 0; i < stationList.size(); i++) {
+                System.out.println((i+1) + ". " + stationList.get(i).getLocationName());
+        }
+        System.out.print("Enter the station number stated above > ");
+        userInput = scanner.nextLine(); 
+        uIn = Integer.parseInt(userInput);
+        arriveLocation = stationList.get(uIn-1);
+
+        System.out.print("Enter a departure time (HH:MM) > ");
+        userInput = scanner.nextLine(); 
+        try {
+            departTime = LocalTime.parse(userInput);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid departure time format. Please use HH:MM.");
+        }
+
+        System.out.print("Enter an arrival time (HH:MM) > ");
+        userInput = scanner.nextLine(); 
+        try {
+            arriveTime = LocalTime.parse(userInput);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid arrival time format. Please use HH:MM.");
+        }
+ 
+        System.out.println("Select a train for this schedule : ");
+        for (int i = 0; i < trainList.size(); i++) {
+                System.out.println((i+1) + ". " + trainList.get(i).getTrainNo());
+        }
+        System.out.print("Enter the train number stated above > ");
+        userInput = scanner.nextLine(); 
+        uIn = Integer.parseInt(userInput);
+        trainOperated = trainList.get(uIn-1);
+
+        System.out.print("Enter the ticket price (RM) > ");
+        userInput = scanner.nextLine(); 
+        ticketPrice = Double.valueOf(userInput) ;
+
+        
+        Schedule s = new Schedule(departLocation, arriveLocation, departTime, arriveTime, trainOperated, ticketPrice);
+        scheduleList.add(s);
+        added = writeScheduleIntoFile("scheduleFile.txt", scheduleList);
+        
+        if (added == true){
+            System.out.println("Schedule has added.");
+        }
+        s = null;    
+    }
+
+    public static void deleteSchedule(ArrayList<Schedule> scheduleList, Scanner scanner) throws Exception {
+        String scheduleId;
+        boolean found = false;
+        String userInput;
+        boolean deleted = false;
+        scanner.nextLine();
+        do {
+            System.out.print("Enter the schedule id that need to be deleted > ");
+            scheduleId = scanner.nextLine();
+            if (scheduleId.equals("#"))
+                break;
+    
+            for (int i = 0; i < scheduleList.size(); i++) {
+                if (scheduleId.equals(scheduleList.get(i).getScheduleId())) {
+                    found = true;
+                    System.out.println("schedule found. Are you sure to delete the schedule information as shown below?  ");
+                    System.out.println(scheduleList.get(i).toString());
+                    System.out.print("Enter your option (Y-Yes/N-No)> ");
+                    userInput = scanner.next();
+    
+                    if (userInput.equalsIgnoreCase("Y")) {
+                        scheduleList.remove(i); // Remove the train from the list
+                        deleted = writeScheduleIntoFile("scheduleFile.txt",scheduleList);
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
+                
+                    break; // Exit the loop since we found and processed the train
+                }
+            }
+            if (deleted == true) {
+                System.out.println("Schedule has been removed.");
+            }
+            if (!found) {
+                System.out.println("Schedule not found. Please search again.");
+            }
+        } while (!found);
+    
     }
 
 }

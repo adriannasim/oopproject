@@ -1,4 +1,6 @@
-public class Train{
+import java.io.Serializable;
+
+public class Train implements Serializable{
     private int trainNo;
     private String trainName;
     private String trainModel;
