@@ -8,6 +8,7 @@ public class DriveJh {
         ArrayList<Train> trainList;
         ArrayList<TrainStation> stationList;
         ArrayList<Schedule> scheduleList;
+        ArrayList<Snacks> snacksList;
         String userInput = "";
         Scanner scanner = new Scanner(System.in);
         boolean cont = true;
@@ -16,6 +17,7 @@ public class DriveJh {
        // Invoke readStationFromFile() method to read station information from the file
        stationList = readStationFromFile("stationFile.txt");
        scheduleList = readScheduleFromFile("scheduleFile.txt");
+       snacksList = readSnacksFromFile("snacksFile.txt");
 
        do{
            System.out.println("1. Train Information Modification");
@@ -36,6 +38,8 @@ public class DriveJh {
                    sheduleModification(scheduleList, scanner, stationList, trainList);
                } else if (userInput.equals("3")) {
                    stationModification(stationList, scanner);
+               } else if (userInput.equals("4")) {
+                   foodAndBeverageModification(snacksList, scanner);
                } else if (userInput.equals("#")) {
                    // Handle going back
                    cont = false;
@@ -168,6 +172,57 @@ public class DriveJh {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             for (int i = 0; i < scheduleList.size(); i++) {
                 oos.writeObject(scheduleList.get(i));
+            }
+            write = true; // Set write to true if writing is successful
+        } catch (IOException e) {
+            // Handle any IOException that might occur during writing
+            e.printStackTrace();
+            // write remains false if an error occurs
+        }
+    
+        return write;
+    }    
+
+    public static ArrayList<Snacks> readSnacksFromFile(String filename) throws Exception {
+        ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
+        File file = new File(filename);
+        ObjectInputStream input = null; // Declare outside the try block
+    
+        try {
+            input = new ObjectInputStream(new FileInputStream(file));
+    
+            while (true) {
+                try {
+                    Snacks s = (Snacks) input.readObject();
+                    snacksList.add(s);
+                } catch (EOFException eofe) {
+                    break;
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+        
+        return snacksList;
+    }
+
+     public static boolean writeSnacksIntoFile(String filename, ArrayList<Snacks> snacksList) {
+        boolean write = false;
+        File file = new File(filename);
+    
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            for (int i = 0; i < snacksList.size(); i++) {
+                oos.writeObject(snacksList.get(i));
             }
             write = true; // Set write to true if writing is successful
         } catch (IOException e) {
@@ -788,5 +843,117 @@ public class DriveJh {
         } while (!found);
     
     }
+
+
+    // Method to modify F&B information
+    public static void foodAndBeverageModification(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception {
+        String userInput = "";
+        boolean cont = true;
+    
+        while (cont) {
+            // Display the user option menu
+            System.out.println("Select a food category");
+            System.out.println("1. Snacks");
+            System.out.println("2. Drinks");
+            System.out.println("#. Back");
+    
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.next();
+               
+                if (userInput.equals("1")) {
+                    snacksModification(snacksList, scanner);
+                } else if (userInput.equals("2")) {
+                    //drinksModification();
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/#).");
+                }
+    
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+        }
+    }
+
+    public static void snacksModification(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception {
+        String userInput = "";
+        boolean cont = true;
+    
+        while (cont) {
+            // Display the user option menu
+            System.out.println("1. View the snacks information");
+            System.out.println("2. Add a new snacks information");
+            System.out.println("3. Modify a snacks information");
+            System.out.println("4. Delete a snacks information");
+            System.out.println("#. Back");
+    
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.next();
+               
+                if (userInput.equals("1")) {
+                    for (int j = 0; j < snacksList.size(); j++) {
+                                System.out.println(snacksList.get(j).toString());
+                            }
+                } else if (userInput.equals("2")) {
+                    addSnacks(snacksList, scanner);
+                } else if (userInput.equals("3")) {
+                    //drinksModification();
+                } else if (userInput.equals("4")) {
+                    //drinksModification();
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/#).");
+                }
+    
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+        }
+    }
+
+    public static void addSnacks(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception{
+        
+        String foodName;
+        double foodPrice;
+        int stockQty;
+        boolean partyPack = false;
+        boolean added = false;
+        String userInput;
+
+        scanner.nextLine();
+        System.out.print("Enter snacks name > ");
+        foodName = scanner.nextLine(); // Read the train name
+    
+        System.out.print("Enter snacks price > ");
+        userInput = scanner.nextLine(); // Read the train model
+        foodPrice = Double.valueOf(userInput) ;
+
+        System.out.print("Enter stock qty > ");
+        userInput = scanner.nextLine(); // Read the train model
+        stockQty = Integer.parseInt(userInput);
+
+        System.out.print("Is it a party pack? (Y-Yes/N-No) > ");
+        userInput = scanner.nextLine(); // Read the train model
+        if (userInput.equalsIgnoreCase("Y")){
+            partyPack = true;
+        }else if(userInput.equalsIgnoreCase("N")){
+            partyPack = false;
+        }else{
+            System.out.println("Invalid input. Please enter Y or N.");
+        }
+
+
+        Snacks tempSnacks = new Snacks(foodName, foodPrice, stockQty, partyPack);
+        snacksList.add(tempSnacks);
+        added = writeSnacksIntoFile("snacksFile.txt", snacksList);
+        if (added == true){
+            System.out.println("Snacks has added.");
+        }
+        tempSnacks = null;    
+
+    }
+
 
 }
