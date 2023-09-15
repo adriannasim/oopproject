@@ -32,6 +32,30 @@ public class Schedule implements Serializable{
         return scheduleId;
     }
 
+    public TrainStation getDepartLocation(){
+        return departLocation;
+    }
+
+    public TrainStation getArriveLocation(){
+        return arriveLocation;
+    }
+
+    public LocalTime getDepartTime(){
+        return departTime;
+    }
+
+    public LocalTime getArriveTime(){
+        return arriveTime;
+    }
+
+    public Train getOperatedTrain(){
+        return trainOperated;
+    }
+
+    public double getTicketPrice(){
+        return ticketPrice;
+    }
+
     public void editDepartLocation(TrainStation departLocation){
         this.departLocation = departLocation;
 

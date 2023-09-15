@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
@@ -515,7 +514,7 @@ public class DriveJh {
                 } else if (userInput.equals("2")) {
                     addSchedule(scheduleList, scanner, stationList, trainList);
                 } else if (userInput.equals("3")) {
-                    //updateSchedule(scheduleList, scanner);
+                    updateScheduleInfo(scheduleList, scanner, stationList, trainList);
                 } else if (userInput.equals("4")) {
                     deleteSchedule(scheduleList, scanner);
                 } else if (userInput.equals("#")) {
@@ -599,6 +598,156 @@ public class DriveJh {
         s = null;    
     }
 
+    public static void updateScheduleInfo(ArrayList<Schedule> scheduleList, Scanner scanner, ArrayList<TrainStation> stationList, ArrayList<Train> trainList) throws FileNotFoundException {
+        String scheduleId;
+        TrainStation departLocation;
+        TrainStation arriveLocation;
+        LocalTime departTime = LocalTime.of(0,0);
+        LocalTime arriveTime = LocalTime.of(0,0);
+        Train trainOperated;
+        double ticketPrice;
+        String userInput = "";
+        boolean found = false;
+        boolean updated = false;
+        String userInput2;
+        String userInput3;
+
+        scanner.nextLine();
+        System.out.println("Search the schedule that needs to be updated");
+        do {
+            System.out.print("Schedule id > ");
+            scheduleId = scanner.nextLine();
+
+            for (int i = 0; i < scheduleList.size(); i++) {
+                if (scheduleId.equals(scheduleList.get(i).getScheduleId())) {
+                    found = true;
+                    System.out.println(scheduleList.get(i).toString());
+                    System.out.println("Select a field to update :");
+                    System.out.println("1. Departure information");
+                    System.out.println("2. Arrival information");
+                    System.out.println("3. Train operated information");
+                    System.out.println("4. Ticket price");
+                    System.out.println("#. Back");
+
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        userInput = scanner.nextLine();
+
+                        if (userInput.equals("1")) {
+                            System.out.println("Select a field to update :");
+                            System.out.println("1. Departure location");
+                            System.out.println("2. Departure time");
+                            System.out.println("#. Back");
+                            do{
+                                System.out.print("Enter option > ");
+                                userInput2 = scanner.nextLine(); 
+                                if (userInput2.equals("1")){
+                                    System.out.println("Departure location: " + scheduleList.get(i).getDepartLocation().getLocationName());
+                                    System.out.println("Select a new departure station : ");
+                                    for (int j = 0; j < stationList.size(); j++) {
+                                        System.out.println((j+1) + ". " + stationList.get(j).getLocationName());
+                                    }
+                                    System.out.print("Enter the station number stated above > ");
+                                    userInput3 = scanner.nextLine(); 
+                                    int uIn = Integer.parseInt(userInput3);
+                                    departLocation = stationList.get(uIn-1);
+                                    scheduleList.get(i).editDepartLocation(departLocation);
+                                }else if(userInput2.equals("2")){
+                                    System.out.println("Departure time: " + scheduleList.get(i).getDepartTime());
+                                    System.out.print("Enter a new departure time : ");
+                                    userInput3 = scanner.nextLine(); 
+                                    try {
+                                        departTime = LocalTime.parse(userInput3);
+                                    } catch (DateTimeParseException e) {
+                                        System.err.println("Invalid departure time format. Please use HH:MM.");
+                                    }
+                                    scheduleList.get(i).editDepartTime(departTime);
+                                }else if(userInput2.equals("#")){
+                                    break;
+                                }else{
+                                    System.out.println("Invalid input. please enter the option as stated above.");
+                                }
+
+                            }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+       
+                        } else if (userInput.equals("2")) {
+                            System.out.println("Select a field to update :");
+                            System.out.println("1. Arrival location");
+                            System.out.println("2. Arrival time");
+                            System.out.println("#. Back");
+                            do{
+                                System.out.print("Enter option > ");
+                                userInput2 = scanner.nextLine(); 
+                                if (userInput2.equals("1")){
+                                    System.out.println("Arrival location: " + scheduleList.get(i).getArriveLocation().getLocationName());
+                                    System.out.println("Select a new arrival station : ");
+                                    for (int j = 0; j < stationList.size(); j++) {
+                                        System.out.println((j+1) + ". " + stationList.get(j).getLocationName());
+                                    }
+                                    System.out.print("Enter the station number stated above > ");
+                                    userInput3 = scanner.nextLine(); 
+                                    int uIn = Integer.parseInt(userInput3);
+                                    arriveLocation = stationList.get(uIn-1);
+                                    scheduleList.get(i).editArriveLocation(arriveLocation);
+                                }else if(userInput2.equals("2")){
+                                    System.out.println("Arrival time: " + scheduleList.get(i).getArriveTime());
+                                    System.out.print("Enter a new arrival time : ");
+                                    userInput3 = scanner.nextLine(); 
+                                    try {
+                                        arriveTime = LocalTime.parse(userInput3);
+                                    } catch (DateTimeParseException e) {
+                                        System.err.println("Invalid arrival time format. Please use HH:MM.");
+                                    }
+                                    scheduleList.get(i).editArriveTime(arriveTime);
+                                }else if(userInput2.equals("#")){
+                                    break;
+                                }else{
+                                    System.out.println("Invalid input. please enter the option as stated above.");
+                                }
+
+                            }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+                            
+                        } else if (userInput.equals("3")) {
+                            System.out.println("Train operated: " + scheduleList.get(i).getOperatedTrain().toString());
+                            System.out.println("Select a new train to replace train above: ");
+                            for (int j = 0; j < trainList.size(); j++) {
+                                System.out.println((j+1) + ". " + trainList.get(j).getTrainNo());
+                            }
+                            System.out.print("Enter the train number stated above > ");
+                            userInput = scanner.nextLine(); 
+                            int uIn = Integer.parseInt(userInput);
+                            trainOperated = trainList.get(uIn-1);
+                            scheduleList.get(i).editTrainOperated(trainOperated);
+                        } else if (userInput.equals("4")) {
+                            System.out.println("Ticket price (RM): " + scheduleList.get(i).getTicketPrice());
+                            System.out.print("Enter a new ticket price : ");
+                            userInput2 = scanner.nextLine(); 
+                            ticketPrice = Double.valueOf(userInput2) ;
+                            scheduleList.get(i).editTicketPrice(ticketPrice);
+                        } else if (userInput.equals("#")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid input. please enter the option as stated above.");
+                        }
+                    } while ( !userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+
+                 }
+            }
+
+            if (!found) {
+                System.out.println("Schedule not found. Please search again.");
+            }
+            updated = writeScheduleIntoFile("scheduleFile.txt",scheduleList);
+            if (updated){
+                System.out.println("Schedule information has updated.");
+            }else{
+                System.out.println("Update failed.");
+            }
+            updated = false;
+        } while (!found);  
+    }
+
+
     public static void deleteSchedule(ArrayList<Schedule> scheduleList, Scanner scanner) throws Exception {
         String scheduleId;
         boolean found = false;
@@ -635,6 +784,7 @@ public class DriveJh {
             if (!found) {
                 System.out.println("Schedule not found. Please search again.");
             }
+            deleted = false;
         } while (!found);
     
     }
