@@ -1,12 +1,13 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Schedule {
     private String scheduleId;
     private Location departLocation;
     private Location arriveLocation;
-    private LocalDateTime departTime;
-    private LocalDateTime arriveTime;
+    private LocalTime departTime;
+    private LocalTime arriveTime;
     private Train trainOperated;
     private double ticketPrice;
 
@@ -14,7 +15,7 @@ public class Schedule {
 
     }
 
-    public Schedule(Location departLocation, Location arriveLocation, LocalDateTime departTime, LocalDateTime arriveTime, Train trainOperated, double ticketPrice){
+    public Schedule(Location departLocation, Location arriveLocation, LocalTime departTime, LocalTime arriveTime, Train trainOperated, double ticketPrice){
         // random id
         this.departLocation = departLocation;
         this.arriveLocation = arriveLocation;
@@ -38,12 +39,12 @@ public class Schedule {
 
     }
 
-    public void editDepartTime(LocalDateTime departTime){
+    public void editDepartTime(LocalTime departTime){
         this.departTime = departTime;
 
     }
 
-    public void editArriveTime(LocalDateTime arriveTime){
+    public void editArriveTime(LocalTime arriveTime){
         this.arriveTime = arriveTime;
 
     }

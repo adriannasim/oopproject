@@ -1,5 +1,7 @@
 import java.util.*;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class DriveJh {
     public static void main(String[] args) throws FileNotFoundException {
@@ -120,6 +122,29 @@ public class DriveJh {
         } catch (IOException e) {
             System.err.println("Error writing to the file: " + e.getMessage());
         }
+        return write;
+    }
+
+    // Method to read the Train Station information from a file & store it into stationList ArrayList<TrainStation>
+   public static ArrayList<Schedule> readScheduleFromFile(String filename) throws Exception {
+         ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+         File file = new File(filename);
+
+         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+         Schedule s = (Schedule)ois.readObject();
+         ois.close();
+         scheduleList.add(s);
+         return scheduleList;
+    }
+
+    public static boolean writeScheduleIntoFile(String filename) throws Exception{
+        boolean write = false;
+        File file = new File(filename);
+        Schedule s = new Schedule("BM", "PB", 09:00:00, null, null, 0)
+
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+        oos.writeObject(s);
+        oos.close();
         return write;
     }
 
@@ -433,5 +458,69 @@ public class DriveJh {
         } while (!found);
     }
 
+    // Method to modify schedule information
+    public static void sheduleModification(ArrayList<Schedule> scheduleList, Scanner scanner) throws FileNotFoundException {
+        String userInput = "";
+        boolean cont = true;
+    
+        while (cont) {
+            // Display the user option menu
+            System.out.println("1. View schedule");
+            System.out.println("2. Add a new schedule");
+            System.out.println("3. Update existing schedule");
+            System.out.println("4. Delete an existing schedule");
+            System.out.println("#. Exit");
+    
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.next();
+               
+                if (userInput.equals("1")) {
+                    for (int i = 0; i < scheduleList.size(); i++) {
+                        System.out.println(scheduleList.get(i).toString());
+                        System.out.println();
+                    }
+                } else if (userInput.equals("2")) {
+                    addSchedule(scheduleList, scanner);
+                } else if (userInput.equals("3")) {
+                    updateSchedule(scheduleList, scanner);
+                } else if (userInput.equals("4")) {
+                    deleteSchedule(scheduleList, scanner);
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                }
+    
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+        }
+    }
+
+    // Method to add a new train information
+    public static void addSchedule(ArrayList<Schedule> scheduleList, Scanner scanner) throws FileNotFoundException {
+        String departLocation;
+        String arriveLocation;
+        LocalDateTime deparTime;
+        LocalDateTime arriveTime;
+        Train trainOperated;
+        double ticketPrice;
+
+        boolean added = false;
+        scanner.nextLine();
+        System.out.print("Enter station name > ");
+        String locationName = scanner.nextLine(); 
+    
+        System.out.print("Enter number of platform available > ");
+        int numOfPlatform = scanner.nextInt(); 
+
+        TrainStation tempStation = new TrainStation(locationName, numOfPlatform);
+        scheduleList.add(tempStation);
+        added = writeStationIntoFile(scheduleList);
+        if (added == true){
+            System.out.println("Station has added.");
+        }
+        tempStation = null;    
+    }
 
 }
