@@ -1,4 +1,6 @@
-public class Snacks extends FoodAndBeverage{
+import java.io.Serializable;
+
+public class Snacks extends FoodAndBeverage implements Serializable{
     private boolean partyPack;
 
     Snacks(){
@@ -9,11 +11,17 @@ public class Snacks extends FoodAndBeverage{
 
     }
 
+    Snacks(String foodName, double foodPrice, int stockQty, boolean partyPack){
+        super(foodName,foodPrice,stockQty);
+        this.partyPack = partyPack;
+    }
+
     public void setPartyPack(boolean partyPack){
 
     }
 
-    public boolean getPartyPack(){
-        return partyPack;
+    public String toString() {
+        String partyPackStatus = partyPack ? "true" : "false";
+        return super.toString() + "\nParty pack: " + partyPackStatus;
     }
 }

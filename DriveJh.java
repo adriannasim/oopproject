@@ -1,10 +1,14 @@
 import java.util.*;
 import java.io.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 public class DriveJh {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         ArrayList<Train> trainList;
         ArrayList<TrainStation> stationList;
+        ArrayList<Schedule> scheduleList;
+        ArrayList<Snacks> snacksList;
         String userInput = "";
         Scanner scanner = new Scanner(System.in);
         boolean cont = true;
@@ -12,6 +16,8 @@ public class DriveJh {
        trainList = readTrainFromFile("trainFile.txt");
        // Invoke readStationFromFile() method to read station information from the file
        stationList = readStationFromFile("stationFile.txt");
+       scheduleList = readScheduleFromFile("scheduleFile.txt");
+       snacksList = readSnacksFromFile("snacksFile.txt");
 
        do{
            System.out.println("1. Train Information Modification");
@@ -29,9 +35,11 @@ public class DriveJh {
                if (userInput.equals("1")) {
                    trainModification(trainList, scanner);
                } else if (userInput.equals("2")) {
-                   //scheduleModification();
+                   sheduleModification(scheduleList, scanner, stationList, trainList);
                } else if (userInput.equals("3")) {
                    stationModification(stationList, scanner);
+               } else if (userInput.equals("4")) {
+                   foodAndBeverageModification(snacksList, scanner);
                } else if (userInput.equals("#")) {
                    // Handle going back
                    cont = false;
@@ -122,6 +130,109 @@ public class DriveJh {
         }
         return write;
     }
+
+    public static ArrayList<Schedule> readScheduleFromFile(String filename) throws Exception {
+        ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+        File file = new File(filename);
+        ObjectInputStream input = null; // Declare outside the try block
+    
+        try {
+            input = new ObjectInputStream(new FileInputStream(file));
+    
+            while (true) {
+                try {
+                    Schedule s = (Schedule) input.readObject();
+                    scheduleList.add(s);
+                } catch (EOFException eofe) {
+                    break;
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+        
+        return scheduleList;
+    }
+    
+
+    public static boolean writeScheduleIntoFile(String filename, ArrayList<Schedule> scheduleList) {
+        boolean write = false;
+        File file = new File(filename);
+    
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            for (int i = 0; i < scheduleList.size(); i++) {
+                oos.writeObject(scheduleList.get(i));
+            }
+            write = true; // Set write to true if writing is successful
+        } catch (IOException e) {
+            // Handle any IOException that might occur during writing
+            e.printStackTrace();
+            // write remains false if an error occurs
+        }
+    
+        return write;
+    }    
+
+    public static ArrayList<Snacks> readSnacksFromFile(String filename) throws Exception {
+        ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
+        File file = new File(filename);
+        ObjectInputStream input = null; // Declare outside the try block
+    
+        try {
+            input = new ObjectInputStream(new FileInputStream(file));
+    
+            while (true) {
+                try {
+                    Snacks s = (Snacks) input.readObject();
+                    snacksList.add(s);
+                } catch (EOFException eofe) {
+                    break;
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+        
+        return snacksList;
+    }
+
+     public static boolean writeSnacksIntoFile(String filename, ArrayList<Snacks> snacksList) {
+        boolean write = false;
+        File file = new File(filename);
+    
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            for (int i = 0; i < snacksList.size(); i++) {
+                oos.writeObject(snacksList.get(i));
+            }
+            write = true; // Set write to true if writing is successful
+        } catch (IOException e) {
+            // Handle any IOException that might occur during writing
+            e.printStackTrace();
+            // write remains false if an error occurs
+        }
+    
+        return write;
+    }    
 
 
 
@@ -215,7 +326,7 @@ public class DriveJh {
                         if (userInput == 1) {
                             System.out.print("New train name > ");
                             newName = scanner.nextLine();
-                            trainList.get(i).chnageTrainName(newName);
+                            trainList.get(i).changeTrainName(newName);
                         } else if (userInput == 2){
                             break; // Exit the loop
                         }else {
@@ -433,5 +544,522 @@ public class DriveJh {
         } while (!found);
     }
 
+    // Method to modify schedule information
+    public static void sheduleModification(ArrayList<Schedule> scheduleList, Scanner scanner, ArrayList<TrainStation> stationList, ArrayList<Train> trainList) throws Exception {
+        String userInput = "";
+        boolean cont = true;
+    
+        while (cont) {
+            // Display the user option menu
+            System.out.println("1. View schedule");
+            System.out.println("2. Add a new schedule");
+            System.out.println("3. Update existing schedule");
+            System.out.println("4. Delete an existing schedule");
+            System.out.println("#. Exit");
+    
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.next();
+               
+                if (userInput.equals("1")) {
+                    for (int i = 0; i < scheduleList.size(); i++) {
+                        System.out.println(scheduleList.get(i).toString());
+                        System.out.println();
+                    }
+                } else if (userInput.equals("2")) {
+                    addSchedule(scheduleList, scanner, stationList, trainList);
+                } else if (userInput.equals("3")) {
+                    updateScheduleInfo(scheduleList, scanner, stationList, trainList);
+                } else if (userInput.equals("4")) {
+                    deleteSchedule(scheduleList, scanner);
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                }
+    
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+        }
+    }
+
+    // Method to add a new train information
+    public static void addSchedule(ArrayList<Schedule> scheduleList, Scanner scanner, ArrayList<TrainStation> stationList, ArrayList<Train> trainList) throws Exception {
+        TrainStation departLocation;
+        TrainStation arriveLocation;
+        LocalTime departTime = LocalTime.of(0,0);
+        LocalTime arriveTime = LocalTime.of(0,0);
+        Train trainOperated;
+        double ticketPrice;
+        String userInput = "";
+
+        boolean added = false;
+        scanner.nextLine();
+        System.out.println("Select a departure station : ");
+        for (int i = 0; i < stationList.size(); i++) {
+                System.out.println((i+1) + ". " + stationList.get(i).getLocationName());
+        }
+        System.out.print("Enter the station number stated above > ");
+        userInput = scanner.nextLine(); 
+        int uIn = Integer.parseInt(userInput);
+        departLocation = stationList.get(uIn-1);
+
+        System.out.println("Select an arrival station : ");
+        for (int i = 0; i < stationList.size(); i++) {
+                System.out.println((i+1) + ". " + stationList.get(i).getLocationName());
+        }
+        System.out.print("Enter the station number stated above > ");
+        userInput = scanner.nextLine(); 
+        uIn = Integer.parseInt(userInput);
+        arriveLocation = stationList.get(uIn-1);
+
+        System.out.print("Enter a departure time (HH:MM) > ");
+        userInput = scanner.nextLine(); 
+        try {
+            departTime = LocalTime.parse(userInput);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid departure time format. Please use HH:MM.");
+        }
+
+        System.out.print("Enter an arrival time (HH:MM) > ");
+        userInput = scanner.nextLine(); 
+        try {
+            arriveTime = LocalTime.parse(userInput);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid arrival time format. Please use HH:MM.");
+        }
+ 
+        System.out.println("Select a train for this schedule : ");
+        for (int i = 0; i < trainList.size(); i++) {
+                System.out.println((i+1) + ". " + trainList.get(i).getTrainNo());
+        }
+        System.out.print("Enter the train number stated above > ");
+        userInput = scanner.nextLine(); 
+        uIn = Integer.parseInt(userInput);
+        trainOperated = trainList.get(uIn-1);
+
+        System.out.print("Enter the ticket price (RM) > ");
+        userInput = scanner.nextLine(); 
+        ticketPrice = Double.valueOf(userInput) ;
+
+        
+        Schedule s = new Schedule(departLocation, arriveLocation, departTime, arriveTime, trainOperated, ticketPrice);
+        scheduleList.add(s);
+        added = writeScheduleIntoFile("scheduleFile.txt", scheduleList);
+        
+        if (added == true){
+            System.out.println("Schedule has added.");
+        }
+        s = null;    
+    }
+
+    public static void updateScheduleInfo(ArrayList<Schedule> scheduleList, Scanner scanner, ArrayList<TrainStation> stationList, ArrayList<Train> trainList) throws FileNotFoundException {
+        String scheduleId;
+        TrainStation departLocation;
+        TrainStation arriveLocation;
+        LocalTime departTime = LocalTime.of(0,0);
+        LocalTime arriveTime = LocalTime.of(0,0);
+        Train trainOperated;
+        double ticketPrice;
+        String userInput = "";
+        boolean found = false;
+        boolean updated = false;
+        String userInput2;
+        String userInput3;
+
+        scanner.nextLine();
+        System.out.println("Search the schedule that needs to be updated");
+        do {
+            System.out.print("Schedule id > ");
+            scheduleId = scanner.nextLine();
+
+            for (int i = 0; i < scheduleList.size(); i++) {
+                if (scheduleId.equals(scheduleList.get(i).getScheduleId())) {
+                    found = true;
+                    System.out.println(scheduleList.get(i).toString());
+                    System.out.println("Select a field to update :");
+                    System.out.println("1. Departure information");
+                    System.out.println("2. Arrival information");
+                    System.out.println("3. Train operated information");
+                    System.out.println("4. Ticket price");
+                    System.out.println("#. Back");
+
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        userInput = scanner.nextLine();
+
+                        if (userInput.equals("1")) {
+                            System.out.println("Select a field to update :");
+                            System.out.println("1. Departure location");
+                            System.out.println("2. Departure time");
+                            System.out.println("#. Back");
+                            do{
+                                System.out.print("Enter option > ");
+                                userInput2 = scanner.nextLine(); 
+                                if (userInput2.equals("1")){
+                                    System.out.println("Departure location: " + scheduleList.get(i).getDepartLocation().getLocationName());
+                                    System.out.println("Select a new departure station : ");
+                                    for (int j = 0; j < stationList.size(); j++) {
+                                        System.out.println((j+1) + ". " + stationList.get(j).getLocationName());
+                                    }
+                                    System.out.print("Enter the station number stated above > ");
+                                    userInput3 = scanner.nextLine(); 
+                                    int uIn = Integer.parseInt(userInput3);
+                                    departLocation = stationList.get(uIn-1);
+                                    scheduleList.get(i).editDepartLocation(departLocation);
+                                }else if(userInput2.equals("2")){
+                                    System.out.println("Departure time: " + scheduleList.get(i).getDepartTime());
+                                    System.out.print("Enter a new departure time : ");
+                                    userInput3 = scanner.nextLine(); 
+                                    try {
+                                        departTime = LocalTime.parse(userInput3);
+                                    } catch (DateTimeParseException e) {
+                                        System.err.println("Invalid departure time format. Please use HH:MM.");
+                                    }
+                                    scheduleList.get(i).editDepartTime(departTime);
+                                }else if(userInput2.equals("#")){
+                                    break;
+                                }else{
+                                    System.out.println("Invalid input. please enter the option as stated above.");
+                                }
+
+                            }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+       
+                        } else if (userInput.equals("2")) {
+                            System.out.println("Select a field to update :");
+                            System.out.println("1. Arrival location");
+                            System.out.println("2. Arrival time");
+                            System.out.println("#. Back");
+                            do{
+                                System.out.print("Enter option > ");
+                                userInput2 = scanner.nextLine(); 
+                                if (userInput2.equals("1")){
+                                    System.out.println("Arrival location: " + scheduleList.get(i).getArriveLocation().getLocationName());
+                                    System.out.println("Select a new arrival station : ");
+                                    for (int j = 0; j < stationList.size(); j++) {
+                                        System.out.println((j+1) + ". " + stationList.get(j).getLocationName());
+                                    }
+                                    System.out.print("Enter the station number stated above > ");
+                                    userInput3 = scanner.nextLine(); 
+                                    int uIn = Integer.parseInt(userInput3);
+                                    arriveLocation = stationList.get(uIn-1);
+                                    scheduleList.get(i).editArriveLocation(arriveLocation);
+                                }else if(userInput2.equals("2")){
+                                    System.out.println("Arrival time: " + scheduleList.get(i).getArriveTime());
+                                    System.out.print("Enter a new arrival time : ");
+                                    userInput3 = scanner.nextLine(); 
+                                    try {
+                                        arriveTime = LocalTime.parse(userInput3);
+                                    } catch (DateTimeParseException e) {
+                                        System.err.println("Invalid arrival time format. Please use HH:MM.");
+                                    }
+                                    scheduleList.get(i).editArriveTime(arriveTime);
+                                }else if(userInput2.equals("#")){
+                                    break;
+                                }else{
+                                    System.out.println("Invalid input. please enter the option as stated above.");
+                                }
+
+                            }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+                            
+                        } else if (userInput.equals("3")) {
+                            System.out.println("Train operated: " + scheduleList.get(i).getOperatedTrain().toString());
+                            System.out.println("Select a new train to replace train above: ");
+                            for (int j = 0; j < trainList.size(); j++) {
+                                System.out.println((j+1) + ". " + trainList.get(j).getTrainNo());
+                            }
+                            System.out.print("Enter the train number stated above > ");
+                            userInput = scanner.nextLine(); 
+                            int uIn = Integer.parseInt(userInput);
+                            trainOperated = trainList.get(uIn-1);
+                            scheduleList.get(i).editTrainOperated(trainOperated);
+                        } else if (userInput.equals("4")) {
+                            System.out.println("Ticket price (RM): " + scheduleList.get(i).getTicketPrice());
+                            System.out.print("Enter a new ticket price : ");
+                            userInput2 = scanner.nextLine(); 
+                            ticketPrice = Double.valueOf(userInput2) ;
+                            scheduleList.get(i).editTicketPrice(ticketPrice);
+                        } else if (userInput.equals("#")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid input. please enter the option as stated above.");
+                        }
+                    } while ( !userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+
+                 }
+            }
+
+            if (!found) {
+                System.out.println("Schedule not found. Please search again.");
+            }
+            updated = writeScheduleIntoFile("scheduleFile.txt",scheduleList);
+            if (updated){
+                System.out.println("Schedule information has updated.");
+            }else{
+                System.out.println("Update failed.");
+            }
+            updated = false;
+        } while (!found);  
+    }
+
+
+    public static void deleteSchedule(ArrayList<Schedule> scheduleList, Scanner scanner) throws Exception {
+        String scheduleId;
+        boolean found = false;
+        String userInput;
+        boolean deleted = false;
+        scanner.nextLine();
+        do {
+            System.out.print("Enter the schedule id that need to be deleted > ");
+            scheduleId = scanner.nextLine();
+            if (scheduleId.equals("#"))
+                break;
+    
+            for (int i = 0; i < scheduleList.size(); i++) {
+                if (scheduleId.equals(scheduleList.get(i).getScheduleId())) {
+                    found = true;
+                    System.out.println("schedule found. Are you sure to delete the schedule information as shown below?  ");
+                    System.out.println(scheduleList.get(i).toString());
+                    System.out.print("Enter your option (Y-Yes/N-No)> ");
+                    userInput = scanner.next();
+    
+                    if (userInput.equalsIgnoreCase("Y")) {
+                        scheduleList.remove(i); // Remove the train from the list
+                        deleted = writeScheduleIntoFile("scheduleFile.txt",scheduleList);
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
+                
+                    break; // Exit the loop since we found and processed the train
+                }
+            }
+            if (deleted == true) {
+                System.out.println("Schedule has been removed.");
+            }
+            if (!found) {
+                System.out.println("Schedule not found. Please search again.");
+            }
+            deleted = false;
+        } while (!found);
+    
+    }
+
+
+    // Method to modify F&B information
+    public static void foodAndBeverageModification(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception {
+        String userInput = "";
+        boolean cont = true;
+    
+        while (cont) {
+            // Display the user option menu
+            System.out.println("Select a food category");
+            System.out.println("1. Snacks");
+            System.out.println("2. Drinks");
+            System.out.println("#. Back");
+    
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.next();
+               
+                if (userInput.equals("1")) {
+                    snacksModification(snacksList, scanner);
+                } else if (userInput.equals("2")) {
+                    //drinksModification();
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/#).");
+                }
+    
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+        }
+    }
+
+    public static void snacksModification(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception {
+        String userInput = "";
+        boolean cont = true;
+    
+        while (cont) {
+            // Display the user option menu
+            System.out.println("1. View the snacks information");
+            System.out.println("2. Add a new snacks information");
+            System.out.println("3. Modify a snacks information");
+            System.out.println("4. Delete a snacks information");
+            System.out.println("#. Back");
+    
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.next();
+               
+                if (userInput.equals("1")) {
+                    for (int j = 0; j < snacksList.size(); j++) {
+                                System.out.println(snacksList.get(j).toString());
+                            }
+                } else if (userInput.equals("2")) {
+                    addSnacks(snacksList, scanner);
+                } else if (userInput.equals("3")) {
+                    updateSnacks(snacksList, scanner);
+                } else if (userInput.equals("4")) {
+                    //drinksModification();
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                    break; // Exit the loop
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/#).");
+                }
+    
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+        }
+    }
+
+    public static void addSnacks(ArrayList<Snacks> snacksList, Scanner scanner) {
+        try {
+            String foodName;
+            double foodPrice;
+            int stockQty;
+            boolean partyPack = false;
+    
+            scanner.nextLine();
+            System.out.print("Enter snacks name > ");
+            foodName = scanner.nextLine();
+    
+            System.out.print("Enter snacks price > ");
+            foodPrice = validateDoubleInput(scanner);
+    
+            System.out.print("Enter stock qty > ");
+            stockQty = validateIntegerInput(scanner);
+    
+            System.out.print("Is it a party pack? (Y-Yes/N-No) > ");
+            String userInput = scanner.nextLine();
+            
+            if (userInput.equalsIgnoreCase("Y")) {
+                partyPack = true;
+            } else if (userInput.equalsIgnoreCase("N")) {
+                partyPack = false;
+            } else {
+                System.out.println("Invalid input. Please enter Y or N.");
+                return; // Exit the method if the input is invalid.
+            }
+    
+            Snacks tempSnacks = new Snacks(foodName, foodPrice, stockQty, partyPack);
+            snacksList.add(tempSnacks);
+            boolean added = writeSnacksIntoFile("snacksFile.txt", snacksList);
+    
+            if (added) {
+                System.out.println("Snacks has been added.");
+            } else {
+                System.out.println("Failed to add snacks.");
+            }
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Helper method to validate double input
+    private static double validateDoubleInput(Scanner scanner) {
+        while (true) {
+            try {
+                String userInput = scanner.nextLine();
+                return Double.parseDouble(userInput);
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a valid number: ");
+            }
+        }
+    }
+    
+    // Helper method to validate integer input
+    private static int validateIntegerInput(Scanner scanner) {
+        while (true) {
+            try {
+                String userInput = scanner.nextLine();
+                return Integer.parseInt(userInput);
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a valid integer: ");
+            }
+        }
+    }
+
+    public static void updateSnacks(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception{
+        String foodId;
+        String foodName;
+        double foodPrice;
+        int stockQty; 
+        boolean found = false;
+        String userInput;
+        boolean updated = false;
+
+        scanner.nextLine();
+        System.out.println("Search the snacks that needs to be updated");
+        do {
+            System.out.print("Snacks id > ");
+            foodId = scanner.nextLine();
+
+            for (int i = 0; i < snacksList.size(); i++) {
+                if (foodId.equals(snacksList.get(i).getFoodId())) {
+                    found = true;
+                    System.out.println(snacksList.get(i).toString());
+                    System.out.println("Select a field: ");
+                    System.out.println("1. Food name ");
+                    System.out.println("2. Food price ");
+                    System.out.println("3. Stock qty ");
+                    System.out.println("4. Make it a party pack or vice versa");
+                    System.out.println("#. Go back");
+
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        
+                        userInput = scanner.nextLine();
+
+                        if (userInput.equals("1")) {
+                            System.out.print("New snacks name > ");
+                            foodName = scanner.nextLine();
+                            snacksList.get(i).editFoodName(foodName);
+                        } else if (userInput.equals("2")) {
+                            System.out.print("New price > ");
+                            String temp = scanner.nextLine();
+                            foodPrice = Double.valueOf(temp) ;
+                            snacksList.get(i).editFoodPrice(foodPrice);
+                        } else if (userInput.equals("3")) {
+                            System.out.print("New qty > ");
+                            String temp = scanner.nextLine();
+                            stockQty = Integer.parseInt(temp);
+                            snacksList.get(i).editStockQty(stockQty);
+                        } else if (userInput.equals("4")) {
+                            System.out.print("A party pack? (Y-Yes/N-No) > ");
+                            String temp = scanner.nextLine();
+                            if (temp.equalsIgnoreCase("Y")){
+                                snacksList.get(i).setPartyPack(true);
+                            }else if (temp.equalsIgnoreCase("N")){
+                                snacksList.get(i).setPartyPack(false);
+                            }else{
+                                System.out.println("Invalid input. Please enter (Y/N).");
+                            }
+                        } else if (userInput.equals("#")) {
+                            break;
+                            
+                        } else {
+                            System.out.println("Invalid option. Please enter (1/2/3).");
+                        }
+                    } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+
+                 }
+            }
+
+            if (!found) {
+                System.out.println("Train snacks not found. Please search again.");
+            }
+
+            updated = writeSnacksIntoFile("snacksFile.txt", snacksList);
+            if (updated){
+                System.out.println("Snacks information has updated.");
+            }else{
+                System.out.println("Update failed.");
+            }
+        } while (!found);  
+    }
+
+    
 
 }

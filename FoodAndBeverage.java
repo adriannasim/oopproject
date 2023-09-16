@@ -10,8 +10,14 @@ public class FoodAndBeverage{
     }
 
     FoodAndBeverage(String foodName, double foodPrice, int stockQty){
+        foodId = String.valueOf((int) (100000 + (Math.random() * (200000 - 100000 + 1))));
+        this.foodName = foodName;
+        this.foodPrice = foodPrice;
+        this.stockQty = stockQty; 
+    }
 
-        
+    public String getFoodId(){
+        return foodId;
     }
 
     public void editFoodName(String foodName){
@@ -31,7 +37,7 @@ public class FoodAndBeverage{
     }
 
     public String toString(){
-        return "";
+        return "Food id: " + foodId + "\nFood name: " + foodName + "\nFood price: " + foodPrice + "\nStock qty: " + stockQty;
     }
 
 }
