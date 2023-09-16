@@ -326,7 +326,7 @@ public class DriveJh {
                         if (userInput == 1) {
                             System.out.print("New train name > ");
                             newName = scanner.nextLine();
-                            trainList.get(i).chnageTrainName(newName);
+                            trainList.get(i).changeTrainName(newName);
                         } else if (userInput == 2){
                             break; // Exit the loop
                         }else {
@@ -899,7 +899,7 @@ public class DriveJh {
                 } else if (userInput.equals("2")) {
                     addSnacks(snacksList, scanner);
                 } else if (userInput.equals("3")) {
-                    //drinksModification();
+                    updateSnacks(snacksList, scanner);
                 } else if (userInput.equals("4")) {
                     //drinksModification();
                 } else if (userInput.equals("#")) {
@@ -913,47 +913,153 @@ public class DriveJh {
         }
     }
 
-    public static void addSnacks(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception{
-        
-        String foodName;
-        double foodPrice;
-        int stockQty;
-        boolean partyPack = false;
-        boolean added = false;
-        String userInput;
-
-        scanner.nextLine();
-        System.out.print("Enter snacks name > ");
-        foodName = scanner.nextLine(); // Read the train name
+    public static void addSnacks(ArrayList<Snacks> snacksList, Scanner scanner) {
+        try {
+            String foodName;
+            double foodPrice;
+            int stockQty;
+            boolean partyPack = false;
     
-        System.out.print("Enter snacks price > ");
-        userInput = scanner.nextLine(); // Read the train model
-        foodPrice = Double.valueOf(userInput) ;
-
-        System.out.print("Enter stock qty > ");
-        userInput = scanner.nextLine(); // Read the train model
-        stockQty = Integer.parseInt(userInput);
-
-        System.out.print("Is it a party pack? (Y-Yes/N-No) > ");
-        userInput = scanner.nextLine(); // Read the train model
-        if (userInput.equalsIgnoreCase("Y")){
-            partyPack = true;
-        }else if(userInput.equalsIgnoreCase("N")){
-            partyPack = false;
-        }else{
-            System.out.println("Invalid input. Please enter Y or N.");
+            scanner.nextLine();
+            System.out.print("Enter snacks name > ");
+            foodName = scanner.nextLine();
+    
+            System.out.print("Enter snacks price > ");
+            foodPrice = validateDoubleInput(scanner);
+    
+            System.out.print("Enter stock qty > ");
+            stockQty = validateIntegerInput(scanner);
+    
+            System.out.print("Is it a party pack? (Y-Yes/N-No) > ");
+            String userInput = scanner.nextLine();
+            
+            if (userInput.equalsIgnoreCase("Y")) {
+                partyPack = true;
+            } else if (userInput.equalsIgnoreCase("N")) {
+                partyPack = false;
+            } else {
+                System.out.println("Invalid input. Please enter Y or N.");
+                return; // Exit the method if the input is invalid.
+            }
+    
+            Snacks tempSnacks = new Snacks(foodName, foodPrice, stockQty, partyPack);
+            snacksList.add(tempSnacks);
+            boolean added = writeSnacksIntoFile("snacksFile.txt", snacksList);
+    
+            if (added) {
+                System.out.println("Snacks has been added.");
+            } else {
+                System.out.println("Failed to add snacks.");
+            }
+    
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
-        Snacks tempSnacks = new Snacks(foodName, foodPrice, stockQty, partyPack);
-        snacksList.add(tempSnacks);
-        added = writeSnacksIntoFile("snacksFile.txt", snacksList);
-        if (added == true){
-            System.out.println("Snacks has added.");
+    }
+    
+    // Helper method to validate double input
+    private static double validateDoubleInput(Scanner scanner) {
+        while (true) {
+            try {
+                String userInput = scanner.nextLine();
+                return Double.parseDouble(userInput);
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a valid number: ");
+            }
         }
-        tempSnacks = null;    
-
+    }
+    
+    // Helper method to validate integer input
+    private static int validateIntegerInput(Scanner scanner) {
+        while (true) {
+            try {
+                String userInput = scanner.nextLine();
+                return Integer.parseInt(userInput);
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a valid integer: ");
+            }
+        }
     }
 
+    public static void updateSnacks(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception{
+        String foodId;
+        String foodName;
+        double foodPrice;
+        int stockQty; 
+        boolean found = false;
+        String userInput;
+        boolean updated = false;
+
+        scanner.nextLine();
+        System.out.println("Search the snacks that needs to be updated");
+        do {
+            System.out.print("Snacks id > ");
+            foodId = scanner.nextLine();
+
+            for (int i = 0; i < snacksList.size(); i++) {
+                if (foodId.equals(snacksList.get(i).getFoodId())) {
+                    found = true;
+                    System.out.println(snacksList.get(i).toString());
+                    System.out.println("Select a field: ");
+                    System.out.println("1. Food name ");
+                    System.out.println("2. Food price ");
+                    System.out.println("3. Stock qty ");
+                    System.out.println("4. Make it a party pack or vice versa");
+                    System.out.println("#. Go back");
+
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        
+                        userInput = scanner.nextLine();
+
+                        if (userInput.equals("1")) {
+                            System.out.print("New snacks name > ");
+                            foodName = scanner.nextLine();
+                            snacksList.get(i).editFoodName(foodName);
+                        } else if (userInput.equals("2")) {
+                            System.out.print("New price > ");
+                            String temp = scanner.nextLine();
+                            foodPrice = Double.valueOf(temp) ;
+                            snacksList.get(i).editFoodPrice(foodPrice);
+                        } else if (userInput.equals("3")) {
+                            System.out.print("New qty > ");
+                            String temp = scanner.nextLine();
+                            stockQty = Integer.parseInt(temp);
+                            snacksList.get(i).editStockQty(stockQty);
+                        } else if (userInput.equals("4")) {
+                            System.out.print("A party pack? (Y-Yes/N-No) > ");
+                            String temp = scanner.nextLine();
+                            if (temp.equalsIgnoreCase("Y")){
+                                snacksList.get(i).setPartyPack(true);
+                            }else if (temp.equalsIgnoreCase("N")){
+                                snacksList.get(i).setPartyPack(false);
+                            }else{
+                                System.out.println("Invalid input. Please enter (Y/N).");
+                            }
+                        } else if (userInput.equals("#")) {
+                            break;
+                            
+                        } else {
+                            System.out.println("Invalid option. Please enter (1/2/3).");
+                        }
+                    } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+
+                 }
+            }
+
+            if (!found) {
+                System.out.println("Train snacks not found. Please search again.");
+            }
+
+            updated = writeSnacksIntoFile("snacksFile.txt", snacksList);
+            if (updated){
+                System.out.println("Snacks information has updated.");
+            }else{
+                System.out.println("Update failed.");
+            }
+        } while (!found);  
+    }
+
+    
 
 }

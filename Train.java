@@ -18,7 +18,7 @@ public class Train implements Serializable{
         this.trainName = trainName;
         this.trainModel = trainModel;  
         this.status = status;
-        nextTrainNo = trainNo+1;
+        nextTrainNo = this.trainNo+1;
     }
 
     public Train(String trainName, String trainModel){
@@ -45,7 +45,7 @@ public class Train implements Serializable{
         return status;
     }
 
-    public void chnageTrainName(String trainName){
+    public void changeTrainName(String trainName){
         this.trainName = trainName;
     }
 

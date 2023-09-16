@@ -16,6 +16,10 @@ public class FoodAndBeverage{
         this.stockQty = stockQty; 
     }
 
+    public String getFoodId(){
+        return foodId;
+    }
+
     public void editFoodName(String foodName){
 
     }
