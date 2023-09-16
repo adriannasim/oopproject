@@ -26,7 +26,7 @@ public class Ticket{
     	return ticketSchedule;
     }
     
-    public void getTicketDate(LocalDate ticketDate){
+    public void setTicketDate(LocalDate ticketDate){
     	this.ticketDate = ticketDate;
     }
     public LocalDate getTicketDate(){
