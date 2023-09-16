@@ -6,7 +6,7 @@ public class Ticket{
     private Schedule ticketSchedule;
     private LocalDate ticketDate;
 
-    public Ticket(String ticketId, Schedule ticketSchedule, LocalDate ticketDate){
+    public Ticket(Schedule ticketSchedule, LocalDate ticketDate){
         String tempTicketId = "T" + ticketIdNo;
         ticketIdNo++;
         ticketId = tempTicketId;
@@ -34,6 +34,7 @@ public class Ticket{
     }
     
     public String toString(){
-    	return String.format("Ticket ID : %s\nTicket Schedule : %s\nTicket Date : %s\n", ticketId, ticketSchedule, ticketDate);
+    	return String.format("\nTicket ID : %s\nSchedule\n-------------------------------------\n%s \n-------------------------------------\nTicket Date : %s\n"
+            , ticketId, ticketSchedule, ticketDate);
     }
 }
