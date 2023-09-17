@@ -21,6 +21,38 @@ public class DebitCreditCard extends PaymentType {
 
     }
 
+    public void setCardNo(int cardNo){
+        this.cardNo = cardNo;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate){
+        this.expiryDate = expiryDate;
+    }
+
+    public void setCardHolderName(String cardHolderName){
+        this.cardHolderName = cardHolderName;
+    }
+
+    public void setCcv(int ccv){
+        this.ccv = ccv;
+    }
+
+    public int getCardNo(){
+        return cardNo;
+    }
+
+    public LocalDate getExpiryDate(){
+        return expiryDate;
+    }
+
+    public String getCardHolderName(){
+        return cardHolderName;
+    }
+
+    public int getCcv(){
+        return ccv;
+    }
+
     public String toString(){
         return String.format("");
     }
