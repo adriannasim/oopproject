@@ -1113,7 +1113,7 @@ public class DriverJh {
                 if (userInput.equals("1")) {
                     snacksModification(snacksList, scanner);
                 } else if (userInput.equals("2")) {
-                    
+                    drinksModification(drinksList, scanner);
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
@@ -1411,13 +1411,15 @@ public class DriverJh {
                 userInput = scanner.nextLine();
                
                 if (userInput.equals("1")) {
-                    
+                    for(int i=0; i<drinksList.size(); i++){
+                        System.out.println(drinksList.get(i).toString());
+                    }
                 } else if (userInput.equals("2")) {
-                    
+                    updateDrinks(drinksList, scanner);
                 } else if (userInput.equals("3")) {
-                    
+                    addDrinks(drinksList, scanner);
                 } else if (userInput.equals("4")) {
-                    
+                    deleteDrinks(drinksList, scanner);
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
@@ -1437,14 +1439,15 @@ public class DriverJh {
         String temperature = "";
         String size = "";
         boolean added = false;
-        int userInput;
-        String userInput2;
+        int temperatureChoice;
+        int sizeChoice;
+        String userInput;
         Drinks drinks = new Drinks();
     
         System.out.print("Enter drinks name > ");
         foodName = scanner.nextLine();
     
-        System.out.print("Enter snacks price > ");
+        System.out.print("Enter drinks price > ");
         foodPrice = validateDoubleInput(scanner, "Enter drinks price > ");
     
         System.out.print("Enter stock qty > ");
@@ -1454,55 +1457,53 @@ public class DriverJh {
         System.out.println("1. Hot ");
         System.out.println("2. Cold");
         System.out.print("Enter the number option > ");
-
-        userInput = validateIntegerInput(scanner, "Enter the number option > ");
-            
-        do{
-            if (userInput==1) {
-                temperature = "Hot";
-            } else if (userInput==2) {
-                temperature = "Cold";
-            }else{
-                System.out.println("Invalid number option. Please enter (1/2).");
-            }
-        }while (userInput<=0 || userInput >2);
-
+    
+        temperatureChoice = validateIntegerInput(scanner, "Enter the number option > ");
+    
+        if (temperatureChoice == 1) {
+            temperature = "Hot";
+        } else if (temperatureChoice == 2) {
+            temperature = "Cold";
+        } else {
+            System.out.println("Invalid number option. Please enter (1/2).");
+            return; // Return early if the choice is invalid.
+        }
+    
         System.out.println("Size of the drinks: ");
         System.out.println("1. Small ");
-        System.out.println("2. Large");
+        System.out.println("2. Medium");
+        System.out.println("3. Big");
         System.out.print("Enter the number option > ");
-
-        userInput = validateIntegerInput(scanner, "Enter the number option > ");
-            
-        do{
-            if (userInput==1) {
-                size = "Small";
-            } else if (userInput==2) {
-                size = "Large";
-            }else{
-                System.out.println("Invalid number option. Please enter (1/2).");
-            }
-        }while (userInput<=0 || userInput >2);
-        
+    
+        sizeChoice = validateIntegerInput(scanner, "Enter the number option > ");
+    
+        if (sizeChoice == 1) {
+            size = "Small";
+        } else if (sizeChoice == 2) {
+            size = "Medium";
+        } else if (sizeChoice == 3) {
+            size = "Big";
+        } else {
+            System.out.println("Invalid number option. Please enter (1/2).");
+            return; // Return early if the choice is invalid.
+        }
     
         System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-        userInput2 = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-
-        if(userInput2.equalsIgnoreCase("Y")){
+        userInput = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+    
+        if (userInput.equalsIgnoreCase("Y")) {
             Drinks tempDrinks = new Drinks(foodName, foodPrice, stockQty, temperature, size);
             drinksList.add(tempDrinks);
             added = writeIntoFile("drinksFile.txt", drinksList, drinks);
     
             if (added) {
-                System.out.println("Snacks has been added.");
+                System.out.println("Drinks have been added.");
             } else {
-                System.out.println("Unable to add snacks.");
+                System.out.println("Unable to add drinks.");
             }
-
-        }else{
+        } else {
             System.out.println("Modification cancelled.");
         }
-        
     }
     
     //----------------------------------------------UPDATE DRINKS----------------------------------------------
@@ -1852,18 +1853,18 @@ public class DriverJh {
                 } catch (EOFException eofe) {
                     break;
                 } catch (IOException ioe) {
-                    //ioe.printStackTrace();
+                    ioe.printStackTrace();
                 }
             }
         } catch (IOException ioe) {
-            //ioe.printStackTrace();
+            ioe.printStackTrace();
         } finally {
             try {
                 if (input != null) {
                     input.close();
                 }
             } catch (IOException ioe) {
-                //ioe.printStackTrace();
+                ioe.printStackTrace();
             }
         }     
     }

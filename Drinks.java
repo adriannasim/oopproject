@@ -1,4 +1,6 @@
-public class Drinks extends FoodAndBeverage{
+import java.io.Serializable;
+
+public class Drinks extends FoodAndBeverage implements Serializable{
     private String temperature;
     private String size;
     private boolean ice;
