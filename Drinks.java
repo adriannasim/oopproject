@@ -38,6 +38,12 @@ public class Drinks extends FoodAndBeverage{
         return temperature;
     }
 
-
+    public String displayToCust(){
+        String iceStatus = ice ? "Yes" : "No";
+        return super.displayToCust() + 
+                "\nIce           : " + iceStatus +
+                "\nTemperature   : " + temperature  +
+                "\nSize          : " + size;
+    }
 
 }

@@ -24,4 +24,10 @@ public class Snacks extends FoodAndBeverage implements Serializable{
         String partyPackStatus = partyPack ? "true" : "false";
         return super.toString() + "\nParty pack: " + partyPackStatus;
     }
+
+    public String displayToCust(){
+        String partyPackStatus = partyPack ? "Yes" : "No";
+        return super.displayToCust() +
+                "\nParty Pack    : " + partyPackStatus;
+    }
 }

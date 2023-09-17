@@ -56,6 +56,12 @@ public class FoodAndBeverage{
         return "Food id: " + foodId + "\nFood name: " + foodName + "\nFood price: " + foodPrice + "\nStock qty: " + stockQty;
     }
 
+    public String displayToCust(){
+        return "Food id       : " + foodId +
+               "\nFood Name     : " + foodPrice +
+               "\nFood Price    : " + foodPrice;
+    }
+
     public double calculatePrice(){
         return foodPrice * purchaseQty;
     }
@@ -76,4 +82,7 @@ public class FoodAndBeverage{
         this.purchaseQty += purchaseQty;
     }
 
+    public void addStockQty(int purchaseQty){
+        stockQty += purchaseQty;
+    }
 }
