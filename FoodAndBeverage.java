@@ -72,4 +72,8 @@ public class FoodAndBeverage{
         stockQty -= purchaseQty;
     }
 
+    public void addPurchaseQty(int purchaseQty){
+        this.purchaseQty += purchaseQty;
+    }
+
 }
