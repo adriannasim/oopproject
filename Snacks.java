@@ -17,7 +17,7 @@ public class Snacks extends FoodAndBeverage implements Serializable{
     }
 
     public void setPartyPack(boolean partyPack){
-
+        this.partyPack = partyPack;
     }
 
     public String toString() {
