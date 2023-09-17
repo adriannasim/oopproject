@@ -21,10 +21,16 @@ public class FoodAndBeverage{
         return foodId;
     }
 
+    public String getFoodName(){
+        return foodName;
+    }
     public void editFoodName(String foodName){
         this.foodName =  foodName;
     }
 
+    public double getFoodPrice(){
+        return foodPrice;
+    }
     public void editFoodPrice(double foodPrice){
         this.foodPrice = foodPrice;
     }
@@ -33,6 +39,9 @@ public class FoodAndBeverage{
         this.stockQty = stockQty;
     }
 
+    public int getPurchaseQty(){
+        return purchaseQty;
+    }
     public void setPurchaseQty(int purchaseQty){
         this.purchaseQty = purchaseQty;
     }
