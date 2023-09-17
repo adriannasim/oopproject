@@ -1,4 +1,4 @@
 public class CounterStaff extends Staff{
-    protected static int nextFrontendStaffId = 1000;
+    protected static int nextCounterStaffId = 1000;
 
 }
