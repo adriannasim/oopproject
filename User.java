@@ -25,6 +25,12 @@ public class User {
     }
     
     //getters
+    public String getUsername() {
+        return login.getUsername();
+    }
+    public String getPassword() {
+        return login.getPassword(login.getUsername());
+    }
     public String getFullname(String username) {
         return fullname;
     }
@@ -33,7 +39,7 @@ public class User {
     }
 
     //toString
-    public String toString() {
-        return String.format("Username: %s\nPassword: %s\nName: %s\nEmail: %s\n", login.getUsername(), login.getPassword(email), fullname, email);
-    }
+    // public String toString() {
+    //     return String.format("Username: %s\nPassword: %s\nName: %s\nEmail: %s\n", login.getUsername(), login.getPassword(email), fullname, email);
+    // }
 }

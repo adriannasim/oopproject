@@ -3,45 +3,64 @@ import java.util.Scanner;
 public class Menu {   
     public static void main(String[] args) {
         //variables declaration
-        int loop = 1;
+        boolean loop = true;
         //methods declaration
         Scanner input = new Scanner(System.in); //scanner
         
         System.out.printf("=================================\n");
         System.out.printf("Welcome to Train Ticketing System\n");
-        System.out.printf("=================================\n");
-        while (loop == 1) {
+        do {
+            System.out.printf("=================================\n");
             System.out.printf("%-14s%s\n"," ", "MENU");
             System.out.printf("=================================\n");
             System.out.printf("1. User Login Menu\n");
-            System.out.printf("2. Admin Login Menu\n");
+            System.out.printf("2. Staff Login Menu\n");
             System.out.printf("3. Exit\n");
-            System.out.printf("=================================\n >");
+            System.out.printf("=================================\n > ");
 
             //accept user input
-            int choice = input.nextInt();
+            if (input.hasNextInt()) {
+                int choice = input.nextInt();
 
-            //call chooseMenu function
-            chooseMenu(choice);
-        }
-    }  
-
-    //invoke classes based on user's input
-    public static void chooseMenu(int choice) {
-        switch(choice) {
-            case 1:
-                System.out.printf("User Login\n");
-                //UserLogin();
-                break;
-            case 2:
-                Login.staffLoginMenu();
-                break;
-            case 3:
-                System.out.printf("Quit\n");
-                //QuitProgram();
-                break;
-            default:
+                //choose user's input choice
+                switch(choice) {
+                case 1:
+                    Login.custLoginMenu();
+                    break;
+                case 2:
+                    Login.staffLoginMenu();
+                    break;
+                case 3:
+                    boolean loop2 = true;
+                    do {
+                        System.out.printf("Are you sure you want to quit (Y/N)? > ");
+                        String choice1 = input.next();
+                        if (choice1.length() == 1) {
+                            switch (choice1.charAt(0)) {
+                                case 'Y':
+                                case 'y':
+                                    System.out.printf("Bye bye!");
+                                    input.close();
+                                    System.exit(0);
+                                    break;
+                                case 'N':
+                                case 'n':
+                                    loop2 = false;
+                                    break;
+                                default: 
+                                    System.out.printf("Invalid input, please enter your choice again.\n");
+                            }
+                        } else {
+                            System.out.printf("Invalid input, please enter your choice again.\n");
+                        }
+                    } while (loop2);
+                    break;
+                default:
+                    System.out.printf("Invalid input, please enter your choice again.\n");
+                }
+            } else {
                 System.out.printf("Invalid input, please enter your choice again.\n");
-        }
-    }
+            }
+        } while (loop);
+    }  
 }

@@ -8,7 +8,7 @@ public class Staff extends User{
     private char staffType;
 
     //arrayList for customer info
-    private static ArrayList<Login> staffLoginInfo = new ArrayList<>();
+    private static ArrayList<Staff> staffDetails = new ArrayList<>();
 
     //constructors
     Staff() {
@@ -28,15 +28,21 @@ public class Staff extends User{
         }
 
         //writing details to arrayList
-        staffLoginInfo.add(new Login(username, password));
+        staffDetails.add(this);
     }
 
     //setters
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
     public void setStaffType(char staffType) {
         this.staffType = staffType;
     }
 
     //getters
+    public String getStaffId() {
+        return staffId;
+    }
     public char getStaffType(String staffId) {
         return staffType;
     }
@@ -45,15 +51,25 @@ public class Staff extends User{
     // public String toString() {
     //     return super.toString() + String.format("Staff Id: %s\nStaff Type: %c\n", staffId, staffType);
     // }
+    
+    //create account
+    public static void createStaffAccount() {
+        
+    }
 
-    //writing all info into file
-    public static void writeAdminInfo() {
+    //customer menu
+    public static void staffMenu() {
+
+    }
+
+    //write file
+    public static void writeStaffInfo() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("adminFile.txt"))) {
-            for (Login login : staffLoginInfo) {
-                writer.write(login.getUsername() + " " + login.getPassword(login.getUsername()));
+            for (Staff staff : staffDetails) {
+                writer.write(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.staffId + "||" + staff.staffType);
                 writer.newLine();
             }
-            System.out.println("User list has been saved to adminFile.txt");
+            System.out.println("Staff registration successful. Please login now.");
         } catch (IOException e) {
             e.printStackTrace();
         }
