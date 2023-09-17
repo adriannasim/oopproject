@@ -31,6 +31,15 @@ public class FoodAndBeverage{
     public double getFoodPrice(){
         return foodPrice;
     }
+
+    public int getStockQty(){
+        return stockQty;
+    }
+
+    public int getPurchaseQty(){
+        return purchaseQty;
+    }
+
     public void editFoodPrice(double foodPrice){
         this.foodPrice = foodPrice;
     }
@@ -39,9 +48,6 @@ public class FoodAndBeverage{
         this.stockQty = stockQty;
     }
 
-    public int getPurchaseQty(){
-        return purchaseQty;
-    }
     public void setPurchaseQty(int purchaseQty){
         this.purchaseQty = purchaseQty;
     }
@@ -52,6 +58,18 @@ public class FoodAndBeverage{
 
     public double calculatePrice(){
         return foodPrice * purchaseQty;
+    }
+
+    public boolean checkStockQty(int purchaseQty){
+        if (purchaseQty > stockQty){
+            return false;
+        }
+
+        return true;
+    }
+
+    public void calculateStockQty(int purchaseQty){
+        stockQty -= purchaseQty;
     }
 
 }

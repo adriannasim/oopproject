@@ -3,8 +3,59 @@ import java.util.*;
 import java.time.LocalDate;
 
 public class DriverJQ {
+    public static void purchasing() throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        boolean continueInput = true;
+        int userOpt1 = 0;
+        char yesno1;
+
+        do {
+
+            // =================================================================================
+            // BUY TICKETS OR FOOD AND BEVERAGE
+            // =================================================================================
+            System.out.println("1. Tickets");
+            System.out.println("1. Food and Beverage");
+
+            do {
+                try {
+                    System.out.print("Enter your option : ");
+                    userOpt1 = scanner.nextInt();
+
+                    continueInput = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInput);
+
+            switch (userOpt1) {
+                case 1:
+                    System.out.println("buy ticket"); // return ticketList
+                    break;
+                case 2:
+                    System.out.println("buy fnb"); // return fnbList
+                    break;
+                default:
+                    System.out.println("Invalid Input. ");
+                    break;
+            }
+
+            System.out.println("Confirm your purchase tickets and orders? (Y - YES, other - NO)");
+            yesno1 = scanner.next().charAt(0);
+
+        } while (yesno1 != 'y' || yesno1 != 'Y');
+
+        //Add to Purchase
+        //Proceed to Payment
+
+    }
+
     // ==============================================================================================================
     // BUY TICKETS
+    // User may add tickets into ticketlist. After user choose to not continue
+    // buying, user may ask for modification.
+    // Then, user may ask for confirmation and proceed to purchase fnb.
     // ==============================================================================================================
     public static void buyTicket(String[] args) throws Exception {
         char yesno1 = 'n', yesno2 = 'n'; // yesno1 - add more Ticket, yesno2 - make changes to added ticket
@@ -23,16 +74,14 @@ public class DriverJQ {
 
         } while (yesno1 == 'y' || yesno1 == 'Y');
 
+        // Display added tickets
+        int z = 1;
+        for (Ticket tickets : ticketList) {
+            System.out.println(z + ".");
+            System.out.println(tickets);
+            z++;
+        }
         do {
-
-            // Display added tickets
-            int z = 1;
-            for (Ticket tickets : ticketList) {
-                System.out.println(z + ".");
-                System.out.println(tickets);
-                z++;
-            }
-
             // Make changes to the added ticket (DELETE or MODIFY)
             System.out.print("Would you like to make changes on tickets? (Y - YES, others - NO) : ");
             yesno2 = scanner.next().charAt(0);
@@ -67,13 +116,14 @@ public class DriverJQ {
             }
 
         } while (yesno2 == 'y' || yesno2 == 'Y');
+
+        // Confirmation
     }
 
-    // -------------------------------------ADD
-    // TICKET----------------------------------------------------
-    // User can buy tickets for DIFFERENT details or SAME details. User can buy
+    // -------------------------------------ADDTICKET----------------------------------------------------
+    // User can buy tickets for DIFFERENT details or SAME details. User can only buy
     // tickets for current day and after current day.
-    // ---------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------
     public static Ticket addTicket(ArrayList<Schedule> scheduleList) throws Exception {
         Scanner scanner = new Scanner(System.in);
         Ticket ticket;
@@ -196,8 +246,7 @@ public class DriverJQ {
      * }
      */
 
-    // -------------------------------------------DELETE
-    // TICKET---------------------------------------------------
+    // -------------------------------------------DELETETICKET---------------------------------------------------
     // User can delete all the added tickets or select a particular ticket to delete
     // -----------------------------------------------------------------------------------------------------------
     public static ArrayList<Ticket> dltTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList)
@@ -215,6 +264,7 @@ public class DriverJQ {
         System.out.println("2. Delete a particular ticket");
         System.out.println("3. Exit");
 
+        // Select delete mode
         do {
             try {
                 System.out.print("Enter your option : ");
@@ -263,6 +313,8 @@ public class DriverJQ {
 
             ticketList.remove(dltTicket - 1);
 
+            System.out.println("Delete successfully. ");
+
         } else {
 
             System.out.println("Delete cancelled. ");
@@ -272,10 +324,9 @@ public class DriverJQ {
         return ticketList;
     }
 
-    // ----------------------------------------------MODIFY
-    // TICKET-------------------------------------------------------
-    // User can select either schedule or date of the tickets to modify.
-    // ------------------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------MODIFYTICKET------------------------------------------------
+    // User can select either schedule or date of the selected tickets to modify.
+    // ----------------------------------------------------------------------------------------------------------
     public static ArrayList<Ticket> modifyTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList) {
 
         return ticketList;
@@ -301,8 +352,11 @@ public class DriverJQ {
         Scanner scanner = new Scanner(System.in);
         ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
         boolean continueInput = true;
+        boolean continueInputF = true;
+        int userOpt1 = 0;
         char yesno1, yesno2, yesno3; // yesno1 - Continue to add more fnb, yesno2 - Continue to add more snacks,
                                      // yesno3 - Continue to add more drinks
+        char cont1; // cont1 - Make changes to fnb
         int addFnb = 0;
         double subtotal = 0;
 
@@ -325,13 +379,14 @@ public class DriverJQ {
 
             if (addFnb == 1) {
 
+                // Add Snacks
                 do {
                     fnbList.add(addSnacks(snacksList));
                     System.out.print("Would you like to buy more snacks? (Y - YES, OTHER - NO)  ");
                     yesno2 = scanner.next().charAt(0);
                 } while (yesno2 == 'y' || yesno2 == 'Y');
 
-                // Display added snacks
+                // Display Snacks
                 int z = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
                     if (fnbs instanceof Snacks) {
@@ -347,23 +402,24 @@ public class DriverJQ {
 
             } else if (addFnb == 2) {
 
+                // Add Drinks
                 do {
                     fnbList.add(addDrinks(drinksList));
                     System.out.print("Would you like to buy more drinks? (Y - YES, OTHER - NO)  ");
                     yesno3 = scanner.next().charAt(0);
                 } while (yesno3 == 'y' || yesno3 == 'Y');
 
-                // Display added snacks
-                int z = 1;
+                // Display Drinks
+                int y = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
                     if (fnbs instanceof Drinks) {
-                        System.out.println(z + ".");
+                        System.out.println(y + ".");
                         System.out.println(fnbs);
                         System.out.println("Purchase Quantity : " + fnbs.getPurchaseQty());
                         System.out.println("Total Amount : " + fnbs.calculatePrice());
                         subtotal += fnbs.calculatePrice();
                         System.out.println();
-                        z++;
+                        y++;
                     }
                 }
 
@@ -373,18 +429,57 @@ public class DriverJQ {
 
             }
 
-            System.out.print("Would you like to add more order? (Y - YES, other - NO)  ");
+            System.out.print("Would you like to add more orders? (Y - YES, other - NO)  ");
             yesno1 = scanner.next().charAt(0);
 
         } while (yesno1 == 'y' || yesno1 == 'Y');
 
-        System.out.println(subtotal);
+        // Display added fnb
+        int y = 1;
+        for (FoodAndBeverage fnbs : fnbList) {
+            System.out.println(y + ".");
+            System.out.println(fnbs);
+            System.out.println("Purchase Quantity : " + fnbs.getPurchaseQty());
+            System.out.println("Total Amount : " + fnbs.calculatePrice());
+            subtotal += fnbs.calculatePrice();
+            System.out.println();
+            y++;
+
+        }
+
+        do {
+            // Make changes to the orders
+            System.out.print("Would you like to make changes to orders? (Y - YES, other - NO)  ");
+            cont1 = scanner.next().charAt(0);
+
+            if (cont1 == 'y' || cont1 == 'Y') {
+
+                System.out.println("1. Delete orders ");
+                System.out.println("2. Modify orders ");
+
+                do {
+                    try {
+                        System.out.print("Enter your option : ");
+                        userOpt1 = scanner.nextInt();
+
+                        continueInputF = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputF);
+
+                // Confirmation
+
+            }
+
+        } while (cont1 == 'y' || cont1 == 'Y');
 
     }
 
-    //---------------------------------------ADD SNACKS-----------------------------------------
+    // ---------------------------------------ADDSNACKS------------------------------------
     // User can buy one or many different and same snacks
-    //------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------
     public static FoodAndBeverage addSnacks(ArrayList<Snacks> snacksList) throws Exception {
         Scanner scanner = new Scanner(System.in);
         Snacks snack;
@@ -402,10 +497,10 @@ public class DriverJQ {
         }
         System.out.println("Which snack would you like to add?");
 
+        // Enter option
         do {
 
             do {
-
                 try {
                     System.out.print("Enter your option : ");
                     addSnacks = scanner.nextInt();
@@ -415,7 +510,6 @@ public class DriverJQ {
                     System.out.println("Incorrect Input. Please try agin. ");
                     scanner.nextLine();
                 }
-
             } while (continueInputS);
 
             if (addSnacks > snacksList.size()) {
@@ -430,27 +524,43 @@ public class DriverJQ {
         snack = snacksList.get(addSnacks - 1);
 
         do {
-            try {
-              System.out.print("Enter quantity : ");
-              snackQty = scanner.nextInt();
-      
-              continueInputSQ = false;
-            }
-            catch (InputMismatchException ex) {
-              System.out.println("Incorrect Input. Please try agin. ");
-              scanner.nextLine();
-            }
-          } while (continueInputSQ);
 
-          snack.setPurchaseQty(snackQty);
+            // Enter quantity
+            do {
+                try {
+                    System.out.print("Enter quantity : ");
+                    snackQty = scanner.nextInt();
+
+                    continueInputSQ = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputSQ);
+
+            if (snack.checkStockQty(snackQty)) {
+
+                // Purchase quantity <= stock quantity
+                snack.calculateStockQty(snackQty);
+                snack.setPurchaseQty(snackQty);
+
+            } else {
+
+                // Purchase quantity > stock quantity
+                System.out.println("Sorry, we have only " + snack.getStockQty() + " for " + snack.getFoodName());
+                System.out.println("Please enter again : ");
+
+            }
+
+        } while (!snack.checkStockQty(snackQty));
 
         return snack;
     }
 
-    //---------------------------------------ADD DRINKS-----------------------------------------
+    // ---------------------------------------ADDDRINKS------------------------------------
     // User can buy one or many different and same drinks
-    //------------------------------------------------------------------------------------------
-     public static FoodAndBeverage addDrinks(ArrayList<Drinks> drinksList) throws Exception {
+    // ------------------------------------------------------------------------------------
+    public static FoodAndBeverage addDrinks(ArrayList<Drinks> drinksList) throws Exception {
         Scanner scanner = new Scanner(System.in);
         Drinks drink;
         int addDrinks = 0;
@@ -467,6 +577,7 @@ public class DriverJQ {
         }
         System.out.println("Which drink would you like to add?");
 
+        // Enter option
         do {
 
             do {
@@ -495,20 +606,39 @@ public class DriverJQ {
         drink = drinksList.get(addDrinks - 1);
 
         do {
-            try {
-              System.out.print("Enter quantity : ");
-              drinkQty = scanner.nextInt();
-      
-              continueInputDQ = false;
-            }
-            catch (InputMismatchException ex) {
-              System.out.println("Incorrect Input. Please try agin. ");
-              scanner.nextLine();
-            }
-          } while (continueInputDQ);
 
-          drink.setPurchaseQty(drinkQty);
+            // Enter quantity
+            do {
+                try {
+                    System.out.print("Enter quantity : ");
+                    drinkQty = scanner.nextInt();
+
+                    continueInputDQ = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputDQ);
+
+            if (drink.checkStockQty(drinkQty)) {
+
+                // Purchase quantity <= Stock Quantity
+                drink.calculateStockQty(drinkQty);
+                drink.setPurchaseQty(drinkQty);
+
+            } else {
+
+                // Purchase quantity > Stock Quatity
+                System.out.println("Sorry, we have only " + drink.getStockQty() + " for " + drink.getFoodName());
+                System.out.println("Please enter again : ");
+
+            }
+
+        } while (!drink.checkStockQty(drinkQty));
 
         return drink;
     }
+
+    // Delete fnb
+
 }
