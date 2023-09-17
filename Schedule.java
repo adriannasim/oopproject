@@ -34,7 +34,6 @@ public class Schedule implements Serializable{
     }
 
     //------------------------------------METHOD-----------------------------------------
-
     // DELETE METHOD
     public void deleteSchedule(){
         scheduleId = null;

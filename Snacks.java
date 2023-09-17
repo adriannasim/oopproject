@@ -3,10 +3,13 @@ import java.io.Serializable;
 public class Snacks extends FoodAndBeverage implements Serializable{
     private boolean partyPack;
 
+    //-----------------------------------CONSTRUCTOR---------------------------------------- 
+    // NO-ARG CONSTRUCTOR
     Snacks(){
  
     }
 
+    // PARAMETERIZED CONSTRUCTOR
     Snacks(boolean partyPack){
 
     }
@@ -16,10 +19,13 @@ public class Snacks extends FoodAndBeverage implements Serializable{
         this.partyPack = partyPack;
     }
 
+    //------------------------------------METHOD-----------------------------------------
+    // UPDATE METHOD
     public void setPartyPack(boolean partyPack){
         this.partyPack = partyPack;
     }
 
+    // DISPLAY METHOD
     public String toString() {
         String partyPackStatus = partyPack ? "true" : "false";
         return super.toString() + "\nParty pack: " + partyPackStatus;
