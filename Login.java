@@ -13,8 +13,8 @@ public class Login {
     static Scanner input = new Scanner(System.in); //scanner
 
     //array list declaration
-    private static ArrayList<Login> custLoginInfo = new ArrayList<>();
-    private static ArrayList<Login> staffLoginInfo = new ArrayList<>();
+    private static ArrayList<Customer> custDetails = new ArrayList<>();
+    private static ArrayList<Staff> staffDetails = new ArrayList<>();
 
     //constructors
     Login() {
@@ -44,8 +44,8 @@ public class Login {
 
     //login menu
     public static void staffLoginMenu() {
-        int loop = 1;
-        while (loop == 1) {
+        boolean loop = true;
+        do {
             System.out.printf("=================================\n");
             System.out.printf("%-8s%s\n"," ", "STAFF LOGIN MENU");
             System.out.printf("=================================\n");
@@ -59,21 +59,21 @@ public class Login {
                     loginToStaff();
                     break;
                 case 2:
-                    createStaffAccount();
+                    Staff.createStaffAccount();
                     break;
                 default: 
                     System.out.printf("Invalid input, please enter your choice again.\n");
             }
-        }   
+        } while (loop); 
     }
     public static void custLoginMenu() {
-        int loop = 1;
-        while (loop == 1) {
+        boolean loop = true;
+        do {
             System.out.printf("=================================\n");
             System.out.printf("%-7s%s\n"," ", "CUSTOMER LOGIN MENU");
             System.out.printf("=================================\n");
             System.out.printf("1. Login\n");
-            System.out.printf("2. Create Account\n");
+            System.out.printf("2. Create Account\n > ");
 
             int choice = input.nextInt();
 
@@ -82,12 +82,12 @@ public class Login {
                     loginToCust();
                     break;
                 case 2:
-                    createCustAccount();
+                    Customer.createCustAccount();
                     break;
                 default: 
                     System.out.printf("Invalid input, please enter your choice again.\n");
             }
-        }   
+        } while (loop);  
     }
 
     //login to account
@@ -100,14 +100,18 @@ public class Login {
         System.out.printf("Please enter your password > ");
         String inPassword = input.next();
 
-        readAdminInfo();
+        readStaffInfo();
 
-        for (int i=0; i < staffLoginInfo.size(); i++) {
-            if (inUsername == staffLoginInfo.get(i).username) {
-                if (inPassword == staffLoginInfo.get(i).password) {
-                    System.out.printf("Login Successful\n");
-                }
+        boolean loginSuccessful = false;
+        for (int i=0; i < staffDetails.size(); i++) {
+            if (inUsername.equals(staffDetails.get(i).getUsername()) && inPassword.equals(staffDetails.get(i).getPassword())) {
+                System.out.printf("Login Successful\n");
+                loginSuccessful = true;
+                Staff.staffMenu();
             }
+        }
+        if (loginSuccessful == false) {
+            System.out.printf("Incorrect username/password. Please try again.\n");
         }
     }
     public static void loginToCust() {
@@ -119,34 +123,39 @@ public class Login {
         System.out.printf("Please enter your password > ");
         String inPassword = input.next();
 
-        readAdminInfo();
+        readCustInfo();
 
-        for (int i=0; i < custLoginInfo.size(); i++) {
-            if (inUsername == custLoginInfo.get(i).username) {
-                if (inPassword == custLoginInfo.get(i).password) {
-                    System.out.printf("Login Successful\n");
-                }
+        boolean loginSuccessful = false;
+        for (int i=0; i < custDetails.size(); i++) {
+            if (inUsername.equals(custDetails.get(i).getUsername()) && inPassword.equals(custDetails.get(i).getPassword())) {
+                System.out.printf("Login Successful\n");
+                Customer.custMenu();
+
             }
         }
-    }
-    //create account
-    public static void createStaffAccount() {
-        
-    }
-    public static void createCustAccount() {
-        
+        if (loginSuccessful == false) {
+            System.out.printf("Incorrect username/password. Please try again.\n");
+        }
     }
 
     //read file
-    public static void readAdminInfo() {
+    public static void readStaffInfo() {
         try (BufferedReader reader = new BufferedReader(new FileReader("adminFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {
-                String[] parts = info.split(" ");
-                if (parts.length == 2) {
+                String[] parts = info.split("\\|\\|");
+                if (parts.length == 6) {
                     String username = parts[0];
                     String password = parts[1];
-                    staffLoginInfo.add(new Login(username, password));
+                    String fullname = parts[2];
+                    String email = parts[3];
+                    String staffId = parts[4];     
+                    char staffType = parts[5].charAt(0);
+                    
+                    //add details from file to arraylist
+                    Staff staff = new Staff(username, password, fullname, email, staffType);
+                    staff.setStaffId(staffId);
+                    staffDetails.add(staff);
                 }
             }
         } catch (IOException e) {
@@ -157,11 +166,18 @@ public class Login {
         try (BufferedReader reader = new BufferedReader(new FileReader("custFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {
-                String[] parts = info.split(" ");
-                if (parts.length == 2) {
+                String[] parts = info.split("\\|\\|");
+                if (parts.length == 6) {
                     String username = parts[0];
                     String password = parts[1];
-                    staffLoginInfo.add(new Login(username, password));
+                    String fullname = parts[2];
+                    String email = parts[3];
+                    String contactNo = parts[4];
+                    char gender = parts[5].charAt(0);
+                    
+                    //add details from file to arraylist
+                    Customer cust = new Customer(username, password, fullname, email, contactNo, gender);
+                    custDetails.add(cust);
                 }
             }
         } catch (IOException e) {

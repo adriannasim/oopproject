@@ -21,16 +21,16 @@ public class DriverAdr {
         System.out.println(admin2.toString());
 
         //call method to write details into file
-        Staff.writeAdminInfo();
+        Staff.writeStaffInfo();
         Customer.writeCustInfo();
 
         Staff admin3 = new Staff("hoho", "5555", "huh Sim", "huhu@gmail.com", 'C');
         System.out.println(admin3.toString());
-        Staff.writeAdminInfo();
+        Staff.writeStaffInfo();
 
         //call printMenu function
         System.out.printf("=================================\n");
-        System.out.printf("%-11s%s\n"," ", "STAFF LOGIN");
+        System.out.printf("%-5s%s\n"," ", "CREATE CUSTOMER ACCOUNT");
         System.out.printf("=================================\n");
         /*END OF MAIN PROGRAM*/
 
