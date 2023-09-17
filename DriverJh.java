@@ -167,7 +167,7 @@ public class DriverJh {
                         System.out.println();
                     }
                 } else if (userInput.equals("2")) {
-                    updateTrainInfo(trainList, scanner);
+                    updateTrainInfo(trainList, scheduleList, scanner);
                 } else if (userInput.equals("3")) {
                     addTrain(trainList, scanner);
                 } else if (userInput.equals("4")) {
@@ -215,7 +215,7 @@ public class DriverJh {
 
     //----------------------------------------------UPDATE TRAIN-------------------------------------------------
 
-    public static void updateTrainInfo(ArrayList<Train> trainList, Scanner scanner) throws Exception {
+    public static void updateTrainInfo(ArrayList<Train> trainList, ArrayList<Schedule> scheduleList, Scanner scanner) throws Exception {
         String userInput;
         String userInput2;
         String trainName;
@@ -223,7 +223,9 @@ public class DriverJh {
         int index = 0;
         boolean found = false;
         boolean updated = false;
+        boolean updated2 = false;
         Train obj = new Train();
+        Schedule obj2 = new Schedule();
 
         System.out.println("====================================");
         System.out.println(" Update Train Information");
@@ -261,7 +263,8 @@ public class DriverJh {
                             if (userInput2.equalsIgnoreCase("Y")){
                                 trainList.get(index).changeTrainName(trainName);
                                 updated = writeIntoFile("trainfile.txt", trainList, obj);
-                                if (updated){
+                                updated2 = writeIntoFile("scheduleFile.txt", scheduleList, obj2);
+                                if (updated && updated2){
                                     System.out.println("\nTrain information has updated.\n");
                                 }else{
                                     System.out.println("\nUnable to update the train information.\n");
@@ -321,7 +324,7 @@ public class DriverJh {
                 System.out.println("Do you want to delete the train information as shown below ?");
                 System.out.println(trainList.get(index).toString());
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
-                userInput = scanner.nextLine();
+                userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
     
                 if (userInput.equalsIgnoreCase("Y")) {
                     for (int j=0; j<scheduleList.size(); j++){
@@ -377,6 +380,7 @@ public class DriverJh {
            
         } while (!found);
     }
+    
     //===========================================================================================================
     //                                   TRAIN STATION INFORMATION MODIFICATION
     //===========================================================================================================
@@ -403,7 +407,7 @@ public class DriverJh {
                         System.out.println();
                     }
                 } else if (userInput.equals("2")) {
-                    updateStationInfo(stationList, scanner);
+                    updateStationInfo(stationList, scheduleList, scanner);
                 } else if (userInput.equals("3")) {
                     addStation(stationList, scanner);
                 } else if (userInput.equals("4")) {
@@ -433,7 +437,7 @@ public class DriverJh {
             locationName = scanner.nextLine(); // Read the train name
             duplicated = false;
             for (int i=0; i<stationList.size(); i++){
-                if (locationName.equals(stationList.get(i).getLocationName())){
+                if (locationName.equalsIgnoreCase(stationList.get(i).getLocationName())){
                     duplicated = true;
                     System.out.println("The station name exists. Please use another name.");
                 }
@@ -462,16 +466,18 @@ public class DriverJh {
 
     //-------------------------------------------UPDATE TRAIN STATION--------------------------------------------
 
-    public static void updateStationInfo(ArrayList<TrainStation> stationList, Scanner scanner) {
+    public static void updateStationInfo(ArrayList<TrainStation> stationList, ArrayList<Schedule> scheduleList, Scanner scanner) {
         String userInput;
         String userInput2;
         String locationName;
         boolean found = false;
         boolean duplicated = false;
         boolean updated = false;
+        boolean updated2 = false;
         int index = 0;
         int numOfPlatform;
         TrainStation obj = new TrainStation();
+        Schedule obj2 = new Schedule();
     
         System.out.println("====================================");
         System.out.println(" Update Train Station Information");
@@ -496,7 +502,7 @@ public class DriverJh {
                 System.out.println(stationList.get(index).toString());
     
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
-                userInput = scanner.nextLine();
+                userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
     
                 if (userInput.equalsIgnoreCase("Y")) {
                     System.out.println("The field that can be updated :");
@@ -513,7 +519,7 @@ public class DriverJh {
                                 System.out.print("Enter new station name > ");
                                 locationName = scanner.nextLine(); // Read the train name
                                 for (int i=0; i<stationList.size(); i++){
-                                    if (locationName.equals(stationList.get(i).getLocationName())){
+                                    if (locationName.equalsIgnoreCase(stationList.get(i).getLocationName())){
                                         duplicated = true;
                                         System.out.println("The station name exists. Please use another name.");
                                     }
@@ -523,8 +529,9 @@ public class DriverJh {
                             userInput2 = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
                             if (userInput2.equalsIgnoreCase("Y")){
                                 stationList.get(index).changeLocationName(locationName);
-                                updated = writeIntoFile("stationfile.txt", stationList, obj);
-                                if(updated){
+                                updated = writeIntoFile("stationFile.txt", stationList, obj);
+                                updated2 = writeIntoFile("scheduleFile.txt", scheduleList, obj2);
+                                if(updated && updated2){
                                      System.out.println("\nThe station has updated.\n");
                                 }else{
                                      System.out.println("\nUnable to update the station.\n");
@@ -586,7 +593,7 @@ public class DriverJh {
                 break;
     
             for (int i = 0; i < stationList.size(); i++) {
-                if (userInput.equals(stationList.get(i).getLocationName())) {
+                if (userInput.equalsIgnoreCase(stationList.get(i).getLocationName())) {
                     found = true;
                     index = i;
                 }
@@ -596,33 +603,40 @@ public class DriverJh {
                 System.out.println(stationList.get(index).toString());
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
                 userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
-    
+                
                 if (userInput.equalsIgnoreCase("Y")) {
-                    for (int j=0; j<scheduleList.size(); j++){
-                        if ((scheduleList.get(j).getDepartLocation().getLocationName()==stationList.get(index).getLocationName())||(scheduleList.get(j).getArriveLocation().getLocationName()==stationList.get(index).getLocationName())){
+                    hasSchedule = false; // Initialize the flag
+                    for (int j = 0; j < scheduleList.size(); j++) {
+                        if (scheduleList.get(j).getDepartLocation().getLocationName().equals(stationList.get(index).getLocationName()) ||
+                            scheduleList.get(j).getArriveLocation().getLocationName().equals(stationList.get(index).getLocationName())) {
                             hasSchedule = true;
-                        }   
-                    }
-                    if(hasSchedule){
-                        System.out.println("Please think carefully as it will remove the schedule below as well.");
-                        for (int j=0; j<scheduleList.size(); j++){
-                            if ((scheduleList.get(j).getDepartLocation().getLocationName()==stationList.get(index).getLocationName())||(scheduleList.get(j).getArriveLocation().getLocationName()==stationList.get(index).getLocationName())){
-                                System.out.println(scheduleList.get(j).toString());
-                                System.out.println();
-                            }   
+                            break; // Exit the loop early if a schedule is found
                         }
                     }
+                    
+                    if (hasSchedule) {
+                        System.out.println("Please think carefully as it will remove the schedule below as well.");
+                        for (int j = 0; j < scheduleList.size(); j++) {
+                            if (scheduleList.get(j).getDepartLocation().getLocationName().equals(stationList.get(index).getLocationName()) ||
+                                scheduleList.get(j).getArriveLocation().getLocationName().equals(stationList.get(index).getLocationName())) {
+                                System.out.println(scheduleList.get(j).toString());
+                                System.out.println();
+                            }
+                        }
+                    }
+                
                     
                     System.out.print("Do you confirm to delete the station (Y-Yes/N-No)? ");
                     userInput = validateYNInput(scanner,"Do you confirm to delete the station (Y-Yes/N-No) ?");
                     if(userInput.equalsIgnoreCase("Y")){
-                        stationList.remove(index); // Remove the train from the list
-                        deleted = writeIntoFile("stationFile.txt", stationList, obj);
-                        for (int j=0; j<scheduleList.size(); j++){
-                            if ((scheduleList.get(j).getDepartLocation().getLocationName().equalsIgnoreCase(stationList.get(index).getLocationName()))||(scheduleList.get(j).getArriveLocation().getLocationName().equalsIgnoreCase(stationList.get(index).getLocationName()))){
+                        for (int j = 0; j < scheduleList.size(); j++) {
+                            if (scheduleList.get(j).getDepartLocation().getLocationName().equals(stationList.get(index).getLocationName()) ||
+                                scheduleList.get(j).getArriveLocation().getLocationName().equals(stationList.get(index).getLocationName())) {
                                 scheduleList.remove(j);
-                            }   
+                            }
                         }
+                        stationList.remove(index); 
+                        deleted = writeIntoFile("stationFile.txt", stationList, obj);
                         deleted2 = writeIntoFile("scheduleFile.txt", scheduleList, obj2);
                             
                         if (deleted && deleted2){
@@ -1179,7 +1193,7 @@ public class DriverJh {
             partyPack = false;
         } 
     
-        System.out.println("Do you confirm? (Y-Yes/N-No) > ");
+        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
         userInput = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
 
         if(userInput.equalsIgnoreCase("Y")){
@@ -1661,7 +1675,6 @@ public class DriverJh {
  
     }
     
-    
     //----------------------------------------------DELETE DRINKS----------------------------------------------
     
      public static void deleteDrinks(ArrayList<Drinks> drinksList, Scanner scanner) throws Exception {
@@ -1752,18 +1765,18 @@ public class DriverJh {
                 } catch (EOFException eofe) {
                     break;
                 } catch (IOException ioe) {
-                    ioe.printStackTrace();
+                    //ioe.printStackTrace();
                 }
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            //ioe.printStackTrace();
         } finally {
             try {
                 if (input != null) {
                     input.close();
                 }
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                //ioe.printStackTrace();
             }
         }     
     }
@@ -1781,18 +1794,18 @@ public class DriverJh {
                 } catch (EOFException eofe) {
                     break;
                 } catch (IOException ioe) {
-                    ioe.printStackTrace();
+                    //ioe.printStackTrace();
                 }
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            //ioe.printStackTrace();
         } finally {
             try {
                 if (input != null) {
                     input.close();
                 }
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                //ioe.printStackTrace();
             }
         }     
     }
@@ -1810,18 +1823,18 @@ public class DriverJh {
                 } catch (EOFException eofe) {
                     break;
                 } catch (IOException ioe) {
-                    ioe.printStackTrace();
+                    //ioe.printStackTrace();
                 }
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            //ioe.printStackTrace();
         } finally {
             try {
                 if (input != null) {
                     input.close();
                 }
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                //ioe.printStackTrace();
             }
         }     
     }
@@ -1839,18 +1852,18 @@ public class DriverJh {
                 } catch (EOFException eofe) {
                     break;
                 } catch (IOException ioe) {
-                    ioe.printStackTrace();
+                    //ioe.printStackTrace();
                 }
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            //ioe.printStackTrace();
         } finally {
             try {
                 if (input != null) {
                     input.close();
                 }
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                //ioe.printStackTrace();
             }
         }     
     }
