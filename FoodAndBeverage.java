@@ -1,4 +1,4 @@
-public class FoodAndBeverage{
+public abstract class FoodAndBeverage{
     private String foodId;
     private String foodName;
     private double foodPrice;
@@ -6,7 +6,8 @@ public class FoodAndBeverage{
     private int stockQty;
 
     FoodAndBeverage(){
-
+        foodId = "Undefined";
+        foodName = "Undefined";
     }
 
     FoodAndBeverage(String foodName, double foodPrice, int stockQty){
@@ -21,11 +22,11 @@ public class FoodAndBeverage{
     }
 
     public void editFoodName(String foodName){
-
+        this.foodName = foodName;
     }
 
     public void editFoodPrice(double foodPrice){
-
+        this.foodPrice = foodPrice;
     }
 
     public void editStockQty(int stockQty){

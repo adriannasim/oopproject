@@ -1,23 +1,27 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Train implements Serializable{
     private int trainNo;
     private String trainName;
     private String trainModel;
     private static int nextTrainNo = 2900;
-    private String status;
 
+    //-----------------------------------CONSTRUCTOR---------------------------------------- 
+    // NO-ARG CONSTRUCTOR
     public Train(){
         trainNo = 0;
         trainName = "Undefined";
         trainModel = "Undefined";
     }
 
-    public Train(int trainNo,String trainName, String trainModel, String status){
+    // PARAMETERIZED CONSTRUCTOR
+    public Train(int trainNo,String trainName, String trainModel){
         this.trainNo = trainNo;
         this.trainName = trainName;
         this.trainModel = trainModel;  
-        this.status = status;
         nextTrainNo = this.trainNo+1;
     }
 
@@ -25,10 +29,19 @@ public class Train implements Serializable{
         trainNo = nextTrainNo;
         this.trainName = trainName;
         this.trainModel = trainModel;  
-        status = "Not in use";
         nextTrainNo++;
     }
 
+    //------------------------------------METHOD-----------------------------------------
+
+    // DELETE METHOD
+    public void deleteTrain(){
+        trainNo = 0;
+        trainName = null;
+        trainModel = null;
+    }
+
+    // READ METHOD
     public int getTrainNo(){
         return trainNo;
     }
@@ -41,20 +54,14 @@ public class Train implements Serializable{
         return trainModel;
     }
 
-    public String getTrainStatus(){
-        return status;
-    }
-
+    // UPDATE METHOD
     public void changeTrainName(String trainName){
         this.trainName = trainName;
     }
 
-    public void changeTrainStatus(String status){
-        this.status = status;
-    }
-
+    // DISPLAY METHOD
     public String toString(){
-           return "Train No: " + trainNo + "\nTrain Name: " + trainName + "\nTrain Model: " + trainModel + "\nTrain status: " + status;
+           return "Train No: " + trainNo + "\nTrain Name: " + trainName + "\nTrain Model: " + trainModel + "\n";
     }
 
 }

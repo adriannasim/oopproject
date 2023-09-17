@@ -1,24 +1,21 @@
-public class Drinks {
-    private boolean ice;
+public class Drinks extends FoodAndBeverage{
+    private String temperature;
     private String size;
-    private boolean hot;
+
 
     Drinks(){
 
     }
 
-    Drinks(String foodName, double foodPrice, boolean ice, String size, boolean hot){
-
+    Drinks(String foodName, double foodPrice, int stockQty, String temperature, String size){
+        super(foodName, foodPrice, stockQty);
+        this.temperature = temperature;
+        this.size = size;
     }
 
-    public void setIce(boolean ice){
-
+    public void setTemperature(String temperature){
+        this.temperature = temperature;
     }
-
-    public boolean getIce(){
-        return ice;
-    }
-
     public void setSize(String size){
 
     }
@@ -26,15 +23,5 @@ public class Drinks {
     public String getSize(){
         return size;
     }
-
-    public void setHot(boolean hot){
-
-    }
-
-    public boolean getHot(){
-        return hot;
-    }
-
-
 
 }
