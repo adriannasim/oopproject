@@ -1,14 +1,14 @@
 import java.time.LocalDate;
 
 public class Ticket{
-    private static int ticketIdNo = 1001;
+    private static int ticketIdNo;
     private String ticketId;
     private Schedule ticketSchedule;
     private LocalDate ticketDate;
 
     public Ticket(Schedule ticketSchedule, LocalDate ticketDate){
+        ticketIdNo = (int) (10000 + (Math.random() * (20000 - 10000 + 1)));
         String tempTicketId = "T" + ticketIdNo;
-        ticketIdNo++;
         ticketId = tempTicketId;
         
         this.ticketSchedule = ticketSchedule;
@@ -26,7 +26,7 @@ public class Ticket{
     	return ticketSchedule;
     }
     
-    public void getTicketDate(LocalDate ticketDate){
+    public void setTicketDate(LocalDate ticketDate){
     	this.ticketDate = ticketDate;
     }
     public LocalDate getTicketDate(){

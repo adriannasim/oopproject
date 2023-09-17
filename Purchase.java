@@ -2,6 +2,7 @@ public class Purchase{
 	private Ticket[] ticketList = new Ticket[100];
 	private PaymentType paymentType;
 	private FoodAndBeverage[] fnb = new FoodAndBeverage[100];
+	private double purchaseAmount = 0;
 	
 	public Purchase(){
 		
@@ -37,6 +38,15 @@ public class Purchase{
 	public FoodAndBeverage[] getFnb(){
 		return fnb;
 	}
+
+	public double getPurchaseAmount(){
+		return purchaseAmount;
+	}
+	
+	public void calPurchaseAmount(double amount){
+		purchaseAmount += amount;
+	}
+
 	
 	public String toString(){
 		return String.format("Payment Type : %s", paymentType) + ticketList + fnb;

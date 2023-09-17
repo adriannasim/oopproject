@@ -15,14 +15,30 @@ public abstract class FoodAndBeverage{
         this.foodName = foodName;
         this.foodPrice = foodPrice;
         this.stockQty = stockQty; 
+        purchaseQty = 0;
     }
 
     public String getFoodId(){
         return foodId;
     }
 
+    public String getFoodName(){
+        return foodName;
+    }
     public void editFoodName(String foodName){
-        this.foodName = foodName;
+        this.foodName =  foodName;
+    }
+
+    public double getFoodPrice(){
+        return foodPrice;
+    }
+
+    public int getStockQty(){
+        return stockQty;
+    }
+
+    public int getPurchaseQty(){
+        return purchaseQty;
     }
 
     public void editFoodPrice(double foodPrice){
@@ -30,15 +46,44 @@ public abstract class FoodAndBeverage{
     }
 
     public void editStockQty(int stockQty){
-
+        this.stockQty = stockQty;
     }
 
     public void setPurchaseQty(int purchaseQty){
-
+        this.purchaseQty = purchaseQty;
     }
 
     public String toString(){
         return "Food id: " + foodId + "\nFood name: " + foodName + "\nFood price: " + foodPrice + "\nStock qty: " + stockQty;
     }
 
+    public String displayToCust(){
+        return "Food id       : " + foodId +
+               "\nFood Name     : " + foodPrice +
+               "\nFood Price    : " + foodPrice;
+    }
+
+    public double calculatePrice(){
+        return foodPrice * purchaseQty;
+    }
+
+    public boolean checkStockQty(int purchaseQty){
+        if (purchaseQty > stockQty){
+            return false;
+        }
+
+        return true;
+    }
+
+    public void calculateStockQty(int purchaseQty){
+        stockQty -= purchaseQty;
+    }
+
+    public void addPurchaseQty(int purchaseQty){
+        this.purchaseQty += purchaseQty;
+    }
+
+    public void addStockQty(int purchaseQty){
+        stockQty += purchaseQty;
+    }
 }

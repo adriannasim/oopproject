@@ -17,11 +17,17 @@ public class Snacks extends FoodAndBeverage implements Serializable{
     }
 
     public void setPartyPack(boolean partyPack){
-
+        this.partyPack = partyPack;
     }
 
     public String toString() {
         String partyPackStatus = partyPack ? "true" : "false";
         return super.toString() + "\nParty pack: " + partyPackStatus;
+    }
+
+    public String displayToCust(){
+        String partyPackStatus = partyPack ? "Yes" : "No";
+        return super.displayToCust() +
+                "\nParty Pack    : " + partyPackStatus;
     }
 }
