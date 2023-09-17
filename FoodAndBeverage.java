@@ -1,12 +1,15 @@
-public class FoodAndBeverage{
+public abstract class FoodAndBeverage{
     private String foodId;
     private String foodName;
     private double foodPrice;
     private int purchaseQty;
     private int stockQty;
 
+    //-----------------------------------CONSTRUCTOR---------------------------------------- 
+    // NO-ARG CONSTRUCTOR
     FoodAndBeverage(){
-        this("NotDefined", 0, 0);
+        foodId = "Undefined";
+        foodName = "Undefined";
     }
 
     FoodAndBeverage(String foodName, double foodPrice, int stockQty){
@@ -17,15 +20,14 @@ public class FoodAndBeverage{
         purchaseQty = 0;
     }
 
+    //------------------------------------METHOD-----------------------------------------
+    // READ METHOD
     public String getFoodId(){
         return foodId;
     }
 
     public String getFoodName(){
         return foodName;
-    }
-    public void editFoodName(String foodName){
-        this.foodName =  foodName;
     }
 
     public double getFoodPrice(){
@@ -40,6 +42,11 @@ public class FoodAndBeverage{
         return purchaseQty;
     }
 
+    // UPDATE METHOD
+    public void editFoodName(String foodName){
+        this.foodName =  foodName;
+    }
+
     public void editFoodPrice(double foodPrice){
         this.foodPrice = foodPrice;
     }
@@ -52,10 +59,18 @@ public class FoodAndBeverage{
         this.purchaseQty = purchaseQty;
     }
 
+    // DISPLAY METHOD
     public String toString(){
         return "Food id: " + foodId + "\nFood name: " + foodName + "\nFood price: " + foodPrice + "\nStock qty: " + stockQty;
     }
 
+    public String displayToCust(){
+        return "Food id       : " + foodId +
+               "\nFood Name     : " + foodPrice +
+               "\nFood Price    : " + foodPrice;
+    }
+
+    // CALCULATION METHOD
     public double calculatePrice(){
         return foodPrice * purchaseQty;
     }
@@ -76,4 +91,7 @@ public class FoodAndBeverage{
         this.purchaseQty += purchaseQty;
     }
 
+    public void addStockQty(int purchaseQty){
+        stockQty += purchaseQty;
+    }
 }

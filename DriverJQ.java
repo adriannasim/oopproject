@@ -387,13 +387,16 @@ public class DriverJQ {
                 } while (yesno2 == 'y' || yesno2 == 'Y');
 
                 // Display Snacks
+                System.out.println("\n============================");
+                System.out.println("           Snacks");
+                System.out.println("============================");
                 int z = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
                     if (fnbs instanceof Snacks) {
                         System.out.println(z + ".");
-                        System.out.println(fnbs);
-                        System.out.println("Purchase Quantity : " + fnbs.getPurchaseQty());
-                        System.out.println("Total Amount : " + fnbs.calculatePrice());
+                        System.out.println(fnbs.displayToCust());
+                        System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
+                        System.out.println("Total Amount      >> " + fnbs.calculatePrice());
                         subtotal += fnbs.calculatePrice();
                         System.out.println();
                         z++;
@@ -410,13 +413,16 @@ public class DriverJQ {
                 } while (yesno3 == 'y' || yesno3 == 'Y');
 
                 // Display Drinks
+                System.out.println("\n============================");
+                System.out.println("           Drinks");
+                System.out.println("============================");
                 int y = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
                     if (fnbs instanceof Drinks) {
                         System.out.println(y + ".");
-                        System.out.println(fnbs);
-                        System.out.println("Purchase Quantity : " + fnbs.getPurchaseQty());
-                        System.out.println("Total Amount : " + fnbs.calculatePrice());
+                        System.out.println(fnbs.displayToCust());
+                        System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
+                        System.out.println("Total Amount      >> " + fnbs.calculatePrice());
                         subtotal += fnbs.calculatePrice();
                         System.out.println();
                         y++;
@@ -434,40 +440,60 @@ public class DriverJQ {
 
         } while (yesno1 == 'y' || yesno1 == 'Y');
 
-        // Display added fnb
-        int y = 1;
-        for (FoodAndBeverage fnbs : fnbList) {
-            System.out.println(y + ".");
-            System.out.println(fnbs);
-            System.out.println("Purchase Quantity : " + fnbs.getPurchaseQty());
-            System.out.println("Total Amount : " + fnbs.calculatePrice());
-            subtotal += fnbs.calculatePrice();
-            System.out.println();
-            y++;
-
-        }
-
         do {
+            // Display added fnb
+            // Noted : Every Modification, display once order summary
+            System.out.println("\n============================");
+            System.out.println("        Order Summary");
+            System.out.println("============================");
+            int y = 1;
+            for (FoodAndBeverage fnbs : fnbList) {
+                System.out.println(y + ".");
+                System.out.println(fnbs.displayToCust());
+                System.out.println("Purchase Quantity >>  " + fnbs.getPurchaseQty());
+                System.out.println("Total Amount      >>  " + fnbs.calculatePrice());
+                subtotal += fnbs.calculatePrice();
+                System.out.println();
+                y++;
+
+            }
+
             // Make changes to the orders
             System.out.print("Would you like to make changes to orders? (Y - YES, other - NO)  ");
             cont1 = scanner.next().charAt(0);
 
             if (cont1 == 'y' || cont1 == 'Y') {
 
-                System.out.println("1. Delete orders ");
-                System.out.println("2. Modify orders ");
-
                 do {
-                    try {
-                        System.out.print("Enter your option : ");
-                        userOpt1 = scanner.nextInt();
 
-                        continueInputF = false;
-                    } catch (InputMismatchException ex) {
-                        System.out.println("Incorrect Input. Please try agin. ");
-                        scanner.nextLine();
-                    }
-                } while (continueInputF);
+                    System.out.println("1. Delete orders ");
+                    System.out.println("2. Modify orders ");
+
+                    do {
+                        try {
+                            System.out.print("Enter your option : ");
+                            userOpt1 = scanner.nextInt();
+
+                            continueInputF = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect Input. Please try agin. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputF);
+
+                } while (userOpt1 != 1 && userOpt1 != 2);
+
+                switch (userOpt1) {
+                    case 1:
+                        fnbList = dltFnb(fnbList);
+                        break;
+                    case 2:
+                        fnbList = editFnb(drinksList, fnbList);
+                        break;
+                    default:
+                        System.out.println("Invalid. ");
+                        break;
+                }
 
                 // Confirmation
 
@@ -546,7 +572,7 @@ public class DriverJQ {
 
                     // Purchase quantity > stock quantity
                     System.out.println("Sorry, we have only " + snack.getStockQty() + " for " + snack.getFoodName());
-                    System.out.println("Please enter again ");
+                    System.out.println("Please enter again. ");
 
                 }
 
@@ -584,8 +610,12 @@ public class DriverJQ {
         Drinks drink;
         int addDrinks = 0;
         int drinkQty = 0;
+        char size;
+        char ice;
+        int temperature = 0;
         boolean continueInputD = true;
         boolean continueInputDQ = true;
+        boolean continueInputT = true;
         boolean validDrink = true;
         boolean foundDrink = false;
 
@@ -646,27 +676,82 @@ public class DriverJQ {
 
                     // Purchase quantity > Stock Quatity
                     System.out.println("Sorry, we have only " + drink.getStockQty() + " for " + drink.getFoodName());
-                    System.out.println("Please enter again : ");
+                    System.out.println("Please enter again. ");
 
                 }
 
             } while (!drink.checkStockQty(drinkQty));
 
-            // Added drink list has found the same item
-            for (FoodAndBeverage fnbs : fnbList) {
-                if (fnbs.getFoodId().equals(drink.getFoodId())) {
-                    fnbs.calculateStockQty(drinkQty);
-                    fnbs.addPurchaseQty(drinkQty);
-                    foundDrink = true;
+            drink.calculateStockQty(drinkQty);
+
+            drink.setPurchaseQty(drinkQty);
+
+            System.out.println("\n============================");
+            System.out.println("           Size");
+            System.out.println("============================");
+            System.out.println("1. Small - S");
+            System.out.println("2. Medium - M");
+            System.out.println("3. Big - B");
+
+            // Select size
+            do {
+
+                System.out.print("Enter (S, M, B) : ");
+                size = scanner.next().charAt(0);
+                size = Character.toUpperCase(size);
+
+            } while (size != 'S' && size != 'M' && size != 'B');
+
+            switch (size) {
+                case 'S':
+                    drink.setSize("Small");
+                    break;
+                case 'M':
+                    drink.setSize("Medium");
+                    break;
+                case 'B':
+                    drink.setSize("Big");
+                    break;
+                default:
+                    System.out.println("Invalid.");
+                    break;
+            }
+
+            // Select temperature
+            do {
+
+                System.out.println("\n============================");
+                System.out.println("        Temperature");
+                System.out.println("============================");
+                System.out.println("1. Cold");
+                System.out.println("2. Hot");
+                do {
+                    try {
+                        System.out.print("Enter (1 / 2) : ");
+                        temperature = scanner.nextInt();
+
+                        continueInputT = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputT);
+
+            } while (temperature != 1 && temperature != 2);
+
+            if (temperature == 1) {
+                drink.setTemperature("Cold");
+                System.out.print("Y - ICED, other - NO ICE : ");
+                ice = scanner.next().charAt(0);
+
+                if (ice == 'Y' || ice == 'y') {
+                    drink.setIce(true);
+                } else {
+                    drink.setIce(false);
                 }
             }
 
-            // Added drink list has found the same item
-            if (!foundDrink) {
-                drink.calculateStockQty(drinkQty);
-                drink.setPurchaseQty(drinkQty);
-                fnbList.add(drink);
-            }
+            fnbList.add(drink);
 
         } else {
 
@@ -677,7 +762,282 @@ public class DriverJQ {
         return fnbList;
     }
 
-    // Delete fnb
+    // ---------------------------------------DLTFNB------------------------------------
+    // User can buy delete one or many orders
+    // ------------------------------------------------------------------------------------
+    public static ArrayList<FoodAndBeverage> dltFnb(ArrayList<FoodAndBeverage> fnbList) throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        int dltFnbOpt = 0;
+        char confirmDlt;
+        boolean continueInputD = true;
+        boolean validDlt = true;
+
+        do {
+
+            do {
+                try {
+                    System.out.print("Select the item you would like to delete : ");
+                    dltFnbOpt = scanner.nextInt();
+
+                    continueInputD = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputD);
+
+            if (dltFnbOpt > fnbList.size()) {
+                System.out.println("Order not found. Please try again. ");
+                validDlt = false;
+            } else {
+                validDlt = true;
+            }
+
+        } while (!validDlt);
+
+        System.out.println("\n============================");
+        System.out.println("            Order");
+        System.out.println("============================");
+        System.out.println(fnbList.get(dltFnbOpt - 1).displayToCust());
+        System.out.print("\nAre you sure to delete this order? (Y - YES, other - NO)   ");
+        confirmDlt = scanner.next().charAt(0);
+        confirmDlt = Character.toUpperCase(confirmDlt);
+
+        if (confirmDlt == 'Y') {
+            fnbList.remove(dltFnbOpt - 1);
+            System.out.println("Delete successfully.");
+        } else {
+            System.out.println("Delete cancelled.");
+        }
+
+        return fnbList;
+
+    }
+
     // Modify fnb
+    public static ArrayList<FoodAndBeverage> editFnb(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList)
+            throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        int editFnbOpt = 0;
+        int fnbIndex = 0;
+        int editOpt = 0;
+        boolean continueInput = true;
+        boolean continueInputE = true;
+        boolean continueInputEQ = true;
+        boolean continueInputET = true;
+        boolean validEdit = true;
+        boolean isDrink = false;
+        char confirmEdit;
+        int editQty = 0;
+        char editSize;
+        char editIce;
+        int editTemp = 0;
+        Drinks tempDrink;
+
+        do {
+
+            do {
+                try {
+                    System.out.print("Select the item you would like to modify : ");
+                    editFnbOpt = scanner.nextInt();
+
+                    continueInputE = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputE);
+
+            if (editFnbOpt > fnbList.size()) {
+                System.out.println("Order not found. Please try again. ");
+                validEdit = false;
+            } else {
+                validEdit = true;
+            }
+
+        } while (!validEdit);
+
+        fnbIndex = editFnbOpt - 1;
+        System.out.println("\n============================");
+        System.out.println("            Order");
+        System.out.println("============================");
+        System.out.println(fnbList.get(fnbIndex).displayToCust());
+        System.out.print("\nAre you sure to edit this order? (Y - YES, other - NO)   ");
+        confirmEdit = scanner.next().charAt(0);
+        confirmEdit = Character.toUpperCase(confirmEdit);
+
+        if (confirmEdit == 'Y') {
+            System.out.println("1. Quantity");
+            for (Drinks drink : drinksList) {
+                if (fnbList.get(fnbIndex).getFoodId().equals(drink.getFoodId())) {
+                    System.out.println("2. Size (For Drinks Only)");
+                    System.out.println("3. Temperature (For Drinks Only)");
+                    System.out.println("4. Ice (For Cold Drinks Only)");
+                    isDrink = true;
+                }
+            }
+
+            do {
+                try {
+                    System.out.print("Enter your option : ");
+                    editOpt = scanner.nextInt();
+
+                    continueInput = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInput);
+
+            if (editOpt == 1) {
+
+                if (fnbList.get(fnbIndex).getStockQty() != 0) {
+
+                    do {
+
+                        do {
+                            try {
+                                System.out.print("Enter quantity : ");
+                                editQty = scanner.nextInt();
+
+                                continueInputEQ = false;
+                            } catch (InputMismatchException ex) {
+                                System.out.println("Incorrect Input. Please try agin. ");
+                                scanner.nextLine();
+                            }
+                        } while (continueInputEQ);
+
+                        if (fnbList.get(fnbIndex).checkStockQty(editQty)) {
+
+                            if (editQty > fnbList.get(fnbIndex).getPurchaseQty()) {
+
+                                // Example: Get four items, and add one more item, become five items
+                                int tempQty1 = fnbList.get(fnbIndex).getPurchaseQty();
+                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                                fnbList.get(fnbIndex).calculateStockQty(editQty - tempQty1);
+                                System.out.println("Edit successfully. ");
+
+                            } else if (editQty < fnbList.get(fnbIndex).getPurchaseQty()) {
+
+                                // Example: Get four items, and put back one item, left three items
+                                int tempQty2 = fnbList.get(fnbIndex).getPurchaseQty();
+                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                                fnbList.get(fnbIndex).addStockQty(tempQty2 - editQty);
+                                System.out.println("Edit successfully. ");
+
+                            } else {
+
+                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                                System.out.println("Edit successfully. ");
+
+                            }
+
+                        }
+
+                    } while (!fnbList.get(fnbIndex).checkStockQty(editQty));
+
+                }
+
+            } else if (editOpt == 2) {
+
+                if (isDrink) {
+                    tempDrink = (Drinks) fnbList.get(fnbIndex);
+
+                    System.out.println("\n============================");
+                    System.out.println("           Size");
+                    System.out.println("============================");
+                    System.out.println("1. Small - S");
+                    System.out.println("2. Medium - M");
+                    System.out.println("3. Big - B");
+
+                    do {
+
+                        System.out.print("Enter (S, M, B) : ");
+                        editSize = scanner.next().charAt(0);
+                        editSize = Character.toUpperCase(editSize);
+
+                    } while (editSize != 'S' && editSize != 'M' && editSize != 'B');
+
+                    switch (editSize) {
+                        case 'S':
+                            tempDrink.setSize("Small");
+                            break;
+                        case 'M':
+                            tempDrink.setSize("Medium");
+                            break;
+                        case 'B':
+                            tempDrink.setSize("Big");
+                            break;
+                        default:
+                            System.out.println("Invalid.");
+                            break;
+                    }
+                }
+
+            } else if (editOpt == 3) {
+
+                if (isDrink) {
+                    tempDrink = (Drinks) fnbList.get(fnbIndex);
+
+                    // Select temperature
+                    do {
+
+                        System.out.println("\n============================");
+                        System.out.println("        Temperature");
+                        System.out.println("============================");
+                        System.out.println("1. Cold");
+                        System.out.println("2. Hot");
+                        do {
+                            try {
+                                System.out.print("Enter (1 / 2) : ");
+                                editTemp = scanner.nextInt();
+
+                                continueInputET = false;
+                            } catch (InputMismatchException ex) {
+                                System.out.println("Incorrect Input. Please try agin. ");
+                                scanner.nextLine();
+                            }
+                        } while (continueInputET);
+
+                    } while (editTemp != 1 && editTemp != 2);
+
+                    if (editTemp == 1) {
+                        tempDrink.setTemperature("Cold");
+                    } else if (editTemp == 2) {
+                        tempDrink.setTemperature("Hot");
+                    }
+
+                }
+
+            } else if (editOpt == 4) {
+
+                if (isDrink) {
+                    tempDrink = (Drinks) fnbList.get(fnbIndex);
+
+                    System.out.print("Y - ICED, other - NO ICED");
+                    editIce = scanner.next().charAt(0);
+                    editIce = Character.toUpperCase(editIce);
+
+                    if (editIce == 'Y') {
+
+                        if (tempDrink.getTemperature().equalsIgnoreCase("Cold")) {
+
+                            tempDrink.setIce(true);
+
+                        }
+
+                    }
+
+                }
+
+            } else {
+                System.out.println("Invalid Option.");
+            }
+
+        }
+
+        return fnbList;
+
+    }
 
 }
