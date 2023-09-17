@@ -46,8 +46,8 @@ public class DriverJQ {
 
         } while (yesno1 != 'y' || yesno1 != 'Y');
 
-        //Add to Purchase
-        //Proceed to Payment
+        // Add to Purchase
+        // Proceed to Payment
 
     }
 
@@ -381,7 +381,7 @@ public class DriverJQ {
 
                 // Add Snacks
                 do {
-                    fnbList.add(addSnacks(snacksList));
+                    fnbList = addSnacks(snacksList, fnbList);
                     System.out.print("Would you like to buy more snacks? (Y - YES, OTHER - NO)  ");
                     yesno2 = scanner.next().charAt(0);
                 } while (yesno2 == 'y' || yesno2 == 'Y');
@@ -404,7 +404,7 @@ public class DriverJQ {
 
                 // Add Drinks
                 do {
-                    fnbList.add(addDrinks(drinksList));
+                    fnbList = addDrinks(drinksList, fnbList);
                     System.out.print("Would you like to buy more drinks? (Y - YES, OTHER - NO)  ");
                     yesno3 = scanner.next().charAt(0);
                 } while (yesno3 == 'y' || yesno3 == 'Y');
@@ -480,7 +480,8 @@ public class DriverJQ {
     // ---------------------------------------ADDSNACKS------------------------------------
     // User can buy one or many different and same snacks
     // ------------------------------------------------------------------------------------
-    public static FoodAndBeverage addSnacks(ArrayList<Snacks> snacksList) throws Exception {
+    public static ArrayList<FoodAndBeverage> addSnacks(ArrayList<Snacks> snacksList, ArrayList<FoodAndBeverage> fnbList)
+            throws Exception {
         Scanner scanner = new Scanner(System.in);
         Snacks snack;
         int addSnacks = 0;
@@ -488,6 +489,7 @@ public class DriverJQ {
         boolean continueInputS = true;
         boolean continueInputSQ = true;
         boolean validSnack = true;
+        boolean foundSnack = false;
 
         // Display snacks
         for (int i = 0; i < snacksList.size(); i++) {
@@ -523,44 +525,61 @@ public class DriverJQ {
 
         snack = snacksList.get(addSnacks - 1);
 
-        do {
+        if (snack.getStockQty() != 0) {
 
-            // Enter quantity
             do {
-                try {
-                    System.out.print("Enter quantity : ");
-                    snackQty = scanner.nextInt();
 
-                    continueInputSQ = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
+                // Enter quantity
+                do {
+                    try {
+                        System.out.print("Enter quantity : ");
+                        snackQty = scanner.nextInt();
+
+                        continueInputSQ = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputSQ);
+
+                if (!snack.checkStockQty(snackQty)) {
+
+                    // Purchase quantity > stock quantity
+                    System.out.println("Sorry, we have only " + snack.getStockQty() + " for " + snack.getFoodName());
+                    System.out.println("Please enter again ");
+
                 }
-            } while (continueInputSQ);
 
-            if (snack.checkStockQty(snackQty)) {
+            } while (!snack.checkStockQty(snackQty));
 
-                // Purchase quantity <= stock quantity
-                snack.calculateStockQty(snackQty);
-                snack.setPurchaseQty(snackQty);
-
-            } else {
-
-                // Purchase quantity > stock quantity
-                System.out.println("Sorry, we have only " + snack.getStockQty() + " for " + snack.getFoodName());
-                System.out.println("Please enter again : ");
-
+            // Added snack list has found the same item
+            for (FoodAndBeverage fnbs : fnbList) {
+                if (fnbs.getFoodId().equals(snack.getFoodId())) {
+                    fnbs.calculateStockQty(snackQty);
+                    fnbs.addPurchaseQty(snackQty);
+                    foundSnack = true;
+                }
             }
 
-        } while (!snack.checkStockQty(snackQty));
+            // Added snack list has not found the same item
+            if (!foundSnack) {
+                snack.calculateStockQty(snackQty);
+                snack.setPurchaseQty(snackQty);
+                fnbList.add(snack);
+            }
 
-        return snack;
+        } else {
+            System.out.println("Sorry, we have out of stock for " + snack.getFoodName() + ".");
+        }
+
+        return fnbList;
     }
 
     // ---------------------------------------ADDDRINKS------------------------------------
     // User can buy one or many different and same drinks
     // ------------------------------------------------------------------------------------
-    public static FoodAndBeverage addDrinks(ArrayList<Drinks> drinksList) throws Exception {
+    public static ArrayList<FoodAndBeverage> addDrinks(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList)
+            throws Exception {
         Scanner scanner = new Scanner(System.in);
         Drinks drink;
         int addDrinks = 0;
@@ -568,6 +587,7 @@ public class DriverJQ {
         boolean continueInputD = true;
         boolean continueInputDQ = true;
         boolean validDrink = true;
+        boolean foundDrink = false;
 
         // Display snacks
         for (int i = 0; i < drinksList.size(); i++) {
@@ -605,40 +625,59 @@ public class DriverJQ {
 
         drink = drinksList.get(addDrinks - 1);
 
-        do {
+        if (drink.getStockQty() != 0) {
 
-            // Enter quantity
             do {
-                try {
-                    System.out.print("Enter quantity : ");
-                    drinkQty = scanner.nextInt();
 
-                    continueInputDQ = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
+                // Enter quantity
+                do {
+                    try {
+                        System.out.print("Enter quantity : ");
+                        drinkQty = scanner.nextInt();
+
+                        continueInputDQ = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputDQ);
+
+                if (!drink.checkStockQty(drinkQty)) {
+
+                    // Purchase quantity > Stock Quatity
+                    System.out.println("Sorry, we have only " + drink.getStockQty() + " for " + drink.getFoodName());
+                    System.out.println("Please enter again : ");
+
                 }
-            } while (continueInputDQ);
 
-            if (drink.checkStockQty(drinkQty)) {
+            } while (!drink.checkStockQty(drinkQty));
 
-                // Purchase quantity <= Stock Quantity
-                drink.calculateStockQty(drinkQty);
-                drink.setPurchaseQty(drinkQty);
-
-            } else {
-
-                // Purchase quantity > Stock Quatity
-                System.out.println("Sorry, we have only " + drink.getStockQty() + " for " + drink.getFoodName());
-                System.out.println("Please enter again : ");
-
+            // Added drink list has found the same item
+            for (FoodAndBeverage fnbs : fnbList) {
+                if (fnbs.getFoodId().equals(drink.getFoodId())) {
+                    fnbs.calculateStockQty(drinkQty);
+                    fnbs.addPurchaseQty(drinkQty);
+                    foundDrink = true;
+                }
             }
 
-        } while (!drink.checkStockQty(drinkQty));
+            // Added drink list has found the same item
+            if (!foundDrink) {
+                drink.calculateStockQty(drinkQty);
+                drink.setPurchaseQty(drinkQty);
+                fnbList.add(drink);
+            }
 
-        return drink;
+        } else {
+
+            System.out.println("Sorry, we have out of stock for " + drink.getFoodName() + ".");
+
+        }
+
+        return fnbList;
     }
 
     // Delete fnb
+    // Modify fnb
 
 }
