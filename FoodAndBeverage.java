@@ -50,4 +50,8 @@ public class FoodAndBeverage{
         return "Food id: " + foodId + "\nFood name: " + foodName + "\nFood price: " + foodPrice + "\nStock qty: " + stockQty;
     }
 
+    public double calculatePrice(){
+        return foodPrice * purchaseQty;
+    }
+
 }
