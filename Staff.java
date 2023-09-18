@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Staff extends User{
+    //variables declaration
     private String staffId;
     private char staffType;
 
     //arrayList for customer info
-    private static ArrayList<Staff> staffDetails = new ArrayList<>();
+    protected static ArrayList<Staff> staffDetails = new ArrayList<>();
 
     //constructors
     Staff() {
@@ -19,16 +20,10 @@ public class Staff extends User{
         this.staffId = "";
         this.staffType = ' ';
     }
-    Staff(String username, String password, String fullname, String email, char staffType) {
+    Staff(String username, String password, String fullname, String email, String staffId, char staffType) {
         super(username, password, fullname, email);
+        this.staffId = staffId;
         this.staffType = staffType;
-        if (staffType == 'B') {
-            this.staffId = String.format(staffType + Integer.toString(BackendStaff.nextBackendStaffId));
-            BackendStaff.nextBackendStaffId++;
-        } else if (staffType == 'C') {
-            this.staffId = String.format(staffType + Integer.toString(CounterStaff.nextCounterStaffId));
-            CounterStaff.nextCounterStaffId++;
-        }
 
         //writing details to arrayList
         staffDetails.add(this);
@@ -57,17 +52,16 @@ public class Staff extends User{
 
     //customer menu
     public void staffMenu() {
-
+        
     }
 
     //write file
     public static void writeStaffInfo() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("adminFile.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("staffFile.txt", true))) {
             for (Staff staff : staffDetails) {
                 writer.write(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.staffId + "||" + staff.staffType);
                 writer.newLine();
             }
-            System.out.println("Staff registration successful. Please login now.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,9 +69,12 @@ public class Staff extends User{
 
     //read file
     public static void readStaffInfo() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("adminFile.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("staffFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {
+                //delete whitespaces
+                info = info.trim();
+
                 String[] parts = info.split("\\|\\|");
                 if (parts.length == 6) {
                     String username = parts[0];
@@ -88,15 +85,14 @@ public class Staff extends User{
                     char staffType = parts[5].charAt(0);
                     
                     //add details from file to arraylist
-                    Staff staff = new Staff(username, password, fullname, email, staffType);
-                    staff.setStaffId(staffId);
-                    staffDetails.add(staff);
+                    Staff staff = new Staff(username, password, fullname, email, staffId, staffType);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     //STAFF driver
     public void driverStaff() {
         //variables declaration
@@ -114,7 +110,7 @@ public class Staff extends User{
             System.out.printf("=================================\n");
             System.out.printf("1. Create backend staff\n");
             System.out.printf("2. Create counter staff\n");
-            System.out.printf("3. Exit\n");
+            System.out.printf("3. Return\n > ");
 
             if (input.hasNextInt()) {
                 int choice = input.nextInt();
@@ -127,11 +123,15 @@ public class Staff extends User{
                     case 2:
                         counter.createCounterStaff();
                         break;
+                    case 3:
+                        return;
                     default:
                     System.out.printf("Invalid input, please enter your choice again.\n"); 
                 }   
             } else {
                 System.out.printf("Invalid input, please enter your choice again.\n");
+                //clear buffer
+                input.next();
             }
         } while (loop);
         input.close();

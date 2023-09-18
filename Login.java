@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,10 +5,6 @@ public class Login {
     //variable declaration
     private String username;
     private String password;
-
-    //array list declaration
-    private static ArrayList<Customer> custDetails = new ArrayList<>();
-    private static ArrayList<Staff> staffDetails = new ArrayList<>();
 
     //constructors
     Login() {
@@ -44,6 +37,8 @@ public class Login {
     public void checkStaffLogin(String username, String password, Staff staff) {
         //read from staff file
         Staff.readStaffInfo();
+        //access array in staff class
+        ArrayList<Staff> staffDetails = Staff.staffDetails;
 
         //check if user input matches any username and password in file
         boolean loginSuccessful = false;
@@ -64,6 +59,8 @@ public class Login {
     public void checkCustLogin(String username, String password, Customer cust) {
         //read from cust file
         Customer.readCustInfo();
+        //access array in customer class
+        ArrayList<Customer> custDetails = Customer.custDetails;
 
         //check if user input matches any username and password in file
         boolean loginSuccessful = false;
@@ -91,50 +88,20 @@ public class Login {
         Customer cust = new Customer();
 
         //login menu
-        //staff
-        if (choice == 1) {
-            boolean loop = true;
-            do {
-                System.out.printf("=================================\n");
-                System.out.printf("%-8s%s\n"," ", "STAFF LOGIN MENU");
-                System.out.printf("=================================\n");
-                System.out.printf("1. Login\n");
-                System.out.printf("2. Create Account\n > ");
-
-                int choice2 = input.nextInt();
-                switch (choice2) {
-                    //login
-                    case 1:
-                        System.out.printf("=================================\n");
-                        System.out.printf("%-11s%s\n"," ", "STAFF LOGIN");
-                        System.out.printf("=================================\n");
-                        System.out.printf("Please enter your username > ");
-                        inUsername = input.next();
-                        System.out.printf("Please enter your password > ");
-                        inPassword = input.next();
-                        checkStaffLogin(inUsername, inPassword, staff);
-                        break;
-                    //create account
-                    case 2:
-                        staff.driverStaff();
-                        break;
-                    default: 
-                        System.out.printf("Invalid input, please enter your choice again.\n");
-                }
-            } while (loop); 
         //customer
-        } else if (choice == 2) {
+        if (choice == 1) {
             boolean loop = true;
             do {
                 System.out.printf("=================================\n");
                 System.out.printf("%-7s%s\n"," ", "CUSTOMER LOGIN MENU");
                 System.out.printf("=================================\n");
                 System.out.printf("1. Login\n");
-                System.out.printf("2. Create Account\n > ");
+                System.out.printf("2. Create Account\n");
+                System.out.printf("3. Return\n > ");
 
-                int choice2 = input.nextInt();
-
-                switch (choice2) {
+                if (input.hasNextInt()) {
+                    int choice2 = input.nextInt();
+                    switch (choice2) {
                     //login
                     case 1:
                         System.out.printf("=================================\n");
@@ -150,10 +117,57 @@ public class Login {
                     case 2:
                         cust.driverCustomer();
                         break;
+                    case 3: 
+                        return;
                     default: 
                         System.out.printf("Invalid input, please enter your choice again.\n");
+                    }
+                } else {
+                    System.out.printf("Invalid input, please enter your choice again.\n");
+                    //clear buffer
+                    input.next();
                 }
             } while (loop);  
+        //staff
+        } else if (choice == 2) {
+            boolean loop = true;
+            do {
+                System.out.printf("=================================\n");
+                System.out.printf("%-8s%s\n"," ", "STAFF LOGIN MENU");
+                System.out.printf("=================================\n");
+                System.out.printf("1. Login\n");
+                System.out.printf("2. Create Account\n");
+                System.out.printf("3. Return\n > ");
+
+                if (input.hasNextInt()) {
+                    int choice2 = input.nextInt();
+                    switch (choice2) {
+                        //login
+                        case 1:
+                            System.out.printf("=================================\n");
+                            System.out.printf("%-11s%s\n"," ", "STAFF LOGIN");
+                            System.out.printf("=================================\n");
+                            System.out.printf("Please enter your username > ");
+                            inUsername = input.next();
+                            System.out.printf("Please enter your password > ");
+                            inPassword = input.next();
+                            checkStaffLogin(inUsername, inPassword, staff);
+                            break;
+                        //create account
+                        case 2:
+                            staff.driverStaff();
+                            break;
+                        case 3: 
+                            return;
+                        default: 
+                            System.out.printf("Invalid input, please enter your choice again.\n");
+                    }
+                } else {
+                    System.out.printf("Invalid input, please enter your choice again.\n");
+                    //clear buffer
+                    input.next();
+                }
+            } while (loop); 
         }
         input.close();
     }

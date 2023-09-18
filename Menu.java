@@ -24,7 +24,7 @@ public class Menu {
                 int choice = input.nextInt();
 
                 //choose user's input choice
-                switch(choice) {
+                switch (choice) {
                 //login menus
                 case 1:
                 case 2:
@@ -63,6 +63,8 @@ public class Menu {
                 }
             } else {
                 System.out.printf("Invalid input, please enter your choice again.\n");
+                //clear buffer
+                input.next();
             }
         } while (loop);
     }  
