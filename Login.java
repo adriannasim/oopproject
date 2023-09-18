@@ -9,9 +9,6 @@ public class Login {
     private String username;
     private String password;
 
-    //methods declaration
-    static Scanner input = new Scanner(System.in); //scanner
-
     //array list declaration
     private static ArrayList<Customer> custDetails = new ArrayList<>();
     private static ArrayList<Staff> staffDetails = new ArrayList<>();
@@ -42,146 +39,122 @@ public class Login {
         return password;
     }
 
-    //login menu
-    public static void staffLoginMenu() {
-        boolean loop = true;
-        do {
-            System.out.printf("=================================\n");
-            System.out.printf("%-8s%s\n"," ", "STAFF LOGIN MENU");
-            System.out.printf("=================================\n");
-            System.out.printf("1. Login\n");
-            System.out.printf("2. Create Account\n");
-
-            int choice = input.nextInt();
-
-            switch (choice) {
-                case 1:
-                    loginToStaff();
-                    break;
-                case 2:
-                    Staff.createStaffAccount();
-                    break;
-                default: 
-                    System.out.printf("Invalid input, please enter your choice again.\n");
-            }
-        } while (loop); 
-    }
-    public static void custLoginMenu() {
-        boolean loop = true;
-        do {
-            System.out.printf("=================================\n");
-            System.out.printf("%-7s%s\n"," ", "CUSTOMER LOGIN MENU");
-            System.out.printf("=================================\n");
-            System.out.printf("1. Login\n");
-            System.out.printf("2. Create Account\n > ");
-
-            int choice = input.nextInt();
-
-            switch (choice) {
-                case 1:
-                    loginToCust();
-                    break;
-                case 2:
-                    Customer.createCustAccount();
-                    break;
-                default: 
-                    System.out.printf("Invalid input, please enter your choice again.\n");
-            }
-        } while (loop);  
-    }
-
     //login to account
-    public static void loginToStaff() {
-        System.out.printf("=================================\n");
-        System.out.printf("%-11s%s\n"," ", "STAFF LOGIN");
-        System.out.printf("=================================\n");
-        System.out.printf("Please enter your username > ");
-        String inUsername = input.next();
-        System.out.printf("Please enter your password > ");
-        String inPassword = input.next();
+    //staff
+    public void checkStaffLogin(String username, String password, Staff staff) {
+        //read from staff file
+        Staff.readStaffInfo();
 
-        readStaffInfo();
-
+        //check if user input matches any username and password in file
         boolean loginSuccessful = false;
         for (int i=0; i < staffDetails.size(); i++) {
-            if (inUsername.equals(staffDetails.get(i).getUsername()) && inPassword.equals(staffDetails.get(i).getPassword())) {
+            //matches
+            if (username.equals(staffDetails.get(i).getUsername()) && password.equals(staffDetails.get(i).getPassword())) {
                 System.out.printf("Login Successful\n");
                 loginSuccessful = true;
-                Staff.staffMenu();
+                staff.staffMenu();
             }
         }
+        //no match
         if (loginSuccessful == false) {
             System.out.printf("Incorrect username/password. Please try again.\n");
         }
     }
-    public static void loginToCust() {
-        System.out.printf("=================================\n");
-        System.out.printf("%-8s%s\n"," ", "CUSTOMER LOGIN");
-        System.out.printf("=================================\n");
-        System.out.printf("Please enter your username > ");
-        String inUsername = input.next();
-        System.out.printf("Please enter your password > ");
-        String inPassword = input.next();
+    //customer
+    public void checkCustLogin(String username, String password, Customer cust) {
+        //read from cust file
+        Customer.readCustInfo();
 
-        readCustInfo();
-
+        //check if user input matches any username and password in file
         boolean loginSuccessful = false;
         for (int i=0; i < custDetails.size(); i++) {
-            if (inUsername.equals(custDetails.get(i).getUsername()) && inPassword.equals(custDetails.get(i).getPassword())) {
+            //matches
+            if (username.equals(custDetails.get(i).getUsername()) && password.equals(custDetails.get(i).getPassword())) {
                 System.out.printf("Login Successful\n");
-                Customer.custMenu();
-
+                loginSuccessful = true;
+                cust.custMenu();
             }
         }
+        //no match
         if (loginSuccessful == false) {
             System.out.printf("Incorrect username/password. Please try again.\n");
         }
     }
 
-    //read file
-    public static void readStaffInfo() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("adminFile.txt"))) {
-            String info;
-            while ((info = reader.readLine()) != null) {
-                String[] parts = info.split("\\|\\|");
-                if (parts.length == 6) {
-                    String username = parts[0];
-                    String password = parts[1];
-                    String fullname = parts[2];
-                    String email = parts[3];
-                    String staffId = parts[4];     
-                    char staffType = parts[5].charAt(0);
-                    
-                    //add details from file to arraylist
-                    Staff staff = new Staff(username, password, fullname, email, staffType);
-                    staff.setStaffId(staffId);
-                    staffDetails.add(staff);
+    //DRIVER login
+    public void driverLogin(int choice) {
+        //variables declaration
+        String inUsername, inPassword;
+        //method declaration
+        Scanner input = new Scanner(System.in); //scanner
+        Staff staff = new Staff();
+        Customer cust = new Customer();
+
+        //login menu
+        //staff
+        if (choice == 1) {
+            boolean loop = true;
+            do {
+                System.out.printf("=================================\n");
+                System.out.printf("%-8s%s\n"," ", "STAFF LOGIN MENU");
+                System.out.printf("=================================\n");
+                System.out.printf("1. Login\n");
+                System.out.printf("2. Create Account\n > ");
+
+                int choice2 = input.nextInt();
+                switch (choice2) {
+                    //login
+                    case 1:
+                        System.out.printf("=================================\n");
+                        System.out.printf("%-11s%s\n"," ", "STAFF LOGIN");
+                        System.out.printf("=================================\n");
+                        System.out.printf("Please enter your username > ");
+                        inUsername = input.next();
+                        System.out.printf("Please enter your password > ");
+                        inPassword = input.next();
+                        checkStaffLogin(inUsername, inPassword, staff);
+                        break;
+                    //create account
+                    case 2:
+                        staff.driverStaff();
+                        break;
+                    default: 
+                        System.out.printf("Invalid input, please enter your choice again.\n");
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void readCustInfo() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("custFile.txt"))) {
-            String info;
-            while ((info = reader.readLine()) != null) {
-                String[] parts = info.split("\\|\\|");
-                if (parts.length == 6) {
-                    String username = parts[0];
-                    String password = parts[1];
-                    String fullname = parts[2];
-                    String email = parts[3];
-                    String contactNo = parts[4];
-                    char gender = parts[5].charAt(0);
-                    
-                    //add details from file to arraylist
-                    Customer cust = new Customer(username, password, fullname, email, contactNo, gender);
-                    custDetails.add(cust);
+            } while (loop); 
+        //customer
+        } else if (choice == 2) {
+            boolean loop = true;
+            do {
+                System.out.printf("=================================\n");
+                System.out.printf("%-7s%s\n"," ", "CUSTOMER LOGIN MENU");
+                System.out.printf("=================================\n");
+                System.out.printf("1. Login\n");
+                System.out.printf("2. Create Account\n > ");
+
+                int choice2 = input.nextInt();
+
+                switch (choice2) {
+                    //login
+                    case 1:
+                        System.out.printf("=================================\n");
+                        System.out.printf("%-8s%s\n"," ", "CUSTOMER LOGIN");
+                        System.out.printf("=================================\n");
+                        System.out.printf("Please enter your username > ");
+                        inUsername = input.next();
+                        System.out.printf("Please enter your password > ");
+                        inPassword = input.next();
+                        checkCustLogin(inUsername, inPassword, cust);
+                        break;
+                    //create account
+                    case 2:
+                        cust.driverCustomer();
+                        break;
+                    default: 
+                        System.out.printf("Invalid input, please enter your choice again.\n");
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            } while (loop);  
         }
+        input.close();
     }
 }
