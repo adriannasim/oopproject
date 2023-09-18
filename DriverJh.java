@@ -221,6 +221,7 @@ public class DriverJh {
         String trainName;
         int trainNo;
         int index = 0;
+        boolean cont = true;
         boolean found = false;
         boolean updated = false;
         boolean updated2 = false;
@@ -246,41 +247,56 @@ public class DriverJh {
                 
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
                 userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
+                do{
+                    if(userInput.equalsIgnoreCase("Y")){
+                        System.out.println("The field that can be updated :");
+                        System.out.println("1. Train Name");
+                        System.out.println("Press # to exit");
+                        do {
+                            System.out.print("Enter option in number stated above > ");
+                            userInput = scanner.nextLine();
 
-                if(userInput.equalsIgnoreCase("Y")){
-                    System.out.println("The field that can be updated :");
-                    System.out.println("1. Train Name");
-                    System.out.println("Press # to exit");
-                    do {
-                        System.out.print("Enter option in number stated above > ");
-                        userInput = scanner.nextLine();
-
-                        if (userInput.equals("1")) {
-                            System.out.print("Enter new train name > ");
-                            trainName = scanner.nextLine();
-                            System.out.print("Do you confirm with the changes? (Y-Yes/N-No) > ");
-                            userInput2 = validateYNInput(scanner, "Do you confirm with the changes? (Y-Yes/N-No) > ");
-                            if (userInput2.equalsIgnoreCase("Y")){
-                                trainList.get(index).changeTrainName(trainName);
-                                updated = writeIntoFile("trainfile.txt", trainList, obj);
-                                updated2 = writeIntoFile("scheduleFile.txt", scheduleList, obj2);
-                                if (updated && updated2){
-                                    System.out.println("\nTrain information has updated.\n");
+                            if (userInput.equals("1")) {
+                                System.out.print("Enter new train name > ");
+                                trainName = scanner.nextLine();
+                                System.out.print("Do you confirm with the changes? (Y-Yes/N-No) > ");
+                                userInput2 = validateYNInput(scanner, "Do you confirm with the changes? (Y-Yes/N-No) > ");
+                                if (userInput2.equalsIgnoreCase("Y")){
+                                    for (Schedule schedule : scheduleList) {
+                                        if (schedule.getOperatedTrain().getTrainNo()==(trainList.get(index).getTrainNo())) {
+                                            schedule.getOperatedTrain().changeTrainName(trainName);
+                                        }
+                                    }
+                                    trainList.get(index).changeTrainName(trainName);
+                                    updated = writeIntoFile("trainfile.txt", trainList, obj);
+                                    updated2 = writeIntoFile("scheduleFile.txt", scheduleList, obj2);
+                                    if (updated && updated2){
+                                        System.out.println("\nTrain information has updated.\n");
+                                    }else{
+                                        System.out.println("\nUnable to update the train information.\n");
+                                    }
                                 }else{
-                                    System.out.println("\nUnable to update the train information.\n");
-                                }
-                            }else{
-                                System.out.println("\nModification cancelled.\n");
-                            }     
-                        } else if (userInput.equals("#")){
-                            break; 
-                        }else {
-                            System.out.println("Invalid option. Please enter (1/#).");
-                        }            
-                    } while (!userInput.equals("1") && !userInput.equals("#"));
-                }else {
-                    found = false;
-                }
+                                    System.out.println("\nModification cancelled.\n");
+                                }     
+                            } else if (userInput.equals("#")){
+                                cont = false;
+                                return; 
+                            }else {
+                                System.out.println("Invalid option. Please enter (1/#).");
+                            }            
+                        } while (!userInput.equals("1") && !userInput.equals("#"));
+                
+                    }else {
+                        found = false;
+                    }
+                    System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    userInput = validateYNInput(scanner, "Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    if (userInput.equalsIgnoreCase("Y")){
+                        cont = true;
+                    }else{
+                        cont = false;
+                    }
+                }while(cont==true);
             }else{
                 System.out.println("Train is not found. Please search again.");
             }  
@@ -432,17 +448,19 @@ public class DriverJh {
         TrainStation obj = new TrainStation();
         String userInput;
 
-        do{
-            System.out.print("Enter station name > ");
-            locationName = scanner.nextLine(); // Read the train name
-            duplicated = false;
-            for (int i=0; i<stationList.size(); i++){
-                if (locationName.equalsIgnoreCase(stationList.get(i).getLocationName())){
+        do {
+            System.out.print("Enter new station name > ");
+            locationName = scanner.nextLine(); // Read the station name
+            duplicated = false; // Reset duplicated to false before checking the list
+        
+            for (int i = 0; i < stationList.size(); i++) {
+                if (locationName.equalsIgnoreCase(stationList.get(i).getLocationName())) {
                     duplicated = true;
                     System.out.println("The station name exists. Please use another name.");
+                    break; // Exit the loop as soon as a duplicate is found
                 }
             }
-        }while (duplicated==true);
+        } while (duplicated);
         
         System.out.print("Enter number of platform provided > ");
         numOfPlatform = validateIntegerInput(scanner, "Enter number of platform provided > ");
@@ -474,6 +492,7 @@ public class DriverJh {
         boolean duplicated = false;
         boolean updated = false;
         boolean updated2 = false;
+        boolean cont = true;
         int index = 0;
         int numOfPlatform;
         TrainStation obj = new TrainStation();
@@ -503,67 +522,97 @@ public class DriverJh {
     
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
                 userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
+                do{  
+                    if (userInput.equalsIgnoreCase("Y")) {
+                        System.out.println("The field that can be updated :");
+                        System.out.println("1. Station name");
+                        System.out.println("2. Number of platform");
+                        System.out.println("Press # to exit");
     
-                if (userInput.equalsIgnoreCase("Y")) {
-                    System.out.println("The field that can be updated :");
-                    System.out.println("1. Station name");
-                    System.out.println("2. Number of platform");
-                    System.out.println("Press # to exit");
+                        do {
+                            System.out.print("Enter option in number stated above > ");
+                            userInput = scanner.nextLine();
     
-                    do {
-                        System.out.print("Enter option in number stated above > ");
-                        userInput = scanner.nextLine();
-    
-                        if (userInput.equals("1")) {
-                            do{
-                                System.out.print("Enter new station name > ");
-                                locationName = scanner.nextLine(); // Read the train name
-                                for (int i=0; i<stationList.size(); i++){
-                                    if (locationName.equalsIgnoreCase(stationList.get(i).getLocationName())){
-                                        duplicated = true;
-                                        System.out.println("The station name exists. Please use another name.");
+                            if (userInput.equals("1")) {
+                                do {
+                                    System.out.print("Enter new station name > ");
+                                    locationName = scanner.nextLine(); // Read the station name
+                                    duplicated = false; // Reset duplicated to false before checking the list
+                                
+                                    for (int i = 0; i < stationList.size(); i++) {
+                                        if (locationName.equalsIgnoreCase(stationList.get(i).getLocationName())) {
+                                            duplicated = true;
+                                            System.out.println("The station name exists. Please use another name.");
+                                            break; // Exit the loop as soon as a duplicate is found
+                                        }
                                     }
-                                }
-                            }while (duplicated==true);
-                            System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
-                            userInput2 = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
-                            if (userInput2.equalsIgnoreCase("Y")){
-                                stationList.get(index).changeLocationName(locationName);
-                                updated = writeIntoFile("stationFile.txt", stationList, obj);
-                                updated2 = writeIntoFile("scheduleFile.txt", scheduleList, obj2);
-                                if(updated && updated2){
-                                     System.out.println("\nThe station has updated.\n");
+                                } while (duplicated);
+                                System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
+                                userInput2 = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
+                                if (userInput2.equalsIgnoreCase("Y")){
+                                    for (Schedule schedule : scheduleList) {
+                                        if (schedule.getDepartLocation().getLocationName().equals(stationList.get(index).getLocationName())) {
+                                            schedule.getDepartLocation().changeLocationName(locationName);
+                                        }
+                                        if(schedule.getArriveLocation().getLocationName().equals(stationList.get(index).getLocationName())){
+                                            schedule.getArriveLocation().changeLocationName(locationName);
+                                        }
+                                    }
+                                    stationList.get(index).changeLocationName(locationName);
+                                    updated = writeIntoFile("stationFile.txt", stationList, obj);
+                                    updated2 = writeIntoFile("scheduleFile.txt", scheduleList, obj2);
+                                    if(updated && updated2){
+                                        System.out.println("\nThe station has updated.\n");
+                                    }else{
+                                        System.out.println("\nUnable to update the station.\n");
+                                    }
                                 }else{
-                                     System.out.println("\nUnable to update the station.\n");
+                                    System.out.println("\nModification cancelled.\n");
                                 }
-                            }else{
-                                 System.out.println("\nModification cancelled.\n");
-                            }
-                        } else if (userInput.equals("2")) {
-                            System.out.print("Enter new number of platform > ");
-                            numOfPlatform = validateIntegerInput(scanner, "Enter new number of platform > ");
-                            System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
-                            userInput2 = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
-                            if (userInput2.equalsIgnoreCase("Y")){
-                                stationList.get(index).changeNumOfPlatform(numOfPlatform);
-                                updated = writeIntoFile("stationfile.txt", stationList, obj);
-                                if(updated){
-                                     System.out.println("\nThe station has updated.\n");
+                            } else if (userInput.equals("2")) {
+                                System.out.print("Enter new number of platform > ");
+                                numOfPlatform = validateIntegerInput(scanner, "Enter new number of platform > ");
+                                System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
+                                userInput2 = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
+                                if (userInput2.equalsIgnoreCase("Y")){
+                                    for (Schedule schedule : scheduleList) {
+                                        if (schedule.getDepartLocation().getLocationName().equals(stationList.get(index).getLocationName())) {
+                                            schedule.getDepartLocation().changeNumOfPlatform(numOfPlatform);
+                                        }
+                                        if(schedule.getArriveLocation().getLocationName().equals(stationList.get(index).getLocationName())){
+                                            schedule.getArriveLocation().changeNumOfPlatform(numOfPlatform);
+                                        }
+                                    }
+                                    stationList.get(index).changeNumOfPlatform(numOfPlatform);
+                                    updated = writeIntoFile("stationfile.txt", stationList, obj);
+                                    updated2 = writeIntoFile("scheduleFile.txt", scheduleList, obj2);
+                                    if(updated && updated2){
+                                        System.out.println("\nThe station has updated.\n");
+                                    }else{
+                                        System.out.println("\nUnable to update the station.\n");
+                                    }
                                 }else{
-                                     System.out.println("\nUnable to update the station.\n");
+                                    System.out.println("\nModification cancelled.\n");
                                 }
-                            }else{
-                                 System.out.println("\nModification cancelled.\n");
+                            } else if (userInput.equals("#")) {
+                                cont = false;
+                                return;
+                            } else {
+                                System.out.println("Invalid option. Please enter (1/2/#).");
                             }
-                        } else if (userInput.equals("#")) {
-                            break;
-                        } else {
-                            System.out.println("Invalid option. Please enter (1/2/#).");
-                        }
-                    } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
-                } else {
-                    found = false;
-                } 
+                        } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+                    } else {
+                        found = false;
+                    }
+                    System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    userInput = validateYNInput(scanner, "Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    if (userInput.equalsIgnoreCase("Y")){
+                        cont = true;
+                    }else{
+                        cont = false;
+                    }
+                } while(cont == true);
+            
             }else{
                 System.out.println("Station is not found. Please search again.");        
             }
@@ -700,29 +749,55 @@ public class DriverJh {
     //-----------------------------------------------ADD SCHEDULE------------------------------------------------ 
 
     public static void addSchedule(ArrayList<Schedule> scheduleList, Scanner scanner, ArrayList<TrainStation> stationList, ArrayList<Train> trainList) throws Exception {
-        TrainStation departLocation;
-        TrainStation arriveLocation;
+        TrainStation departLocation = new TrainStation();
+        TrainStation arriveLocation = new TrainStation();
         LocalTime departTime = LocalTime.of(0,0);
         LocalTime arriveTime = LocalTime.of(0,0);
-        Train trainOperated;
+        Train trainOperated = new Train();
         double ticketPrice;
         String userInput;
         int userInput2;
-        int departureIndex;
+        int departureIndex = 0;
         int stationNumber;
         Schedule obj = new Schedule();
         boolean added = false;
         boolean correctTime = false;
 
+        if (stationList.isEmpty() && trainList.isEmpty()){
+            System.out.println("No train stations and train available. Please add some train stations and train.");
+            return;
+        }else if(stationList.size()==1 && trainList.isEmpty()){
+            System.out.println("There is no train available and not enough train stations to create a schedule. Please add a train station and a train.");
+            return;
+        }else if (stationList.isEmpty()){
+            System.out.println("No train stations available. Please add a train station.");
+            return;
+        }else if(stationList.size()==1){
+            System.out.println("Not enough stations to create a schedule. Please add a station.");
+            return;
+        }else if(trainList.isEmpty()){
+            System.out.println("No train available. Please add a train.");
+            return;
+        }else{
+            System.out.println("====================================");
+            System.out.println("      Add Schedule Information");
+            System.out.println("====================================");
+        }
         System.out.println("Select a departure station : ");
         for (int i = 0; i < stationList.size(); i++) {
             System.out.println((i+1) + ". " + stationList.get(i).getLocationName());
         }
-        System.out.print("Enter the station number stated above > ");
-        userInput2 = validateIntegerInput(scanner, "Enter the station number stated above > ");
-        departLocation = stationList.get(userInput2-1);
-        departureIndex = stationList.indexOf(departLocation);
-
+        do{
+            System.out.print("Enter the station number stated above > ");
+            userInput2 = validateIntegerInput(scanner, "Enter the station number stated above > ");
+            if(userInput2>stationList.size()){
+                System.out.println("Invalid option. Please enter the number stated above.");
+            }else{
+                departLocation = stationList.get(userInput2-1);
+                departureIndex = stationList.indexOf(departLocation);
+            }
+        }while(userInput2>stationList.size());
+        
         stationNumber = 1; // Initialize the station number
         System.out.println("Select an arrival station : ");
         for (int i = 0; i < stationList.size(); i++) {
@@ -731,9 +806,13 @@ public class DriverJh {
                 stationNumber++; // Increment the station number
             }
         }
-
-        System.out.print("Enter the station number stated above > ");
-        userInput2 = validateIntegerInput(scanner, "Enter the station number stated above > ");
+        do{
+            System.out.print("Enter the station number stated above > ");
+            userInput2 = validateIntegerInput(scanner, "Enter the station number stated above > ");
+            if(userInput2>(stationList.size()-1)){
+                System.out.println("Invalid option. Please enter the number stated above.");
+            }
+        }while(userInput2>(stationList.size()-1));
 
         // Adjust user input based on the excluded departure station
         if (userInput2 > departureIndex) {
@@ -779,9 +858,16 @@ public class DriverJh {
         for (int i = 0; i < trainList.size(); i++) {
                 System.out.println((i+1) + ". " + trainList.get(i).getTrainNo());
         }
-        System.out.print("Enter the train number stated above > ");
-        userInput2 = validateIntegerInput(scanner, "Enter the train number stated above > ");
-        trainOperated = trainList.get(userInput2-1);
+        do{
+            System.out.print("Enter the train number stated above > ");
+            userInput2 = validateIntegerInput(scanner, "Enter the train number stated above > ");
+            if(userInput2>trainList.size()){
+                System.out.println("Invalid option. Please enter the number stated above.");
+            }else{
+                trainOperated = trainList.get(userInput2-1);
+            }
+            
+        }while(userInput2>trainList.size());
 
         System.out.print("Enter the ticket price (RM) > ");
         ticketPrice = validateDoubleInput(scanner, "Enter the ticket price (RM) > ");
@@ -809,6 +895,7 @@ public class DriverJh {
     public static void updateScheduleInfo(ArrayList<Schedule> scheduleList, ArrayList<TrainStation> stationList, ArrayList<Train> trainList, Scanner scanner) throws Exception {
         String scheduleId;
         String userInput;
+        boolean cont = true;
         int index = 0;
         boolean found = false;
 
@@ -830,35 +917,47 @@ public class DriverJh {
                 System.out.println(scheduleList.get(index).toString());
                 System.out.print("Enter your option (Y-Yes/N-No)> ");
                 userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");
+                do{
+                    if(userInput.equalsIgnoreCase("Y")){
+                        System.out.println("The field that can be updated :");
+                        System.out.println("1. Departure time");
+                        System.out.println("2. Arrival time");
+                        System.out.println("3. Train operated");
+                        System.out.println("4. Ticket price");
+                        System.out.println("* Press # to exit");
+                        do{
+                            System.out.print("Enter option in number stated above > ");
+                            userInput = scanner.nextLine();
+                        
+                            if(userInput.equals("1")){
+                                departureInfoUpdate(scheduleList, stationList, trainList, scanner, index);
+                            }else if(userInput.equals("2")){
+                                arrivalInfoUpdate(scheduleList, stationList, trainList, scanner, index);
+                            }else if(userInput.equals("3")){
+                                trainOperatedUpdate(scheduleList, stationList, trainList, scanner, index);
+                            }else if(userInput.equals("4")){
+                                ticketPriceUpdate(scheduleList, stationList, trainList, scanner, index);
+                            }else if(userInput.equals("#")){
+                                cont = false;
+                                return;
+                            }else{
+                                System.out.println("Invalid input. Please enter (1/2/3/4/#).");
+                            }
 
-                if(userInput.equalsIgnoreCase("Y")){
-                    System.out.println("The field that can be updated :");
-                    System.out.println("1. Departure time");
-                    System.out.println("2. Arrival time");
-                    System.out.println("3. Train operated");
-                    System.out.println("4. Ticket price");
-                    System.out.println("* Press # to exit");
-                    System.out.print("Enter option in number stated above > ");
-                    userInput = scanner.nextLine();
-                    do{
-                        if(userInput.equals("1")){
-                            departureInfoUpdate(scheduleList, stationList, trainList, scanner, index);
-                        }else if(userInput.equals("2")){
-                            arrivalInfoUpdate(scheduleList, stationList, trainList, scanner, index);
-                        }else if(userInput.equals("3")){
-                            trainOperatedUpdate(scheduleList, stationList, trainList, scanner, index);
-                        }else if(userInput.equals("4")){
-                            ticketPriceUpdate(scheduleList, stationList, trainList, scanner, index);
-                        }else if(userInput.equals("#")){
-                            break;
-                        }else{
-                            System.out.println("Invalid input. Please enter (1/2/3/4/#).");
-                        }
-
-                    }while(!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
-                }else{
-                    found = false;
-                }
+                        }while(!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+                    }else{
+                        found = false;
+                        cont = false;
+                        break;
+                    }
+                    System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    userInput = validateYNInput(scanner, "Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    if (userInput.equalsIgnoreCase("Y")){
+                        cont = true;
+                    }else{
+                        cont = false;
+                    }
+                } while(cont == true);
 
             }else{
                 System.out.println("The schedule is not found. Please serch again.");
@@ -968,13 +1067,18 @@ public class DriverJh {
         boolean updated = false;
         Schedule obj = new Schedule();
 
-        System.out.println("Current operated train: " + scheduleList.get(index).getOperatedTrain().toString());
-        System.out.println("Select a new train to replace train above: ");
-    
+        
         ArrayList<Train> availableTrains = new ArrayList<>(trainList);
         int currentTrainNo = scheduleList.get(index).getOperatedTrain().getTrainNo();
         availableTrains.removeIf(train -> train.getTrainNo()==currentTrainNo);
-        int trainNumber = 1; // Initialize the station number
+        if (availableTrains.size()==0){
+            System.out.println("Sorry. You cannot change the train operated as it is no train available to replace the current train.");
+            return;
+        }
+        System.out.println("Current operated train: " + scheduleList.get(index).getOperatedTrain().toString());
+        System.out.println("Select a new train to replace train above: ");
+        
+        int trainNumber = 1; // Initialize the train number
         for (int n = 0; n < availableTrains.size(); n++) {
             System.out.println(trainNumber + ". " + availableTrains.get(n).getTrainNo());
             trainNumber++; // Increment the station number
@@ -1222,6 +1326,7 @@ public class DriverJh {
         int stockQty = 0; 
         int index = 0;
         boolean found = false;
+        boolean cont = true;
         String userInput;
         String userInput2;
         String confirm;
@@ -1242,122 +1347,130 @@ public class DriverJh {
                 }
             }
             if(found==true){
-                System.out.println(snacksList.get(index).toString());
-                System.out.println("Select a field: ");
-                System.out.println("1. Food name ");
-                System.out.println("2. Food price ");
-                System.out.println("3. Stock qty ");
-                System.out.println("4. Make it a party pack or vice versa");
-                System.out.println("#. Go back");
+                do{
+                    System.out.println(snacksList.get(index).toString());
+                    System.out.println("Select a field: ");
+                    System.out.println("1. Food name ");
+                    System.out.println("2. Food price ");
+                    System.out.println("3. Stock qty ");
+                    System.out.println("4. Make it a party pack or vice versa");
+                    System.out.println("#. Go back");
 
-                do {
-                    System.out.print("Enter option in number stated above > ");
-                    userInput = scanner.nextLine();
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        userInput = scanner.nextLine();
 
-                    if (userInput.equals("1")) {
-                        System.out.print("New snacks name > ");
-                        foodName = scanner.nextLine();
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                        if(confirm.equalsIgnoreCase("Y")){
-                            snacksList.get(index).editFoodName(foodName);
-                            updated = writeIntoFile("snacksFile.txt", snacksList, obj);
-                            if(updated){
-                                System.out.println("Food name has updated.");
-                            }else{
-                                System.out.println("Unable to update food name.");
-                            }
-                        }else{
-                            System.out.println("Modification cancelled.");
-                        }
-                            
-                    } else if (userInput.equals("2")) {
-                        System.out.print("New price > ");
-                        foodPrice = validateDoubleInput(scanner, "New price > ");
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                        if(confirm.equalsIgnoreCase("Y")){
-                            snacksList.get(index).editFoodPrice(foodPrice);
-                            updated = writeIntoFile("snacksFile.txt", snacksList, obj);
-                            if(updated){
-                                System.out.println("Food price has updated.");
-                            }else{
-                                System.out.println("Unable to update food price.");
-                            }
-                        }else{
-                            System.out.println("Modification cancelled.");
-                        }
-                            
-                    } else if (userInput.equals("3")) {
-                        do{
-                            System.out.print("Add or Subtract stocky qty (eg. enter +100 to add 100; enter -100 to subtract 100) > " );
-                            userInput2 = scanner.nextLine();
-                            if (userInput2.startsWith("+") || userInput2.startsWith("-")) {
-                                sign = userInput2.substring(0, 1);
-                                numericPart = userInput2.substring(1);
-                                try {
-                                    stockQty = Integer.parseInt(numericPart);
-                                    invalidFormat = false;
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Invalid format. (eg. +100 / -100).");
-                                    invalidFormat = true;
+                        if (userInput.equals("1")) {
+                            System.out.print("New snacks name > ");
+                            foodName = scanner.nextLine();
+                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                            confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                            if(confirm.equalsIgnoreCase("Y")){
+                                snacksList.get(index).editFoodName(foodName);
+                                updated = writeIntoFile("snacksFile.txt", snacksList, obj);
+                                if(updated){
+                                    System.out.println("Food name has updated.");
+                                }else{
+                                    System.out.println("Unable to update food name.");
                                 }
-                            } else {
-                                sign = "+";
-                                numericPart = userInput2;
-                                try {
-                                    stockQty = Integer.parseInt(numericPart);
-                                    invalidFormat = false;
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Invalid format. (eg. +100 / -100).");
-                                    invalidFormat = true;
-                                }
+                            }else{
+                                System.out.println("Modification cancelled.");
                             }
-                        }while (invalidFormat == true);
+                            
+                        } else if (userInput.equals("2")) {
+                            System.out.print("New price > ");
+                            foodPrice = validateDoubleInput(scanner, "New price > ");
+                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                            confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                            if(confirm.equalsIgnoreCase("Y")){
+                                snacksList.get(index).editFoodPrice(foodPrice);
+                                updated = writeIntoFile("snacksFile.txt", snacksList, obj);
+                                if(updated){
+                                    System.out.println("Food price has updated.");
+                                }else{
+                                    System.out.println("Unable to update food price.");
+                                }
+                            }else{
+                                System.out.println("Modification cancelled.");
+                            }
+                            
+                        } else if (userInput.equals("3")) {
+                            do{
+                                System.out.print("Add or Subtract stocky qty (eg. enter +100 to add 100; enter -100 to subtract 100) > " );
+                                userInput2 = scanner.nextLine();
+                                if (userInput2.startsWith("+") || userInput2.startsWith("-")) {
+                                    sign = userInput2.substring(0, 1);
+                                    numericPart = userInput2.substring(1);
+                                    try {
+                                        stockQty = Integer.parseInt(numericPart);
+                                        invalidFormat = false;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Invalid format. (eg. +100 / -100).");
+                                        invalidFormat = true;
+                                    }
+                                } else {
+                                    sign = "+";
+                                    numericPart = userInput2;
+                                    try {
+                                        stockQty = Integer.parseInt(numericPart);
+                                        invalidFormat = false;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Invalid format. (eg. +100 / -100).");
+                                        invalidFormat = true;
+                                    }
+                                }
+                            }while (invalidFormat == true);
                        
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                        if(confirm.equalsIgnoreCase("Y")){
-                            snacksList.get(index).editStockQty(sign, stockQty);
-                            updated = writeIntoFile("snacksFile.txt", snacksList, obj);
-                            if(updated){
-                                System.out.println("Food stock qty has updated.");
+                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                            confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                            if(confirm.equalsIgnoreCase("Y")){
+                                boolean success = snacksList.get(index).editStockQty(sign, stockQty);
+                                updated = writeIntoFile("snacksFile.txt", snacksList, obj);
+                                if(updated && success){
+                                    System.out.println("Food stock qty has updated.");
+                                }else{
+                                    System.out.println("Unable to update food stock qty.");
+                                }
                             }else{
-                                System.out.println("Unable to update food stock qty.");
+                                System.out.println("Modification cancelled.");
                             }
-                        }else{
-                            System.out.println("Modification cancelled.");
-                        }
                             
-                    } else if (userInput.equals("4")) {
-                        System.out.print("A party pack? (Y-Yes/N-No) > ");
-                        userInput2 = validateYNInput(scanner, "A party pack? (Y-Yes/N-No) > ");
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                        } else if (userInput.equals("4")) {
+                            System.out.print("A party pack? (Y-Yes/N-No) > ");
+                            userInput2 = validateYNInput(scanner, "A party pack? (Y-Yes/N-No) > ");
+                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                            confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
 
-                        if (confirm.equalsIgnoreCase("Y")){
-                            if(userInput2.equalsIgnoreCase("Y")){
-                                snacksList.get(index).setPartyPack(true);
+                            if (confirm.equalsIgnoreCase("Y")){
+                                if(userInput2.equalsIgnoreCase("Y")){
+                                    snacksList.get(index).setPartyPack(true);
+                                }else{
+                                    snacksList.get(index).setPartyPack(false);
+                                }
+                                updated = writeIntoFile("snacksFile.txt", snacksList, obj);
+                                if(updated){
+                                    System.out.println("Party pack setting has updated.");
+                                }else{
+                                    System.out.println("Unable to update party pack setting.");
+                                }
                             }else{
-                                snacksList.get(index).setPartyPack(false);
+                                System.out.println("Modification cancelled.");
                             }
-                            updated = writeIntoFile("snacksFile.txt", snacksList, obj);
-                            if(updated){
-                                System.out.println("Party pack setting has updated.");
-                            }else{
-                                System.out.println("Unable to update party pack setting.");
-                            }
-                        }else{
-                            System.out.println("Modification cancelled.");
-                        }
-                    } else if (userInput.equals("#")) {
-                        break;
+                        } else if (userInput.equals("#")) {
+                            break;
                             
-                    } else {
-                        System.out.println("Invalid option. Please enter (1/2/3/4).");
+                        } else {
+                            System.out.println("Invalid option. Please enter (1/2/3/4).");
                         }
-                } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
-
+                    } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
+                    System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    userInput = validateYNInput(scanner, "Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    if (userInput.equalsIgnoreCase("Y")){
+                        cont = true;
+                    }else{
+                        cont = false;
+                    }
+                }while(cont==true);
             }else{
                 System.out.println("Snacks is not found. Please search again.");
             }
@@ -1469,11 +1582,7 @@ public class DriverJh {
         String foodName;
         double foodPrice;
         int stockQty;
-        String temperature = "";
-        String size = "";
         boolean added = false;
-        int temperatureChoice;
-        int sizeChoice;
         String userInput;
         Drinks drinks = new Drinks();
     
@@ -1486,49 +1595,11 @@ public class DriverJh {
         System.out.print("Enter stock qty > ");
         stockQty = validateIntegerInput(scanner, "Enter stock qty > ");
     
-        System.out.println("Temperature of the drinks: ");
-        System.out.println("1. Hot ");
-        System.out.println("2. Cold");
-                        
-
-        do{
-            System.out.print("Enter the number option > ");
-            temperatureChoice = validateIntegerInput(scanner, "Enter the number option > ");
-                       
-            if (temperatureChoice==1) {
-                temperature = "Hot";
-            } else if (temperatureChoice==2) {
-                temperature = "Cold";
-            }else{
-                System.out.println("Invalid number option. Please enter (1/2).");
-            }
-        }while (temperatureChoice <=0 || temperatureChoice >2);
-    
-        System.out.println("Size of the drinks: ");
-        System.out.println("1. Small ");
-        System.out.println("2. Medium");
-        System.out.println("3. Big");
-                       
-
-        do{
-            System.out.print("Enter the number option > ");
-            sizeChoice = validateIntegerInput(scanner, "Enter the number option > "); 
-            if (sizeChoice==1) {
-                size = "Small";
-            } else if (sizeChoice==2) {
-                size = "Medium";
-            } else if (sizeChoice==3) {
-                size = "Big";
-            }else{
-                System.out.println("Invalid number option. Please enter (1/2).");
-            }
-        }while (sizeChoice<=0 || sizeChoice >3);
-    
         System.out.print("Do you confirm? (Y-Yes/N-No) > ");
         userInput = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
     
         if (userInput.equalsIgnoreCase("Y")) {
-            Drinks tempDrinks = new Drinks(foodName, foodPrice, stockQty, temperature, size);
+            Drinks tempDrinks = new Drinks(foodName, foodPrice, stockQty);
             drinksList.add(tempDrinks);
             added = writeIntoFile("drinksFile.txt", drinksList, drinks);
     
@@ -1551,11 +1622,9 @@ public class DriverJh {
         int stockQty = 0; 
         int index = 0;
         boolean found = false;
-        String temperature = "";
+        boolean cont = true;
         String userInput;
         String userInput3;
-        String size = "";
-        int userInput2;
         boolean updated = false;
         Drinks obj = new Drinks();
         String sign;
@@ -1574,171 +1643,108 @@ public class DriverJh {
                 }
             }
             if(found==true){
-                System.out.println(drinksList.get(index).toString());
-                System.out.println("Select a field: ");
-                System.out.println("1. Food name ");
-                System.out.println("2. Food price ");
-                System.out.println("3. Stock qty ");
-                System.out.println("4. Drinks temperature setting");
-                System.out.println("5. Size setting");
-                System.out.println("#. Go back");
+                do{
+                    System.out.println(drinksList.get(index).toString());
+                    System.out.println("Select a field: ");
+                    System.out.println("1. Food name ");
+                    System.out.println("2. Food price ");
+                    System.out.println("3. Stock qty ");
+                    System.out.println("#. Go back");
 
-                do {
-                    System.out.print("Enter option in number stated above > ");
-                    userInput = scanner.nextLine();
+                    do {
+                        System.out.print("Enter option in number stated above > ");
+                        userInput = scanner.nextLine();
 
-                    if (userInput.equals("1")) {
-                        System.out.print("New snacks name > ");
-                        foodName = scanner.nextLine();
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                        if(confirm.equalsIgnoreCase("Y")){
-                            drinksList.get(index).editFoodName(foodName);
-                            updated = writeIntoFile("drinksFile.txt", drinksList, obj);
-                            if(updated){
-                                System.out.println("Food name has updated.");
-                            }else{
-                                System.out.println("Unable to update food name.");
-                            }
-                        }else{
-                            System.out.println("Modification cancelled.");
-                        }
-                            
-                    } else if (userInput.equals("2")) {
-                        System.out.print("New price > ");
-                        foodPrice = validateDoubleInput(scanner, "New price > ");
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                        if(confirm.equalsIgnoreCase("Y")){
-                            drinksList.get(index).editFoodPrice(foodPrice);
-                            updated = writeIntoFile("drinksFile.txt", drinksList, obj);
-                            if(updated){
-                                System.out.println("Food price has updated.");
-                            }else{
-                                System.out.println("Unable to update food price.");
-                            }
-                        }else{
-                            System.out.println("Modification cancelled.");
-                        }
-                            
-                    } else if (userInput.equals("3")) {
-                        do{
-                            System.out.print("Add or Subtract stocky qty (eg. enter +100 to add 100; enter -100 to subtract 100) > " );
-                            userInput3 = scanner.nextLine();
-                            if (userInput3.startsWith("+") || userInput3.startsWith("-")) {
-                                sign = userInput3.substring(0, 1);
-                                numericPart = userInput3.substring(1);
-                                try {
-                                    stockQty = Integer.parseInt(numericPart);
-                                    invalidFormat = false;
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Invalid format. (eg. +100 / -100).");
-                                    invalidFormat = true;
+                        if (userInput.equals("1")) {
+                            System.out.print("New snacks name > ");
+                            foodName = scanner.nextLine();
+                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                            confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                            if(confirm.equalsIgnoreCase("Y")){
+                                drinksList.get(index).editFoodName(foodName);
+                                updated = writeIntoFile("drinksFile.txt", drinksList, obj);
+                                if(updated){
+                                    System.out.println("Food name has updated.");
+                                }else{
+                                    System.out.println("Unable to update food name.");
                                 }
-                            } else {
-                                sign = "+";
-                                numericPart = userInput3;
-                                try {
-                                    stockQty = Integer.parseInt(numericPart);
-                                    invalidFormat = false;
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Invalid format. (eg. +100 / -100).");
-                                    invalidFormat = true;
+                            }else{
+                                System.out.println("Modification cancelled.");
+                            }
+                                
+                        } else if (userInput.equals("2")) {
+                            System.out.print("New price > ");
+                            foodPrice = validateDoubleInput(scanner, "New price > ");
+                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                            confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                            if(confirm.equalsIgnoreCase("Y")){
+                                drinksList.get(index).editFoodPrice(foodPrice);
+                                updated = writeIntoFile("drinksFile.txt", drinksList, obj);
+                                if(updated){
+                                    System.out.println("Food price has updated.");
+                                }else{
+                                    System.out.println("Unable to update food price.");
                                 }
-                            }
-                        }while (invalidFormat == true);
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                        if(confirm.equalsIgnoreCase("Y")){
-                            drinksList.get(index).editStockQty(sign, stockQty);
-                            updated = writeIntoFile("drinksFile.txt", drinksList, obj);
-                            if(updated){
-                                System.out.println("Food stock qty has updated.");
                             }else{
-                                System.out.println("Unable to update food stock qty.");
+                                System.out.println("Modification cancelled.");
                             }
-                        }else{
-                            System.out.println("Modification cancelled.");
+                                
+                        } else if (userInput.equals("3")) {
+                            do{
+                                System.out.print("Add or Subtract stocky qty (eg. enter +100 to add 100; enter -100 to subtract 100) > " );
+                                userInput3 = scanner.nextLine();
+                                if (userInput3.startsWith("+") || userInput3.startsWith("-")) {
+                                    sign = userInput3.substring(0, 1);
+                                    numericPart = userInput3.substring(1);
+                                    try {
+                                        stockQty = Integer.parseInt(numericPart);
+                                        invalidFormat = false;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Invalid format. (eg. +100 / -100).");
+                                        invalidFormat = true;
+                                    }
+                                } else {
+                                    sign = "+";
+                                    numericPart = userInput3;
+                                    try {
+                                        stockQty = Integer.parseInt(numericPart);
+                                        invalidFormat = false;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Invalid format. (eg. +100 / -100).");
+                                        invalidFormat = true;
+                                    }
+                                }
+                            }while (invalidFormat == true);
+                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                            confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                            if(confirm.equalsIgnoreCase("Y")){
+                                boolean success = drinksList.get(index).editStockQty(sign, stockQty);
+                                updated = writeIntoFile("drinksFile.txt", drinksList, obj);
+                                if(updated && success){
+                                    System.out.println("Food stock qty has updated.");
+                                }else{
+                                    System.out.println("Unable to update food stock qty.");
+                                }
+                            }else{
+                                System.out.println("Modification cancelled.");
+                            }
+                        } else if (userInput.equals("#")) {
+                            break;
+                                
+                        } else {
+                            System.out.println("Invalid option. Please enter (1/2/3/#).");
                         }
-                            
-                    } else if (userInput.equals("4")) {
-                        System.out.println("Temperature of the drinks: ");
-                        System.out.println("1. Hot ");
-                        System.out.println("2. Cold");
-                        
-
-                        do{
-                            System.out.print("Enter the number option > ");
-                            userInput2 = validateIntegerInput(scanner, "Enter the number option > ");
-                       
-                            if (userInput2==1) {
-                                temperature = "Hot";
-                            } else if (userInput2==2) {
-                                temperature = "Cold";
-                            }else{
-                                System.out.println("Invalid number option. Please enter (1/2).");
-                            }
-                        }while (userInput2 <=0 || userInput2 >2);
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-
-                        if (confirm.equalsIgnoreCase("Y")){
-                            drinksList.get(index).setTemperature(temperature);
-                            updated = writeIntoFile("drinksFile.txt", drinksList, obj);
-                            if(updated){
-                                System.out.println("Drinks temperature setting has updated.");
-                            }else{
-                                System.out.println("Unable to update drinks temperature setting.");
-                            }
-                        }else{
-                            System.out.println("Modification cancelled.");     
-                        }
-                    }else if (userInput.equalsIgnoreCase("5")){
-                        System.out.println("Size of the drinks: ");
-                        System.out.println("1. Small ");
-                        System.out.println("2. Medium");
-                        System.out.println("3. Big");
-                       
-
-                        do{
-                            System.out.print("Enter the number option > ");
-                            userInput2 = validateIntegerInput(scanner, "Enter the number option > "); 
-                            if (userInput2==1) {
-                                size = "Small";
-                            } else if (userInput2==2) {
-                                size = "Medium";
-                            } else if (userInput2==3) {
-                                size = "Big";
-                            }else{
-                                System.out.println("Invalid number option. Please enter (1/2).");
-                            }
-                        }while (userInput2<=0 || userInput2 >3);
-
-                        System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                        confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-
-                        if (confirm.equalsIgnoreCase("Y")){
-                            drinksList.get(index).setSize(size);
-                            updated = writeIntoFile("drinksFile.txt", drinksList, obj);
-                            if(updated){
-                                System.out.println("Drinks temperature setting has updated.");
-                            }else{
-                                System.out.println("Unable to update drinks temperature setting.");
-                            }
-                        }else{
-                            System.out.println("Modification cancelled.");     
-                        }
-                    
-                    } else if (userInput.equals("#")) {
-                        break;
-                            
-                    } else {
-                        System.out.println("Invalid option. Please enter (1/2/3/4).");
+                    } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("#"));
+                    System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    userInput = validateYNInput(scanner, "Do you want to continue make changes? (Y-Yes/N-No) > ");
+                    if (userInput.equalsIgnoreCase("Y")){
+                        cont = true;
+                    }else{
+                        cont = false;
                     }
-                } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("5") && !userInput.equals("#"));
-
+                }while(cont==true);
             }else{
-                System.out.println("Train drinks is not found. Please search again.");
+                System.out.println("Drinks is not found. Please search again.");
             }
             
         }while(!found);
@@ -1782,7 +1788,7 @@ public class DriverJh {
                         deleted = writeIntoFile("drinksFile.txt", drinksList, obj);
 
                         if (deleted) {
-                             System.out.println("drinks has been removed.");
+                             System.out.println("Drinks has been removed.");
                         }else{
                             System.out.println("Unable to remove the drinks.");
 
@@ -1918,7 +1924,9 @@ public class DriverJh {
                      inputFile.nextLine();
                      String temperature = inputFile.nextLine();
                      String size = inputFile.nextLine();
-                     drinksList.add(new  Drinks(foodId, foodName, foodPrice, purchaseQty, stockQty, temperature, size));
+                     boolean ice = inputFile.nextBoolean();
+                     inputFile.nextLine();
+                     drinksList.add(new  Drinks(foodId, foodName, foodPrice, purchaseQty, stockQty, temperature, size, ice));
                  }
            }
        }
@@ -2030,6 +2038,7 @@ public class DriverJh {
                     output.write(drinksList.get(i).getStockQty() + "\n");
                     output.write(drinksList.get(i).getTemperature() + "\n");
                     output.write(drinksList.get(i).getSize() + "\n");
+                    output.write(drinksList.get(i).getIce() + "\n");
                 }
                 write = true;
             }
