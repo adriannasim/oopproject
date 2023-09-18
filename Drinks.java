@@ -22,6 +22,11 @@ public class Drinks extends FoodAndBeverage implements Serializable{
         this.size = size;
     }
 
+    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty, String temperature, String size){
+        super(foodId, foodName, foodPrice, purchaseQty, stockQty);
+        this.temperature = temperature;
+        this.size = size;
+    }
      //------------------------------------METHOD-----------------------------------------
      
     // UPDATE METHOD

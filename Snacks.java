@@ -19,10 +19,19 @@ public class Snacks extends FoodAndBeverage implements Serializable{
         this.partyPack = partyPack;
     }
 
+    Snacks(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty, boolean partyPack){
+        super(foodId, foodName, foodPrice, purchaseQty, stockQty);
+        this.partyPack =  partyPack;
+    }
     //------------------------------------METHOD-----------------------------------------
     // UPDATE METHOD
     public void setPartyPack(boolean partyPack){
         this.partyPack = partyPack;
+    }
+
+    // READ METHOD
+    public boolean getPartyPack(){
+        return partyPack;
     }
 
     // DISPLAY METHOD

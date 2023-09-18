@@ -1,9 +1,9 @@
 public abstract class FoodAndBeverage{
-    private String foodId;
-    private String foodName;
-    private double foodPrice;
-    private int purchaseQty;
-    private int stockQty;
+    protected String foodId;
+    protected String foodName;
+    protected double foodPrice;
+    protected int purchaseQty;
+    protected int stockQty;
 
     //-----------------------------------CONSTRUCTOR---------------------------------------- 
     // NO-ARG CONSTRUCTOR
@@ -21,6 +21,14 @@ public abstract class FoodAndBeverage{
         purchaseQty = 0;
     }
 
+    FoodAndBeverage(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty){
+        this.foodId = foodId;
+        this.foodName = foodName;
+        this.foodPrice = foodPrice;
+        this.purchaseQty = purchaseQty;
+        this.stockQty = stockQty;
+
+    }
     //------------------------------------METHOD-----------------------------------------
     // READ METHOD
     public String getFoodId(){
@@ -52,8 +60,12 @@ public abstract class FoodAndBeverage{
         this.foodPrice = foodPrice;
     }
 
-    public void editStockQty(int stockQty){
-        this.stockQty = stockQty;
+    public void editStockQty(String sign, int stockQty){
+        if (sign.equals("+")){
+            this.stockQty+=stockQty;
+        }else{
+            this.stockQty-=stockQty;
+        }
     }
 
     public void setPurchaseQty(int purchaseQty){
