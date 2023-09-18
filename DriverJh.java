@@ -46,13 +46,17 @@ public class DriverJh {
         readFromFile("scheduleFile.txt", scheduleList, schedule);
         readFromFile("snacksFile.txt", snacksList, snacks);
         readFromFile("drinksFile.txt", drinksList, drinks);
-        
+       
         do{
+            System.out.println("==================================================");
+            System.out.println("                    Modification");
+            System.out.println("==================================================");
             System.out.println("1. Train Information Modification");
             System.out.println("2. Schedule Modification");
             System.out.println("3. Train Station Information Modification");
             System.out.println("4. Food and Beverage Information Modification");
-            System.out.println("* Press '#' to exit");
+             System.out.println("\n* Press # to exit");
+            System.out.println("==================================================");
  
             do{
                 System.out.print("Enter your option > ");
@@ -70,7 +74,7 @@ public class DriverJh {
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                    System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4/#).\n");
                 }
             }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
  
@@ -84,12 +88,13 @@ public class DriverJh {
     //------------------------------------------VALIDATE DOUBLE INPUT-------------------------------------------- 
 
     private static double validateDoubleInput(Scanner scanner, String str) {
+
         while (true) {
             try {
                 String userInput = scanner.nextLine();
                 return Double.parseDouble(userInput);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid price: ");
+                System.out.println("\nINVALID INPUT. PLEASE ENTER A VALID PRICE.\n");
                 System.out.print(str);
             }
         }
@@ -106,7 +111,7 @@ public class DriverJh {
                 }
                 return Integer.parseInt(userInput);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid integer.");
+                System.out.println("\nINVALID INPUT. PLEASE ENTER A NUMBER.\n");
                 System.out.print(str);
             }
         }
@@ -120,7 +125,7 @@ public class DriverJh {
             if (userInput.equalsIgnoreCase("Y")||userInput.equalsIgnoreCase("N")){
                 return userInput;
             }else{
-                System.out.println("Invalid input. Please enter Y/N only.");
+                System.out.println("\nINVALID INPUT. PLEASE ENTER (Y/N).\n");
                 System.out.print(str);
             }
         }
@@ -151,11 +156,15 @@ public class DriverJh {
         boolean cont = true;
 
         while(cont==true){
+            System.out.println("==================================================");
+            System.out.println("          Train Information Modification");
+            System.out.println("==================================================");
             System.out.println("1. View existing train information");
             System.out.println("2. Update an existing train information");
             System.out.println("3. Add a new train information");
             System.out.println("4. Delete an existing train information");
-            System.out.println("* Press # to go back");
+            System.out.println("\n* Press # to go back");
+            System.out.println("==================================================");
            
             do{
                 System.out.print("Enter your option > ");
@@ -175,7 +184,7 @@ public class DriverJh {
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                    System.out.println("\nINVALID INPUT. PLEASE ENTER (1/2/3/4/#).\n");
                 }     
             }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
         }
@@ -190,6 +199,10 @@ public class DriverJh {
         boolean added = false;
         Train obj = new Train();
 
+        System.out.println("==================================================");
+        System.out.println("              Add Train Information");
+        System.out.println("==================================================");
+            
         System.out.print("Enter train name > ");
         trainName = scanner.nextLine(); 
     
@@ -205,10 +218,10 @@ public class DriverJh {
             if (added == true){
                 System.out.println("\nTrain has added.\n");
             }else{
-                System.out.println("\nUnable to add the train.\n");
+                System.out.println("\nFAILED TO ADD THE TRAIN.\n");
             }
         }else{
-            System.out.println("\nModification cancelled.\n");
+            System.out.println("\nMODIFICATION CANCELLED.\n");
         }
         
     }
@@ -228,9 +241,10 @@ public class DriverJh {
         Train obj = new Train();
         Schedule obj2 = new Schedule();
 
-        System.out.println("====================================");
-        System.out.println(" Update Train Information");
-        System.out.println("====================================");
+
+        System.out.println("==================================================");
+        System.out.println("              Update Train Information");
+        System.out.println("==================================================");
         do{
             System.out.print("Enter train no to search the train > "); 
             trainNo = validateIntegerInput(scanner, "Enter train no to search the train (Press # to exit) > ");
@@ -249,9 +263,12 @@ public class DriverJh {
                 userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
                 do{
                     if(userInput.equalsIgnoreCase("Y")){
+                        System.out.println("==================================================");
                         System.out.println("The field that can be updated :");
-                        System.out.println("1. Train Name");
-                        System.out.println("Press # to exit");
+                        System.out.println("1. Train name");
+                        System.out.println("* Press # to exit");
+                        System.out.println("==================================================");
+                       
                         do {
                             System.out.print("Enter option in number stated above > ");
                             userInput = scanner.nextLine();
@@ -273,10 +290,10 @@ public class DriverJh {
                                     if (updated && updated2){
                                         System.out.println("\nTrain information has updated.\n");
                                     }else{
-                                        System.out.println("\nUnable to update the train information.\n");
+                                        System.out.println("\nFAILED TO UPDATE THE TRAIN INFORMATION.\n");
                                     }
                                 }else{
-                                    System.out.println("\nModification cancelled.\n");
+                                    System.out.println("\nMODIFICATION CANCELLED.\n");
                                 }     
                             } else if (userInput.equals("#")){
                                 cont = false;
@@ -298,7 +315,7 @@ public class DriverJh {
                     }
                 }while(cont==true);
             }else{
-                System.out.println("Train is not found. Please search again.");
+                System.out.println("\nTRAIN NOT FOUND. PLEASE SEARCH AGAIN.\n");
             }  
         } while (!found);      
     }
@@ -316,9 +333,9 @@ public class DriverJh {
         Train obj = new Train();
         Schedule obj2 = new Schedule();
     
-        System.out.println("====================================");
-        System.out.println(" Delete Train Information");
-        System.out.println("====================================");
+        System.out.println("==================================================");
+        System.out.println("              Delete Train Information");
+        System.out.println("==================================================");
     
         do {
             System.out.print("Enter train no to search the train (Press # to exit) > ");
@@ -350,7 +367,7 @@ public class DriverJh {
                         }   
                     }
                     if(hasSchedule){
-                        System.out.println("Please think carefully as it will remove the schedule below as well.");
+                        System.out.println("\nPLEASE THINK CAREFULLY AS IT WILL REMOVE THE SCHEDULE BELOW AS WELL.\n");
                         for (int j=0; j<scheduleList.size(); j++){
                             if (scheduleList.get(j).getOperatedTrain().getTrainNo()==trainList.get(index).getTrainNo()){
                                 System.out.println(scheduleList.get(j).toString());
@@ -377,11 +394,11 @@ public class DriverJh {
                         if (deleted && deleted2) {
                             System.out.println("\nTrain information has removed.\n");
                         }else{
-                            System.out.println("\nUnable to remove train information.\n");
+                            System.out.println("\nFAILED TO REMOVE THE TRAIN INFORMATION.\n");
                         }
                                 
                     } else {
-                        System.out.println("Modification cancelled.");
+                        System.out.println("\nMODIFICATION CANCELLED.\n");
                     }
                                
                                 
@@ -390,7 +407,7 @@ public class DriverJh {
                 }
                 
             } else {
-                System.out.println("Train is not found. Please search again.");
+                System.out.println("\nTRAIN NOT FOUND. PLEASE SEARCH AGAIN.\n");
             }
     
            
@@ -406,13 +423,16 @@ public class DriverJh {
         boolean cont = true;
     
         while (cont) {
-            // Display the user option menu
+            System.out.println("==================================================");
+            System.out.println("      Train Station Information Modification");
+            System.out.println("==================================================");
             System.out.println("1. View existing train station information");
             System.out.println("2. Update train station information");
             System.out.println("3. Add a new train station information");
             System.out.println("4. Delete an existing train station information");
-            System.out.println("* Press # to go back");
-    
+            System.out.println("\n* Press # to go back");
+            System.out.println("==================================================");
+            
             do {
                 System.out.print("Enter your option > ");
                 userInput = scanner.nextLine();
@@ -431,7 +451,7 @@ public class DriverJh {
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                    System.out.println("\nINVALID OPTION. PLEASE SEARCH AGAIN.\n");
                 }
     
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
@@ -447,6 +467,10 @@ public class DriverJh {
         boolean duplicated = false;
         TrainStation obj = new TrainStation();
         String userInput;
+
+        System.out.println("==================================================");
+        System.out.println("         Add Train Station Information");
+        System.out.println("==================================================");
 
         do {
             System.out.print("Enter new station name > ");
@@ -474,10 +498,10 @@ public class DriverJh {
             if (added == true){
                 System.out.println("\nStation has added.\n");
             }else{
-                System.out.println("\nUnable to add the station.\n");
+                System.out.println("\nFAILED TO ADD THE TRAIN STATION.\n");
             }
         }else{
-            System.out.println("\nModification cancelled.\n");
+            System.out.println("\nMODIFICATION.\n");
         }    
         
     }
@@ -498,9 +522,9 @@ public class DriverJh {
         TrainStation obj = new TrainStation();
         Schedule obj2 = new Schedule();
     
-        System.out.println("====================================");
-        System.out.println(" Update Train Station Information");
-        System.out.println("====================================");
+        System.out.println("==================================================");
+        System.out.println("         Update Train station Information");
+        System.out.println("==================================================");
     
         do {
             System.out.print("Enter station name to search the station (Press # to exit) > ");
@@ -524,11 +548,13 @@ public class DriverJh {
                 userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
                 do{  
                     if (userInput.equalsIgnoreCase("Y")) {
+                        System.out.println("==================================================");
                         System.out.println("The field that can be updated :");
-                        System.out.println("1. Station name");
+                        System.out.println("1. Train staion name");
                         System.out.println("2. Number of platform");
-                        System.out.println("Press # to exit");
-    
+                        System.out.println("* Press # to exit");
+                        System.out.println("==================================================");
+                        
                         do {
                             System.out.print("Enter option in number stated above > ");
                             userInput = scanner.nextLine();
@@ -542,7 +568,7 @@ public class DriverJh {
                                     for (int i = 0; i < stationList.size(); i++) {
                                         if (locationName.equalsIgnoreCase(stationList.get(i).getLocationName())) {
                                             duplicated = true;
-                                            System.out.println("The station name exists. Please use another name.");
+                                            System.out.println("\nTHE STATION NAME EXISTS. PLEASE USE ANOTHER NAME.\n");
                                             break; // Exit the loop as soon as a duplicate is found
                                         }
                                     }
@@ -564,10 +590,10 @@ public class DriverJh {
                                     if(updated && updated2){
                                         System.out.println("\nThe station has updated.\n");
                                     }else{
-                                        System.out.println("\nUnable to update the station.\n");
+                                        System.out.println("\nUNABLE TO UPDATE THE STATION.\n");
                                     }
                                 }else{
-                                    System.out.println("\nModification cancelled.\n");
+                                    System.out.println("\nMODIFICATION CANCELLED.\n");
                                 }
                             } else if (userInput.equals("2")) {
                                 System.out.print("Enter new number of platform > ");
@@ -589,16 +615,16 @@ public class DriverJh {
                                     if(updated && updated2){
                                         System.out.println("\nThe station has updated.\n");
                                     }else{
-                                        System.out.println("\nUnable to update the station.\n");
+                                        System.out.println("\nFAILED TO UPDATE THE TRAIN STATION INFORMATION.\n");
                                     }
                                 }else{
-                                    System.out.println("\nModification cancelled.\n");
+                                    System.out.println("\nMODIFICATION CANCELLED.\n");
                                 }
                             } else if (userInput.equals("#")) {
                                 cont = false;
                                 return;
                             } else {
-                                System.out.println("Invalid option. Please enter (1/2/#).");
+                                System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/#).\n");
                             }
                         } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
                     } else {
@@ -614,7 +640,7 @@ public class DriverJh {
                 } while(cont == true);
             
             }else{
-                System.out.println("Station is not found. Please search again.");        
+                System.out.println("\nSTATION NOT FOUND. PLEASE SEARCH AGAIN.\n");       
             }
         } while (!found);
     }
@@ -631,9 +657,9 @@ public class DriverJh {
         Schedule obj2 = new Schedule();
         boolean hasSchedule = false;
     
-        System.out.println("====================================");
-        System.out.println(" Delete Train Station Information");
-        System.out.println("====================================");
+        System.out.println("==================================================");
+        System.out.println("        Delete Train Station Information");
+        System.out.println("==================================================");
 
         do {
             System.out.print("Enter station name to search the station (Press # to exit) > "); 
@@ -664,7 +690,7 @@ public class DriverJh {
                     }
                     
                     if (hasSchedule) {
-                        System.out.println("Please think carefully as it will remove the schedule below as well.");
+                        System.out.println("\nPLEASE THINKS CAREFULLY AS IT WILL REMOVE THE SCHEDULE BELOW AS WELL.\n");
                         for (int j = 0; j < scheduleList.size(); j++) {
                             if (scheduleList.get(j).getDepartLocation().getLocationName().equals(stationList.get(index).getLocationName()) ||
                                 scheduleList.get(j).getArriveLocation().getLocationName().equals(stationList.get(index).getLocationName())) {
@@ -691,17 +717,17 @@ public class DriverJh {
                         if (deleted && deleted2){
                             System.out.println("The train station has deleted.");
                         }else{
-                            System.out.println("Unable to delete the train station.");
+                            System.out.println("\nFAILED TO DELETE THE TRAIN STATION.\n");
                         }
   
                     }else {
-                        System.out.println("Modification cancelled.");
+                        System.out.println("\nMODIFICATION CANCELLED.\n");
                     }
                 } else  {
                     found = false;
                 }
             }else{
-                System.out.println("Train station is not found. Please search again.");
+                System.out.println("\nTRAIN STATION NOT FOUND. PLEASE SEARCH AGAIN.\n");
             }        
         } while (!found);
     }
@@ -715,11 +741,15 @@ public class DriverJh {
         boolean cont = true;
     
         while (cont) {
+            System.out.println("==================================================");
+            System.out.println("      Schedule Information Modification");
+            System.out.println("==================================================");
             System.out.println("1. View schedule");
             System.out.println("2. Update existing schedule");
             System.out.println("3. Add a new schedule");
             System.out.println("4. Delete an existing schedule");
-            System.out.println("* Press # to go back");
+            System.out.println("\n* Press # to go back");
+            System.out.println("==================================================");
     
             do {
                 System.out.print("Enter your option > ");
@@ -739,7 +769,7 @@ public class DriverJh {
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                    System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4/#).\n");
                 }
     
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
@@ -764,24 +794,25 @@ public class DriverJh {
         boolean correctTime = false;
 
         if (stationList.isEmpty() && trainList.isEmpty()){
-            System.out.println("No train stations and train available. Please add some train stations and train.");
+            System.out.println("\nNO TRAIN AND STATIONS AVAILABLE.\n");
             return;
         }else if(stationList.size()==1 && trainList.isEmpty()){
-            System.out.println("There is no train available and not enough train stations to create a schedule. Please add a train station and a train.");
+            System.out.println("\nNO TRAIN AVAILABLE AND NOT ENOUGH AVAILABLE STATIONS.\n");
             return;
         }else if (stationList.isEmpty()){
-            System.out.println("No train stations available. Please add a train station.");
+            System.out.println("\nNO TRAIN STATIONS AVAILABLE.\n");
             return;
         }else if(stationList.size()==1){
-            System.out.println("Not enough stations to create a schedule. Please add a station.");
+            System.out.println("\nNOT ENOUGH AVAILABLE STATIONS.\n");
             return;
         }else if(trainList.isEmpty()){
-            System.out.println("No train available. Please add a train.");
+            System.out.println("\nNO AVAILABLE TRAIN.\n");
             return;
         }else{
-            System.out.println("====================================");
-            System.out.println("      Add Schedule Information");
-            System.out.println("====================================");
+            System.out.println("==================================================");
+            System.out.println("              Add schedule Information");
+            System.out.println("==================================================");
+
         }
         System.out.println("Select a departure station : ");
         for (int i = 0; i < stationList.size(); i++) {
@@ -791,7 +822,7 @@ public class DriverJh {
             System.out.print("Enter the station number stated above > ");
             userInput2 = validateIntegerInput(scanner, "Enter the station number stated above > ");
             if(userInput2>stationList.size()){
-                System.out.println("Invalid option. Please enter the number stated above.");
+                System.out.println("\nINVALID OPTION. PLEASE ENTER THE NUMBER ABOVE.\n");
             }else{
                 departLocation = stationList.get(userInput2-1);
                 departureIndex = stationList.indexOf(departLocation);
@@ -810,7 +841,7 @@ public class DriverJh {
             System.out.print("Enter the station number stated above > ");
             userInput2 = validateIntegerInput(scanner, "Enter the station number stated above > ");
             if(userInput2>(stationList.size()-1)){
-                System.out.println("Invalid option. Please enter the number stated above.");
+                System.out.println("\nINVALID OPTION. PLEASE ENTER THE NUMBER STATED ABOVE.\n");
             }
         }while(userInput2>(stationList.size()-1));
 
@@ -829,11 +860,11 @@ public class DriverJh {
                     correctTime = true;
                 } else {
                     correctTime = false;
-                    System.out.println("Invalid time format. Please enter in format HH:MM.");
+                    System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
                 }
             } else {
                 correctTime = false;
-                System.out.println("Invalid time format. Please enter in format HH:MM.");
+                System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
         }while(correctTime==false);
         
@@ -846,11 +877,11 @@ public class DriverJh {
                     correctTime = true;
                 } else {
                     correctTime = false;
-                    System.out.println("Invalid time format. Please enter in format HH:MM.");
+                    System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
                 }
             } else {
                 correctTime = false;
-                System.out.println("Invalid time format. Please enter in format HH:MM.");
+                System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
         }while(correctTime==false);
  
@@ -862,7 +893,7 @@ public class DriverJh {
             System.out.print("Enter the train number stated above > ");
             userInput2 = validateIntegerInput(scanner, "Enter the train number stated above > ");
             if(userInput2>trainList.size()){
-                System.out.println("Invalid option. Please enter the number stated above.");
+                System.out.println("\nINVALID OPTION. PLEASE ENTER  THE NUMBER AS STATED ABOVE.\n");
             }else{
                 trainOperated = trainList.get(userInput2-1);
             }
@@ -883,10 +914,10 @@ public class DriverJh {
             if (added){
                 System.out.println("\nSchedule has added.\n");
             }else{
-                System.out.println("\nUnable to add the schedule.\n");
+                System.out.println("\nFAILED TO ADD THE SCHEDULE.\n");
             }
         }else{
-            System.out.println("\nModification cancelled.");
+            System.out.println("\nMODIFICATION CANCELLED.\n");
         }
     }
    
@@ -899,6 +930,10 @@ public class DriverJh {
         int index = 0;
         boolean found = false;
 
+        System.out.println("==================================================");
+        System.out.println("           Update Schedule Information");
+        System.out.println("==================================================");
+    
         do{
             System.out.print("Enter the schedule id to search the schedule (Press # to exit) > ");
             scheduleId = scanner.nextLine();
@@ -919,12 +954,15 @@ public class DriverJh {
                 userInput = validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");
                 do{
                     if(userInput.equalsIgnoreCase("Y")){
+                        System.out.println("==================================================");
                         System.out.println("The field that can be updated :");
                         System.out.println("1. Departure time");
                         System.out.println("2. Arrival time");
                         System.out.println("3. Train operated");
                         System.out.println("4. Ticket price");
                         System.out.println("* Press # to exit");
+                        System.out.println("==================================================");
+    
                         do{
                             System.out.print("Enter option in number stated above > ");
                             userInput = scanner.nextLine();
@@ -941,7 +979,7 @@ public class DriverJh {
                                 cont = false;
                                 return;
                             }else{
-                                System.out.println("Invalid input. Please enter (1/2/3/4/#).");
+                                System.out.println("\nINVALID INPUT. PLEASE ENTER (1/2/3/4/#).\n");
                             }
 
                         }while(!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
@@ -960,7 +998,7 @@ public class DriverJh {
                 } while(cont == true);
 
             }else{
-                System.out.println("The schedule is not found. Please serch again.");
+                System.out.println("\nSCHEDULE NOT FOUND. PLEASE SEARCH AGAIN.\n");
             }
                
         }while(!found);
@@ -975,7 +1013,6 @@ public class DriverJh {
         boolean updated = false;
         boolean correctTime = false;
         Schedule obj = new Schedule();
-
         
         System.out.println("Current departure time: " + scheduleList.get(index).getDepartTime());
                
@@ -988,11 +1025,11 @@ public class DriverJh {
                     correctTime = true;
                 } else {
                     correctTime = false;
-                    System.out.println("Invalid time format. Please enter in format HH:MM.");
+                    System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
                 }
             } else {
                 correctTime = false;
-                System.out.println("Invalid time format. Please enter in format HH:MM.");
+                System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
         }while(correctTime==false);
 
@@ -1005,10 +1042,10 @@ public class DriverJh {
             if(updated){
                 System.out.println("Schedule departure time has updated.");
             }else{
-                System.out.println("Unable to update the schedule departure time.");
+                System.out.println("\nFAILED TO UPDATE THE DEPARTURE TIME.\n");
             }
         }else{
-            System.out.println("Modification cancelled.");
+            System.out.println("\nMODIFICATION CANCELLED.\n");
         }
     }
 
@@ -1033,11 +1070,11 @@ public class DriverJh {
                     correctTime = true;
                 } else {
                     correctTime = false;
-                    System.out.println("Invalid time format. Please enter in format HH:MM.");
+                    System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
                 }
             } else {
                 correctTime = false;
-                System.out.println("Invalid time format. Please enter in format HH:MM.");
+                System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
         }while(correctTime==false);
 
@@ -1050,10 +1087,10 @@ public class DriverJh {
             if(updated){
                 System.out.println("Schedule arrival time has updated.");
             }else{
-                System.out.println("Unable to update the schedule arrival time.");
+                System.out.println("\nFAILED TO UPDATE THE ARRIVAL TIME.\n");
             }
         }else{
-            System.out.println("Modification cancelled.");
+            System.out.println("\nMODIFICATION CANCELLED.\n");
         }
 
     }
@@ -1066,13 +1103,12 @@ public class DriverJh {
         String confirm;
         boolean updated = false;
         Schedule obj = new Schedule();
-
         
         ArrayList<Train> availableTrains = new ArrayList<>(trainList);
         int currentTrainNo = scheduleList.get(index).getOperatedTrain().getTrainNo();
         availableTrains.removeIf(train -> train.getTrainNo()==currentTrainNo);
         if (availableTrains.size()==0){
-            System.out.println("Sorry. You cannot change the train operated as it is no train available to replace the current train.");
+            System.out.println("\nSORRY, YOU CANNOT CHANGE THE TRAIN OPERATED AS IT IS NO TRAIN AVAILABLE TO REPLACE THE CURRENT TRAIN.\n");
             return;
         }
         System.out.println("Current operated train: " + scheduleList.get(index).getOperatedTrain().toString());
@@ -1098,14 +1134,14 @@ public class DriverJh {
                     if(updated){
                         System.out.println("\nThe train operated for the schedule has updated.");
                     }else{
-                        System.out.println("\nUnable to update the train operated for the schedule.");
+                        System.out.println("\nFAILED TO UPDATE THE TRAIN OPERATED FOR THE SCHEDULE.\n");
                     }
 
                 }else{
-                    System.out.println("Modification cancelled.");
+                    System.out.println("\nMODIFICATION CANCELLED.\n");
                 }   
             }else{
-                System.out.println("Invalid train number. Please select a valid train.");
+                System.out.println("\nINVALID TRAIN NUMBER.\n");
             }
         }while ((userInput < 1 && userInput > availableTrains.size()));    
     }
@@ -1117,6 +1153,7 @@ public class DriverJh {
         boolean updated;
         double ticketPrice;
         Schedule obj = new Schedule();
+
 
         System.out.println("Current ticket price (RM): " + scheduleList.get(index).getTicketPrice());
         System.out.print("Enter a new ticket price (RM): ");
@@ -1132,10 +1169,10 @@ public class DriverJh {
             if(updated){
                 System.out.println("Ticket price for the schedule has updated.");
             }else{
-                System.out.println("Unable to update the ticket price for the schedule.");
+                System.out.println("\nFAILED TO UPDATE THE TICKET PRICE FOR THE SCHEDULE.\n");
             }
         }else{
-            System.out.println("Modification cancelled.");
+            System.out.println("\nMODIFICATIO CANCELLED.\n");
         }
         
     }
@@ -1150,6 +1187,10 @@ public class DriverJh {
         Schedule obj = new Schedule();
         int index = 0;
         
+        System.out.println("==================================================");
+        System.out.println("            Delete Schedule Information");
+        System.out.println("==================================================");
+
         do {
             System.out.print("Enter the schedule id to search the schedule (Press # to exit) > ");
             userInput = scanner.nextLine();
@@ -1179,19 +1220,18 @@ public class DriverJh {
                         if (deleted) {
                              System.out.println("Schedule has been removed.");
                         }else{
-                            System.out.println("Unable to remove the schedule.");
-
+                            System.out.println("\nFAILED TO REMOVE THE SCHEDULE.\n");
                         }
 
                     } else {
-                        System.out.println("Modification cancelled.");
+                        System.out.println("\nMODIFICATION CANCELLED.\n");
                     }        
                 }else{
                     found = false;
                 }
             
             }else{
-                System.out.println("The schedule is not found. Please search again.");
+                System.out.println("\nSCHEDULE NO FOUND. PLEASE SEARCH AGAIN.\n");
             } 
         } while (!found);
     
@@ -1206,10 +1246,14 @@ public class DriverJh {
         boolean cont = true;
     
         while (cont) {
+            System.out.println("==================================================");
+            System.out.println("   Food and Beverage Information Modification");
+            System.out.println("==================================================");
             System.out.println("1. Snacks modification");
             System.out.println("2. Drinks modification");
-            System.out.println("* Press # to go back");
-    
+            System.out.println("\n* Press # to go back");
+            System.out.println("==================================================");
+            
             do {
                 System.out.print("Enter your option > ");
                 userInput = scanner.nextLine();
@@ -1221,7 +1265,7 @@ public class DriverJh {
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/#).");
+                    System.out.println("\nINVALID OPTION. PLEASE ENETER (1/2/#).\n");
                 }
     
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
@@ -1235,14 +1279,18 @@ public class DriverJh {
     public static void snacksModification(ArrayList<Snacks> snacksList, Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
-    
+
         while (cont) {
+            System.out.println("==================================================");
+            System.out.println("   Snacks Information Modification");
+            System.out.println("==================================================");
             System.out.println("1. View snacks");
             System.out.println("2. Update existing snacks");
             System.out.println("3. Add a new snacks");
             System.out.println("4. Delete an existing snacks");
-            System.out.println("* Press # to go back");
-    
+            System.out.println("\n* Press # to go back");
+            System.out.println("==================================================");
+
     
             do {
                 System.out.print("Enter your option > ");
@@ -1261,7 +1309,7 @@ public class DriverJh {
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                    System.out.println("\nINVALID OPTION. PLEASE ENETER (1/2/3/4/#).\n");
                 }
     
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
@@ -1279,6 +1327,10 @@ public class DriverJh {
         String userInput;
         Snacks snacks = new Snacks();
     
+        System.out.println("==================================================");
+        System.out.println("              Add Snacks Information");
+        System.out.println("==================================================");
+
         System.out.print("Enter snacks name > ");
         foodName = scanner.nextLine();
     
@@ -1308,11 +1360,11 @@ public class DriverJh {
             if (added) {
                 System.out.println("Snacks has been added.");
             } else {
-                System.out.println("Unable to add snacks.");
+                System.out.println("\nFAILED TO ADD SNACKS\n");
             }
 
         }else{
-            System.out.println("Modification cancelled.");
+            System.out.println("\nMODIFICATION CANCELLED.\n");
         }
         
     }
@@ -1336,6 +1388,10 @@ public class DriverJh {
         String sign;
         String numericPart;
 
+        System.out.println("==================================================");
+        System.out.println("           Update Snacks Information");
+        System.out.println("==================================================");
+
         do {
             System.out.print("Enter the snacks id to search the snacks (Press # to exit) > ");
             foodId = scanner.nextLine();
@@ -1348,14 +1404,15 @@ public class DriverJh {
             }
             if(found==true){
                 do{
-                    System.out.println(snacksList.get(index).toString());
-                    System.out.println("Select a field: ");
-                    System.out.println("1. Food name ");
-                    System.out.println("2. Food price ");
-                    System.out.println("3. Stock qty ");
+                    System.out.println("==================================================");
+                    System.out.println("The field that can be updated :");
+                    System.out.println("1. Snacks name ");
+                    System.out.println("2. Food price");
+                    System.out.println("3. Stock qty");
                     System.out.println("4. Make it a party pack or vice versa");
-                    System.out.println("#. Go back");
-
+                    System.out.println("* Press # to exit");
+                    System.out.println("==================================================");
+                   
                     do {
                         System.out.print("Enter option in number stated above > ");
                         userInput = scanner.nextLine();
@@ -1371,10 +1428,10 @@ public class DriverJh {
                                 if(updated){
                                     System.out.println("Food name has updated.");
                                 }else{
-                                    System.out.println("Unable to update food name.");
+                                    System.out.println("\nFAILED TO UPDATE FOOD MENU.\n");
                                 }
                             }else{
-                                System.out.println("Modification cancelled.");
+                                System.out.println("\nMODIFICATION CANCELLED.\n");
                             }
                             
                         } else if (userInput.equals("2")) {
@@ -1388,10 +1445,10 @@ public class DriverJh {
                                 if(updated){
                                     System.out.println("Food price has updated.");
                                 }else{
-                                    System.out.println("Unable to update food price.");
+                                    System.out.println("\nFAILED TO UPDATE SNACKS PRICE\n");
                                 }
                             }else{
-                                System.out.println("Modification cancelled.");
+                                System.out.println("\nMODIFICATION CANCELLED.\n");
                             }
                             
                         } else if (userInput.equals("3")) {
@@ -1405,7 +1462,7 @@ public class DriverJh {
                                         stockQty = Integer.parseInt(numericPart);
                                         invalidFormat = false;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("Invalid format. (eg. +100 / -100).");
+                                        System.out.println("\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
                                         invalidFormat = true;
                                     }
                                 } else {
@@ -1415,7 +1472,7 @@ public class DriverJh {
                                         stockQty = Integer.parseInt(numericPart);
                                         invalidFormat = false;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("Invalid format. (eg. +100 / -100).");
+                                        System.out.println("\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
                                         invalidFormat = true;
                                     }
                                 }
@@ -1429,10 +1486,10 @@ public class DriverJh {
                                 if(updated && success){
                                     System.out.println("Food stock qty has updated.");
                                 }else{
-                                    System.out.println("Unable to update food stock qty.");
+                                    System.out.println("\nFAILED TO UPDATE SNACKS STOCK QTY.\n");
                                 }
                             }else{
-                                System.out.println("Modification cancelled.");
+                                System.out.println("\nMODIFICATION CANCELLED.\n");
                             }
                             
                         } else if (userInput.equals("4")) {
@@ -1451,16 +1508,16 @@ public class DriverJh {
                                 if(updated){
                                     System.out.println("Party pack setting has updated.");
                                 }else{
-                                    System.out.println("Unable to update party pack setting.");
+                                    System.out.println("\nFAILED TO UPDATE PARTY PACK SETTING.\n");
                                 }
                             }else{
-                                System.out.println("Modification cancelled.");
+                                System.out.println("\nMODIFICATION CANCELLED.\n");
                             }
                         } else if (userInput.equals("#")) {
                             break;
                             
                         } else {
-                            System.out.println("Invalid option. Please enter (1/2/3/4).");
+                             System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4).\n");
                         }
                     } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
                     System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
@@ -1472,7 +1529,7 @@ public class DriverJh {
                     }
                 }while(cont==true);
             }else{
-                System.out.println("Snacks is not found. Please search again.");
+                System.out.println("\nSNACKS NOT FOUND. PLEAE SEARCH AGAIN.\n");
             }
             
         }while(!found);
@@ -1488,6 +1545,10 @@ public class DriverJh {
         boolean deleted = false;
         Snacks obj = new Snacks();
         int index = 0;
+        
+        System.out.println("==================================================");
+        System.out.println("              Delete Snacks Information");
+        System.out.println("==================================================");
         
         do {
             System.out.print("Enter the snacks id to search the snacks (Press # to exit) > ");
@@ -1518,12 +1579,12 @@ public class DriverJh {
                         if (deleted) {
                              System.out.println("Snacks has been removed.");
                         }else{
-                            System.out.println("Unable to remove the snacks.");
+                             System.out.println("\nFAILED TO REMOVE THE SNACKS.\n");
 
                         }
 
                     } else {
-                        System.out.println("Modification cancelled.");
+                         System.out.println("\nMODIFICATION CANCELLED.\n");
                     }        
                 }else{
                     found = false;
@@ -1545,11 +1606,15 @@ public class DriverJh {
         boolean cont = true;
     
         while (cont) {
+            System.out.println("==================================================");
+            System.out.println("   Drinks Information Modification");
+            System.out.println("==================================================");
             System.out.println("1. View drinks");
             System.out.println("2. Update existing drinks");
             System.out.println("3. Add a new drinks");
             System.out.println("4. Delete an existing drinks");
-            System.out.println("* Press # to go back");
+            System.out.println("\n* Press # to go back");
+            System.out.println("==================================================");
     
     
             do {
@@ -1569,7 +1634,7 @@ public class DriverJh {
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/3/4/#).");
+                    System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4/#).\n");
                 }
     
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
@@ -1585,6 +1650,10 @@ public class DriverJh {
         boolean added = false;
         String userInput;
         Drinks drinks = new Drinks();
+
+        System.out.println("==================================================");
+        System.out.println("              Add Drinks Information");
+        System.out.println("==================================================");
     
         System.out.print("Enter drinks name > ");
         foodName = scanner.nextLine();
@@ -1606,10 +1675,10 @@ public class DriverJh {
             if (added) {
                 System.out.println("Drinks have been added.");
             } else {
-                System.out.println("Unable to add drinks.");
+                System.out.println("\nFAILED TO ADD DRINKS.\n");
             }
         } else {
-            System.out.println("Modification cancelled.");
+            System.out.println("\nMODIFICATION CANCELLED.\n");
         }
     }
     
@@ -1632,6 +1701,10 @@ public class DriverJh {
         boolean invalidFormat = false;
         String confirm;
 
+        System.out.println("==================================================");
+        System.out.println("           Update Drinks Information");
+        System.out.println("==================================================");
+
         do {
             System.out.print("Enter the snacks id to search the snacks (Press # to exit) > ");
             foodId = scanner.nextLine();
@@ -1644,12 +1717,13 @@ public class DriverJh {
             }
             if(found==true){
                 do{
-                    System.out.println(drinksList.get(index).toString());
-                    System.out.println("Select a field: ");
-                    System.out.println("1. Food name ");
-                    System.out.println("2. Food price ");
-                    System.out.println("3. Stock qty ");
-                    System.out.println("#. Go back");
+                    System.out.println("==================================================");
+                    System.out.println("The field that can be updated :");
+                    System.out.println("1. Drinks name ");
+                    System.out.println("2. Food price");
+                    System.out.println("3. Stock qty");
+                    System.out.println("* Press # to exit");
+                    System.out.println("==================================================");
 
                     do {
                         System.out.print("Enter option in number stated above > ");
@@ -1666,10 +1740,10 @@ public class DriverJh {
                                 if(updated){
                                     System.out.println("Food name has updated.");
                                 }else{
-                                    System.out.println("Unable to update food name.");
+                                    System.out.println("\nFAILED TO UPDATE DRINKS NAME.\n");
                                 }
                             }else{
-                                System.out.println("Modification cancelled.");
+                                 System.out.println("\nMODIFICATION CANCELLED.\n");
                             }
                                 
                         } else if (userInput.equals("2")) {
@@ -1683,10 +1757,10 @@ public class DriverJh {
                                 if(updated){
                                     System.out.println("Food price has updated.");
                                 }else{
-                                    System.out.println("Unable to update food price.");
+                                    System.out.println("\nFAILED TO UPDATE DRINKS PRICE.\n");
                                 }
                             }else{
-                                System.out.println("Modification cancelled.");
+                                System.out.println("\nMODIFICATION CANCELLED.\n");
                             }
                                 
                         } else if (userInput.equals("3")) {
@@ -1700,7 +1774,7 @@ public class DriverJh {
                                         stockQty = Integer.parseInt(numericPart);
                                         invalidFormat = false;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("Invalid format. (eg. +100 / -100).");
+                                        System.out.println("\nINVALID FORMAT. PLEASE ENTER IN FORMAT (+100/-100).\n");
                                         invalidFormat = true;
                                     }
                                 } else {
@@ -1710,7 +1784,7 @@ public class DriverJh {
                                         stockQty = Integer.parseInt(numericPart);
                                         invalidFormat = false;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("Invalid format. (eg. +100 / -100).");
+                                        System.out.println("\nINVALID FORMAT. PLEASE ENTER IN FORMAT (+100/-100).\n");
                                         invalidFormat = true;
                                     }
                                 }
@@ -1723,16 +1797,16 @@ public class DriverJh {
                                 if(updated && success){
                                     System.out.println("Food stock qty has updated.");
                                 }else{
-                                    System.out.println("Unable to update food stock qty.");
+                                    System.out.println("\nIFAILED TO UPDATE DRINKS STOCK QTY.\n");
                                 }
                             }else{
-                                System.out.println("Modification cancelled.");
+                                System.out.println("\nMODIFICATION CANCELLED.\n");
                             }
                         } else if (userInput.equals("#")) {
                             break;
                                 
                         } else {
-                            System.out.println("Invalid option. Please enter (1/2/3/#).");
+                            System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/#).\n");
                         }
                     } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("#"));
                     System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
@@ -1744,7 +1818,7 @@ public class DriverJh {
                     }
                 }while(cont==true);
             }else{
-                System.out.println("Drinks is not found. Please search again.");
+                System.out.println("\nDRINKS NOT FOUND. PLEASE SEARCH AGAIN.\n");
             }
             
         }while(!found);
@@ -1760,7 +1834,11 @@ public class DriverJh {
         boolean deleted = false;
         Drinks obj = new Drinks();
         int index = 0;
-        
+
+        System.out.println("==================================================");
+        System.out.println("            Delete Drinks Information");
+        System.out.println("==================================================");
+
         do {
             System.out.print("Enter the drinks id to search the drinks (Press # to exit) > ");
             userInput = scanner.nextLine();
@@ -1790,19 +1868,18 @@ public class DriverJh {
                         if (deleted) {
                              System.out.println("Drinks has been removed.");
                         }else{
-                            System.out.println("Unable to remove the drinks.");
-
+                            System.out.println("\nFAILED TO REMOVE THE DRINKS.\n");
                         }
 
                     } else {
-                        System.out.println("Modification cancelled.");
+                        System.out.println("\nMODIFICATION CANCELLED.\n");
                     }        
                 }else{
                     found = false;
                 }
             
             }else{
-                System.out.println("The drinks is not found. Please search again.");
+                System.out.println("\nDRINKS NOT FOUND. PLEASE SEARCH AGAIN.\n");
             } 
         } while (!found);
     
@@ -1938,6 +2015,9 @@ public class DriverJh {
 
     public static boolean writeIntoFile(String filename, ArrayList<Train> trainList, Train obj)  throws FileNotFoundException {
         boolean write = false;
+        String RESET = "\u001B[0m";
+        String RED = "\u001B[31m";
+
         try {
             FileWriter fwrite = new FileWriter(filename, false);
             try (Writer output = new BufferedWriter(fwrite)) {
@@ -1949,7 +2029,7 @@ public class DriverJh {
                 write = true;
             }
         } catch (IOException e) {
-            System.err.println("Error writing to the file: " + e.getMessage());
+            System.err.println(RED + "\nERROR WRITING TO THE FILE: " + e.getMessage() + "\n" + RESET);
         }
         return write;
     }
@@ -2006,6 +2086,9 @@ public class DriverJh {
     
     public static boolean writeIntoFile(String filename, ArrayList<Snacks> snacksList, Snacks obj)  throws FileNotFoundException {
         boolean write = false;
+        String RESET = "\u001B[0m";
+        String RED = "\u001B[31m";
+
         try {
             FileWriter fwrite = new FileWriter(filename, false);
             try (Writer output = new BufferedWriter(fwrite)) {
@@ -2020,13 +2103,16 @@ public class DriverJh {
                 write = true;
             }
         } catch (IOException e) {
-            System.err.println("Error writing to the file: " + e.getMessage());
+            System.err.println(RED + "\nERROR WRITING TO THE FILE: " + e.getMessage() + "\n" + RESET);
         }
         return write;
     }
 
     public static boolean writeIntoFile(String filename, ArrayList<Drinks> drinksList, Drinks obj) {
-       boolean write = false;
+        boolean write = false;
+        String RESET = "\u001B[0m";
+        String RED = "\u001B[31m";
+
         try {
             FileWriter fwrite = new FileWriter(filename, false);
             try (Writer output = new BufferedWriter(fwrite)) {
@@ -2043,7 +2129,7 @@ public class DriverJh {
                 write = true;
             }
         } catch (IOException e) {
-            System.err.println("Error writing to the file: " + e.getMessage());
+            System.err.println(RED + "\nERROR WRITING TO THE FILE: " + e.getMessage() + "\n" + RESET);
         }
         return write;
     }
