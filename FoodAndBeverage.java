@@ -60,11 +60,18 @@ public abstract class FoodAndBeverage{
         this.foodPrice = foodPrice;
     }
 
-    public void editStockQty(String sign, int stockQty){
+    public boolean editStockQty(String sign, int stockQty){
         if (sign.equals("+")){
             this.stockQty+=stockQty;
+            return true;
         }else{
-            this.stockQty-=stockQty;
+            if(stockQty>this.stockQty){
+                System.out.println("Error: This quantity is larger than the stock qty.");
+                return false;
+            }else{
+                this.stockQty-=stockQty;
+                return true;
+            }
         }
     }
 

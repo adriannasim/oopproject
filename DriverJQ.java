@@ -3,7 +3,7 @@ import java.util.*;
 import java.time.LocalDate;
 
 public class DriverJQ {
-    public static void purchasing() throws Exception {
+    public static void makePurchase() throws Exception {
         Scanner scanner = new Scanner(System.in);
         boolean continueInput = true;
         int userOpt1 = 0;
@@ -46,8 +46,9 @@ public class DriverJQ {
 
         } while (yesno1 != 'y' || yesno1 != 'Y');
 
-        // Add to Purchase
-        // Proceed to Payment
+        // =================================================================================
+        // ADD INTO PURCHASE ARRAYLIST
+        // =================================================================================
 
     }
 
@@ -57,38 +58,53 @@ public class DriverJQ {
     // buying, user may ask for modification.
     // Then, user may ask for confirmation and proceed to purchase fnb.
     // ==============================================================================================================
-    public static void buyTicket(String[] args) throws Exception {
-        char yesno1 = 'n', yesno2 = 'n'; // yesno1 - add more Ticket, yesno2 - make changes to added ticket
-        int userOpt1 = 0; // option for delete or modify
+    public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
-        ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+
+        // yesno1 - add more Ticket, yesno2 - make changes to added ticket
+        char yesno1 = 'n', yesno2 = 'n';
+        // Option for delete or modify
+        int userOpt1 = 0;
+
         boolean continueInput = true;
 
-        // Add tickets into ticketlist
+        // ------------------------------------------ScanScheduleFromFile----------------------------------------------
+        Schedule schedule = new Schedule();
+        ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+        DriverJh.readFromFile("scheduleFile.txt", scheduleList, schedule);
+        // ------------------------------------------------------------------------------------------------------------
+
+        // --------------------------------------------AddTicketsIntoArrayList-------------------------------------------
         do {
 
             ticketList.add(addTicket(scheduleList));
-            System.out.print("Would you like to buy more ticket? (Y - YES, OTHER - NO)");
+            System.out.print("Would you like to add more ticket? (Y - YES, OTHER - NO)    ");
             yesno1 = scanner.next().charAt(0);
 
         } while (yesno1 == 'y' || yesno1 == 'Y');
+        // ---------------------------------------------------------------------------------------------------------------
 
-        // Display added tickets
-        int z = 1;
-        for (Ticket tickets : ticketList) {
-            System.out.println(z + ".");
-            System.out.println(tickets);
-            z++;
-        }
         do {
-            // Make changes to the added ticket (DELETE or MODIFY)
+            // --------------------------------------------DisplayTicketArrayList---------------------------------------------
+            int z = 1;
+            for (Ticket tickets : ticketList) {
+                System.out.println(z + ".");
+                System.out.println(tickets);
+                z++;
+            }
+            // -----------------------------------------------------------------------------------------------------------------
+
+            // ---------------------------------------MakeChangesToTheAddedTicket-----------------------------------------------
+
             System.out.print("Would you like to make changes on tickets? (Y - YES, others - NO) : ");
             yesno2 = scanner.next().charAt(0);
+
             if (yesno2 == 'y' || yesno2 == 'Y') {
 
                 System.out.println("1.Delete added tickets");
-                System.out.println("2.Modify added tickets");
+                System.out.println("2.Edit added tickets");
+                System.out.println("Other - EXIT Modifying");
 
                 do {
                     try {
@@ -116,8 +132,6 @@ public class DriverJQ {
             }
 
         } while (yesno2 == 'y' || yesno2 == 'Y');
-
-        // Confirmation
     }
 
     // -------------------------------------ADDTICKET----------------------------------------------------
@@ -126,27 +140,32 @@ public class DriverJQ {
     // --------------------------------------------------------------------------------------------------
     public static Ticket addTicket(ArrayList<Schedule> scheduleList) throws Exception {
         Scanner scanner = new Scanner(System.in);
+
         Ticket ticket;
         Schedule ticketSchedule;
         LocalDate ticketDate;
         LocalDate today = LocalDate.now();
+
         int day = 0, month = 0, year = 0;
         boolean validDate = true;
+
         int scheduleNo = 0;
         boolean validSchedule = true;
+
         boolean continueInputS = true;
         boolean continueInputY = true;
         boolean continueInputD = true;
         boolean continueInputM = true;
 
-        // Display schedule for user to choose
+        // ---------------------------------------DisplaySchedule--------------------------------------------------------
         for (int i = 0; i < scheduleList.size(); i++) {
             System.out.printf("%d.\n", i + 1);
             System.out.println(scheduleList.get(i).toString());
             System.out.println();
         }
+        // --------------------------------------------------------------------------------------------------------------
 
-        // Select schedule for the ticket
+        // -----------------------------------------SelectSchedule--------------------------------------------------------
         do {
 
             do {
@@ -171,8 +190,9 @@ public class DriverJQ {
         } while (!validSchedule);
 
         ticketSchedule = scheduleList.get(scheduleNo - 1);
+        // ---------------------------------------------------------------------------------------------------------------
 
-        // Enter date for the ticket
+        // ------------------------------------------EnterDate------------------------------------------------------------
         do {
             System.out.println("Enter your date ");
 
@@ -225,30 +245,18 @@ public class DriverJQ {
             }
 
         } while (!validDate);
+        // ---------------------------------------------------------------------------------------------------------------
 
+        // -------------------------------------CreateTempTicketObj--------------------------------------------------------
         ticket = new Ticket(ticketSchedule, ticketDate);
+        // ---------------------------------------------------------------------------------------------------------------
 
         return ticket;
     }
 
-    /*
-     * //TEMP TICKET ARRAY FOR TESTING
-     * ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
-     * ticketList.add(new Ticket(scheduleList.get(1), date));
-     * ticketList.add(new Ticket(scheduleList.get(0), date));
-     * ticketList.add(new Ticket(scheduleList.get(1), date));
-     * 
-     * int z = 0;
-     * for (Ticket tickets : ticketList) {
-     * System.out.printf("%d.", z + 1);
-     * System.out.println(tickets);
-     * z++;
-     * }
-     */
-
-    // -------------------------------------------DELETETICKET---------------------------------------------------
+    // -------------------------------------------DELETETICKET-----------------------------------------------------------
     // User can delete all the added tickets or select a particular ticket to delete
-    // -----------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
     public static ArrayList<Ticket> dltTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList)
             throws Exception {
 
@@ -257,14 +265,14 @@ public class DriverJQ {
         int dltTicket = 0;
         boolean validDlt = true;
         int dltOption = 0;
+
         boolean continueInputA = true;
         boolean continueInputP = true;
 
         System.out.println("1. Delete all added tickets");
         System.out.println("2. Delete a particular ticket");
-        System.out.println("3. Exit");
+        System.out.println("Other - Exit Deleting");
 
-        // Select delete mode
         do {
             try {
                 System.out.print("Enter your option : ");
@@ -279,15 +287,16 @@ public class DriverJQ {
 
         if (dltOption == 1) {
 
-            // Clear all the element in ticketList
+            // ------------------------------------ClearAllElementInArrayList------------------------------------------------
             ticketList.clear();
             if (ticketList.size() == 0) {
                 System.out.println("You have delete all the tickets successfully.");
             }
+            // ---------------------------------------------------------------------------------------------------------------
 
         } else if (dltOption == 2) {
 
-            // Remove a paticular element in ticketList
+            // ----------------------------------RemoveParticularElementInArrayList---------------------------------------------
             do {
 
                 do {
@@ -314,6 +323,7 @@ public class DriverJQ {
             ticketList.remove(dltTicket - 1);
 
             System.out.println("Delete successfully. ");
+            // ---------------------------------------------------------------------------------------------------------------
 
         } else {
 
@@ -335,36 +345,39 @@ public class DriverJQ {
     // ==============================================================================================================
     // BUY FNB
     // ==============================================================================================================
-    public static void main(String[] args) throws Exception {
-        // TEMP SNACK AND DRINK LIST
+    public static ArrayList<FoodAndBeverage> buyFnb() throws Exception {
+
+        // --------------------------------------ScanFoodAndBeverageList----------------------------------------------
         ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
-        snacksList.add(new Snacks("Snack1", 20, 90, true));
-        snacksList.add(new Snacks("Snack1", 10, 90, false));
-        snacksList.add(new Snacks("Snack2", 12, 90, true));
-        snacksList.add(new Snacks("Snack2", 8, 90, false));
+        Snacks snacks = new Snacks();
+        DriverJh.readFromFile("snacksFile.txt", snacksList, snacks);
 
         ArrayList<Drinks> drinksList = new ArrayList<Drinks>();
-        drinksList.add(new Drinks("Drink1", 12, 90));
-        drinksList.add(new Drinks("Drink2", 10, 90));
-        drinksList.add(new Drinks("Drink3", 8, 90));
+        Drinks drinks = new Drinks();
+        DriverJh.readFromFile("drinksFile.txt", drinksList, drinks);
+        // ------------------------------------------------------------------------------------------------------------
 
-        // START
         Scanner scanner = new Scanner(System.in);
         ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
+
         boolean continueInput = true;
         boolean continueInputF = true;
+
         int userOpt1 = 0;
-        char yesno1, yesno2, yesno3; // yesno1 - Continue to add more fnb, yesno2 - Continue to add more snacks,
-                                     // yesno3 - Continue to add more drinks
-        char cont1; // cont1 - Make changes to fnb
+        // yesno1 - Continue to add more fnb, yesno2 - Continue to add more snacks,
+        // yesno3 - Continue to add more drinks
+        char yesno1, yesno2, yesno3;
+        // cont1 - Make changes to fnb
+        char cont1;
+
         int addFnb = 0;
         double subtotal = 0;
 
         do {
+            // --------------------------------------SelectSnacksOrDrinks--------------------------------------------------
             System.out.println("1. Snacks");
             System.out.println("2. Drinks");
 
-            // Select snacks or drinks
             do {
                 try {
                     System.out.print("Enter your option : ");
@@ -376,19 +389,20 @@ public class DriverJQ {
                     scanner.nextLine();
                 }
             } while (continueInput);
+            // ------------------------------------------------------------------------------------------------------------
 
             if (addFnb == 1) {
 
-                // Add Snacks
+                // -----------------------------------------AddSnacks--------------------------------------------------------
                 do {
                     fnbList = addSnacks(snacksList, fnbList);
                     System.out.print("Would you like to buy more snacks? (Y - YES, OTHER - NO)  ");
                     yesno2 = scanner.next().charAt(0);
                 } while (yesno2 == 'y' || yesno2 == 'Y');
 
-                // Display Snacks
+                // Display Added Snacks
                 System.out.println("\n============================");
-                System.out.println("           Snacks");
+                System.out.println("       Snacks Orders");
                 System.out.println("============================");
                 int z = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
@@ -402,19 +416,20 @@ public class DriverJQ {
                         z++;
                     }
                 }
+                // ----------------------------------------------------------------------------------------------------------
 
             } else if (addFnb == 2) {
 
-                // Add Drinks
+                // -----------------------------------------AddDrinks--------------------------------------------------------
                 do {
                     fnbList = addDrinks(drinksList, fnbList);
                     System.out.print("Would you like to buy more drinks? (Y - YES, OTHER - NO)  ");
                     yesno3 = scanner.next().charAt(0);
                 } while (yesno3 == 'y' || yesno3 == 'Y');
 
-                // Display Drinks
+                // Display Added Drinks
                 System.out.println("\n============================");
-                System.out.println("           Drinks");
+                System.out.println("       Drinks Orders");
                 System.out.println("============================");
                 int y = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
@@ -428,6 +443,7 @@ public class DriverJQ {
                         y++;
                     }
                 }
+                // ----------------------------------------------------------------------------------------------------------
 
             } else {
 
@@ -441,7 +457,7 @@ public class DriverJQ {
         } while (yesno1 == 'y' || yesno1 == 'Y');
 
         do {
-            // Display added fnb
+            // --------------------------------OrderSummary------------------------------------------------------------------
             // Noted : Every Modification, display once order summary
             System.out.println("\n============================");
             System.out.println("        Order Summary");
@@ -457,8 +473,9 @@ public class DriverJQ {
                 y++;
 
             }
+            // -----------------------------------------------------------------------------------------------------------------
 
-            // Make changes to the orders
+            // ------------------------------------------MakeChangesToOrder-----------------------------------------------------
             System.out.print("Would you like to make changes to orders? (Y - YES, other - NO)  ");
             cont1 = scanner.next().charAt(0);
 
@@ -495,37 +512,43 @@ public class DriverJQ {
                         break;
                 }
 
-                // Confirmation
-
             }
 
         } while (cont1 == 'y' || cont1 == 'Y');
+        // -----------------------------------------------------------------------------------------------------------------
+
+        return fnbList;
 
     }
 
-    // ---------------------------------------ADDSNACKS------------------------------------
+    // ------------------------------------------------ADDSNACKS-----------------------------------------------------------
     // User can buy one or many different and same snacks
-    // ------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
     public static ArrayList<FoodAndBeverage> addSnacks(ArrayList<Snacks> snacksList, ArrayList<FoodAndBeverage> fnbList)
             throws Exception {
+
         Scanner scanner = new Scanner(System.in);
+
         Snacks snack;
         int addSnacks = 0;
         int snackQty = 0;
+
         boolean continueInputS = true;
         boolean continueInputSQ = true;
+
         boolean validSnack = true;
         boolean foundSnack = false;
 
-        // Display snacks
+        // ----------------------------------------------DisplaySnacks--------------------------------------------------------------
         for (int i = 0; i < snacksList.size(); i++) {
             System.out.printf("%d.\n", i + 1);
             System.out.println(snacksList.get(i).toString());
             System.out.println();
         }
         System.out.println("Which snack would you like to add?");
+        // ------------------------------------------------------------------------------------------------------------------------
 
-        // Enter option
+        // -----------------------------------------------SelectSnacks--------------------------------------------------------------
         do {
 
             do {
@@ -550,12 +573,13 @@ public class DriverJQ {
         } while (!validSnack);
 
         snack = snacksList.get(addSnacks - 1);
+        // ------------------------------------------------------------------------------------------------------------------------
 
         if (snack.getStockQty() != 0) {
 
             do {
 
-                // Enter quantity
+                // -------------------------------------------EnterQty-------------------------------------------------------------
                 do {
                     try {
                         System.out.print("Enter quantity : ");
@@ -587,12 +611,13 @@ public class DriverJQ {
                 }
             }
 
-            // Added snack list has not found the same item
+            // Added snack list does not found the same item
             if (!foundSnack) {
                 snack.calculateStockQty(snackQty);
                 snack.setPurchaseQty(snackQty);
                 fnbList.add(snack);
             }
+            // ---------------------------------------------------------------------------------------------------------------------
 
         } else {
             System.out.println("Sorry, we have out of stock for " + snack.getFoodName() + ".");
@@ -601,33 +626,36 @@ public class DriverJQ {
         return fnbList;
     }
 
-    // ---------------------------------------ADDDRINKS------------------------------------
+    // ---------------------------------------ADDDRINKS-----------------------------------------------------------------------------
     // User can buy one or many different and same drinks
-    // ------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------
     public static ArrayList<FoodAndBeverage> addDrinks(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList)
             throws Exception {
         Scanner scanner = new Scanner(System.in);
         Drinks drink;
+
         int addDrinks = 0;
         int drinkQty = 0;
         char size;
         char ice;
         int temperature = 0;
+
         boolean continueInputD = true;
         boolean continueInputDQ = true;
         boolean continueInputT = true;
-        boolean validDrink = true;
-        boolean foundDrink = false;
 
-        // Display snacks
+        boolean validDrink = true;
+
+        // -----------------------------------------------DisplayDrinks---------------------------------------------------------
         for (int i = 0; i < drinksList.size(); i++) {
             System.out.printf("%d.\n", i + 1);
             System.out.println(drinksList.get(i).toString());
             System.out.println();
         }
         System.out.println("Which drink would you like to add?");
+        // ----------------------------------------------------------------------------------------------------------------------
 
-        // Enter option
+        // -------------------------------------------------SelectDrink----------------------------------------------------------
         do {
 
             do {
@@ -652,6 +680,7 @@ public class DriverJQ {
             }
 
         } while (!validDrink);
+        // -----------------------------------------------------------------------------------------------------------------------
 
         drink = drinksList.get(addDrinks - 1);
 
@@ -659,7 +688,7 @@ public class DriverJQ {
 
             do {
 
-                // Enter quantity
+                // -------------------------------------------------EnterQty--------------------------------------------------------
                 do {
                     try {
                         System.out.print("Enter quantity : ");
@@ -681,6 +710,7 @@ public class DriverJQ {
                 }
 
             } while (!drink.checkStockQty(drinkQty));
+            // ----------------------------------------------------------------------------------------------------------------
 
             drink.calculateStockQty(drinkQty);
 
@@ -741,6 +771,8 @@ public class DriverJQ {
 
             if (temperature == 1) {
                 drink.setTemperature("Cold");
+
+                // Select Iced
                 System.out.print("Y - ICED, other - NO ICE : ");
                 ice = scanner.next().charAt(0);
 
@@ -762,9 +794,9 @@ public class DriverJQ {
         return fnbList;
     }
 
-    // ---------------------------------------DLTFNB------------------------------------
+    // ---------------------------------------DLTFNB----------------------------------------------------------------------
     // User can buy delete one or many orders
-    // ------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------------------
     public static ArrayList<FoodAndBeverage> dltFnb(ArrayList<FoodAndBeverage> fnbList) throws Exception {
         Scanner scanner = new Scanner(System.in);
         int dltFnbOpt = 0;
@@ -774,6 +806,7 @@ public class DriverJQ {
 
         do {
 
+            // --------------------------------------SelectItem----------------------------------------------------------------
             do {
                 try {
                     System.out.print("Select the item you would like to delete : ");
@@ -794,6 +827,7 @@ public class DriverJQ {
             }
 
         } while (!validDlt);
+        // --------------------------------------------------------------------------------------------------------------------
 
         System.out.println("\n============================");
         System.out.println("            Order");
@@ -814,19 +848,22 @@ public class DriverJQ {
 
     }
 
-    // Modify fnb
+    // --------------------------------------EDITFNB----------------------------------------------------------------------
     public static ArrayList<FoodAndBeverage> editFnb(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList)
             throws Exception {
         Scanner scanner = new Scanner(System.in);
+
         int editFnbOpt = 0;
         int fnbIndex = 0;
         int editOpt = 0;
+
         boolean continueInput = true;
         boolean continueInputE = true;
         boolean continueInputEQ = true;
         boolean continueInputET = true;
         boolean validEdit = true;
         boolean isDrink = false;
+
         char confirmEdit;
         int editQty = 0;
         char editSize;
@@ -891,6 +928,7 @@ public class DriverJQ {
 
             if (editOpt == 1) {
 
+                // Edit Qty
                 if (fnbList.get(fnbIndex).getStockQty() != 0) {
 
                     do {
@@ -940,6 +978,7 @@ public class DriverJQ {
 
             } else if (editOpt == 2) {
 
+                // Edit size
                 if (isDrink) {
                     tempDrink = (Drinks) fnbList.get(fnbIndex);
 
@@ -976,10 +1015,10 @@ public class DriverJQ {
 
             } else if (editOpt == 3) {
 
+                // Edit temperature
                 if (isDrink) {
                     tempDrink = (Drinks) fnbList.get(fnbIndex);
 
-                    // Select temperature
                     do {
 
                         System.out.println("\n============================");
@@ -1002,15 +1041,23 @@ public class DriverJQ {
                     } while (editTemp != 1 && editTemp != 2);
 
                     if (editTemp == 1) {
+
+                        // Set cold
                         tempDrink.setTemperature("Cold");
+
                     } else if (editTemp == 2) {
+
+                        // Set hot
+                        tempDrink.setIce(false);
                         tempDrink.setTemperature("Hot");
+
                     }
 
                 }
 
             } else if (editOpt == 4) {
 
+                // Edit Iced
                 if (isDrink) {
                     tempDrink = (Drinks) fnbList.get(fnbIndex);
 
