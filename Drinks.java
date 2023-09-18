@@ -51,6 +51,10 @@ public class Drinks extends FoodAndBeverage implements Serializable{
         return temperature;
     }
 
+    public boolean getIce(){
+        return ice;
+    }
+
     // DISPLAY METHOD
     public String displayToCust(){
         String iceStatus = ice ? "Yes" : "No";
