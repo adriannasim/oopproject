@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,9 +49,52 @@ public class Customer extends User{
     // public String toString() {
     //     return super.toString() + String.format("Contact: %s\nGender: %c", contactNo, gender);
     // }
-    
-    //create account
-    public static void createCustAccount() {
+
+    //customer menu
+    public void custMenu(){
+        
+    }
+
+    //writing all info into file
+    public static void writeCustInfo() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("custFile.txt"))) {
+            for (Customer cust : custDetails) {
+                writer.write(cust.getUsername() + "||" + cust.getPassword() + "||" + cust.getFullname(cust.getUsername()) + "||" + cust.getEmail(cust.getUsername()) + "||" + cust.contactNo + "||" + cust.gender);
+                writer.newLine();
+            }
+            System.out.println("Registration successful. Please login now.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //read file
+    public static void readCustInfo() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("custFile.txt"))) {
+            String info;
+            while ((info = reader.readLine()) != null) {
+                String[] parts = info.split("\\|\\|");
+                if (parts.length == 6) {
+                    String username = parts[0];
+                    String password = parts[1];
+                    String fullname = parts[2];
+                    String email = parts[3];
+                    String contactNo = parts[4];
+                    char gender = parts[5].charAt(0);
+                    
+                    //add details from file to arraylist
+                    Customer cust = new Customer(username, password, fullname, email, contactNo, gender);
+                    custDetails.add(cust);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //DRIVER customer
+    public void driverCustomer() {
+        //create account
         Scanner input = new Scanner(System.in); //scanner
         String regex = "^[a-zA-Z0-9 ]+$";  //regex with space
         String regex2 = "^[a-zA-Z0-9]+$";  //regex without space
@@ -132,23 +177,5 @@ public class Customer extends User{
 
         Customer cust = new Customer(inUsername, inPassword, inFullname, inEmail, inContact, inGender.charAt(0));
         writeCustInfo();
-    }
-
-    //customer menu
-    public static void custMenu() {
-        
-    }
-
-    //writing all info into file
-    public static void writeCustInfo() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("custFile.txt"))) {
-            for (Customer cust : custDetails) {
-                writer.write(cust.getUsername() + "||" + cust.getPassword() + "||" + cust.getFullname(cust.getUsername()) + "||" + cust.getEmail(cust.getUsername()) + "||" + cust.contactNo + "||" + cust.gender);
-                writer.newLine();
-            }
-            System.out.println("Registration successful. Please login now.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

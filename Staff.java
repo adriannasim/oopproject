@@ -1,7 +1,10 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.io.IOException;                           
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Staff extends User{
     private String staffId;
@@ -51,14 +54,9 @@ public class Staff extends User{
     // public String toString() {
     //     return super.toString() + String.format("Staff Id: %s\nStaff Type: %c\n", staffId, staffType);
     // }
-    
-    //create account
-    public static void createStaffAccount() {
-        
-    }
 
     //customer menu
-    public static void staffMenu() {
+    public void staffMenu() {
 
     }
 
@@ -73,5 +71,69 @@ public class Staff extends User{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //read file
+    public static void readStaffInfo() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("adminFile.txt"))) {
+            String info;
+            while ((info = reader.readLine()) != null) {
+                String[] parts = info.split("\\|\\|");
+                if (parts.length == 6) {
+                    String username = parts[0];
+                    String password = parts[1];
+                    String fullname = parts[2];
+                    String email = parts[3];
+                    String staffId = parts[4];     
+                    char staffType = parts[5].charAt(0);
+                    
+                    //add details from file to arraylist
+                    Staff staff = new Staff(username, password, fullname, email, staffType);
+                    staff.setStaffId(staffId);
+                    staffDetails.add(staff);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //STAFF driver
+    public void driverStaff() {
+        //variables declaration
+        boolean loop = true;
+
+        //methods declaration
+        Scanner input = new Scanner(System.in);
+        BackendStaff backend = new BackendStaff();
+        CounterStaff counter = new CounterStaff();
+
+        //choose staff type
+        do {
+            System.out.printf("=================================\n");
+            System.out.printf("%-8s%s\n"," ", "CREATE STAFF ACCOUNT");
+            System.out.printf("=================================\n");
+            System.out.printf("1. Create backend staff\n");
+            System.out.printf("2. Create counter staff\n");
+            System.out.printf("3. Exit\n");
+
+            if (input.hasNextInt()) {
+                int choice = input.nextInt();
+                switch(choice) {
+                    //create backend staff
+                    case 1:
+                        backend.createBackendStaff();
+                        break;
+                    //create counter staff
+                    case 2:
+                        counter.createCounterStaff();
+                        break;
+                    default:
+                    System.out.printf("Invalid input, please enter your choice again.\n"); 
+                }   
+            } else {
+                System.out.printf("Invalid input, please enter your choice again.\n");
+            }
+        } while (loop);
+        input.close();
     }
 }
