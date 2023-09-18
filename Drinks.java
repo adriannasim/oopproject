@@ -65,4 +65,17 @@ public class Drinks extends FoodAndBeverage implements Serializable{
                 "\nSize          : " + size;
     }
 
+    // CALCULATION METHOD
+    public double calculatePrice(){
+        double sizePrice;
+        if (size.equalsIgnoreCase("Medium")){
+            sizePrice = 1.2;
+        } else if (size.equalsIgnoreCase("Big")){
+            sizePrice = 2;
+        } else {
+            sizePrice = 0;
+        }
+        return (foodPrice + sizePrice) * purchaseQty;
+    }
+
 }

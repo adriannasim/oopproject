@@ -5,8 +5,16 @@ import java.time.LocalDate;
 public class DriverJQ {
     public static void makePurchase() throws Exception {
         Scanner scanner = new Scanner(System.in);
+        ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
+        ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
+        Purchase userPurchase = new Purchase();
+        PaymentType pType = new PaymentType();
+
         boolean continueInput = true;
+        boolean continueInputPT = true;
+
         int userOpt1 = 0;
+        int paymentTypeOpt = 0;
         char yesno1;
 
         do {
@@ -15,7 +23,7 @@ public class DriverJQ {
             // BUY TICKETS OR FOOD AND BEVERAGE
             // =================================================================================
             System.out.println("1. Tickets");
-            System.out.println("1. Food and Beverage");
+            System.out.println("2. Food and Beverage");
 
             do {
                 try {
@@ -31,14 +39,37 @@ public class DriverJQ {
 
             switch (userOpt1) {
                 case 1:
-                    System.out.println("buy ticket"); // return ticketList
+                    ticketList = buyTicket(ticketList);
                     break;
                 case 2:
-                    System.out.println("buy fnb"); // return fnbList
+                    fnbList = buyFnb(fnbList);
                     break;
                 default:
                     System.out.println("Invalid Input. ");
                     break;
+            }
+
+            System.out.println("================================");
+            System.out.println("            Tickets");
+            System.out.println("================================");
+            int z = 1;
+            for (Ticket tickets : ticketList) {
+                System.out.println(z + ".");
+                System.out.println(tickets);
+                z++;
+            }
+
+            System.out.println("================================");
+            System.out.println("        Food And Beverage");
+            System.out.println("================================");
+            int y = 1;
+            for (FoodAndBeverage fnbs : fnbList) {
+                System.out.println(y + ".");
+                System.out.println(fnbs.displayToCust());
+                System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
+                System.out.println("Total Amount      >> " + fnbs.calculatePrice());
+                System.out.println();
+                y++;
             }
 
             System.out.println("Confirm your purchase tickets and orders? (Y - YES, other - NO)");
@@ -49,7 +80,195 @@ public class DriverJQ {
         // =================================================================================
         // ADD INTO PURCHASE ARRAYLIST
         // =================================================================================
+        Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
+        userPurchase.purchaseTicket(tickets);
 
+        FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
+        userPurchase.purchaseFnb(fnbs);
+
+        // =================================================================================
+        // PROCEED TO PAYMENT
+        // =================================================================================
+        System.out.println("================================");
+        System.out.println("           Payment Type");
+        System.out.println("================================");
+        System.out.println("1. Online Banking");
+        System.out.println("2. E-wallet");
+        System.out.println("3. Debit / Credit Card");
+        do {
+
+            do {
+                try {
+                    System.out.print("Choose your payment type : ");
+                    paymentTypeOpt = scanner.nextInt();
+
+                    continueInputPT = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputPT);
+
+        } while (paymentTypeOpt != 1 && paymentTypeOpt != 1 && paymentTypeOpt != 1);
+
+        switch (paymentTypeOpt) {
+            case 1:
+                pType = addOnlinebanking(scanner);
+                break;
+            case 2:
+                pType = addEwallet(scanner);
+                break;
+            case 3:
+                pType = addCard(scanner);
+                break;
+            default:
+                System.out.println("Invalid Input");
+                break;
+        }
+
+        userPurchase.setPaymentType(pType);
+
+        System.out.println("Purchase successsfully. ");
+    }
+
+    public static OnlineBanking addOnlinebanking(Scanner scanner) {
+        OnlineBanking onlineBanking;
+
+        System.out.println("Enter bank : ");
+        String bank = scanner.next();
+
+        onlineBanking = new OnlineBanking(bank);
+
+        return onlineBanking;
+    }
+
+    public static EWallet addEwallet(Scanner scanner) {
+        EWallet eWallet;
+        boolean continueInput = true;
+        int telNo = 0;
+
+        System.out.println("Enter e-wallet used : ");
+        String eWalletType = scanner.next();
+
+        do {
+            try {
+                System.out.print("Enter phone number : ");
+                telNo = scanner.nextInt();
+
+                continueInput = false;
+            } catch (InputMismatchException ex) {
+                System.out.println("Incorrect Input. Please try agin. ");
+                scanner.nextLine();
+            }
+        } while (!continueInput);
+
+        eWallet = new EWallet(eWalletType, telNo);
+
+        return eWallet;
+    }
+
+    public static DebitCreditCard addCard(Scanner scanner) {
+        DebitCreditCard card;
+        boolean continueInputNo = true;
+        boolean continueInputCCV = true;
+        boolean continueInputD = true;
+        boolean continueInputM = true;
+        boolean continueInputY = true;
+        boolean validDate = true;
+
+        int cardNo = 0;
+        int ccv = 0;
+        LocalDate expiryDate;
+        LocalDate today = LocalDate.now();
+        int day = 0, month = 0, year = 0;
+        String cardHolder;
+
+        // Enter cardNo
+        do {
+            try {
+                System.out.print("Enter phone number : ");
+                cardNo = scanner.nextInt();
+
+                continueInputNo = false;
+            } catch (InputMismatchException ex) {
+                System.out.println("Incorrect Input. Please try agin. ");
+                scanner.nextLine();
+            }
+        } while (!continueInputNo);
+
+        // Enter expiry date
+        do {
+            System.out.println("Enter expiry date ");
+
+            // Enter year
+            do {
+                try {
+                    System.out.print("Year : ");
+                    year = scanner.nextInt();
+
+                    continueInputY = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputY);
+
+            // Enter month
+            do {
+                try {
+                    System.out.print("Month : ");
+                    month = scanner.nextInt();
+
+                    continueInputM = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputM);
+
+            // Enter day
+            do {
+                try {
+                    System.out.print("Day : ");
+                    day = scanner.nextInt();
+
+                    continueInputD = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputD);
+
+            expiryDate = LocalDate.of(year, month, day);
+
+            if (expiryDate.isBefore(today)) {
+                System.out.println("Invalid Date. Please enter again.");
+                validDate = false;
+            } else {
+                validDate = true;
+            }
+
+        } while (!validDate);
+
+        System.out.println("Enter card holder name : ");
+        cardHolder = scanner.nextLine();
+
+        // Enter ccv
+        do {
+            try {
+                System.out.print("Enter ccv : ");
+                ccv = scanner.nextInt();
+
+                continueInputCCV = false;
+            } catch (InputMismatchException ex) {
+                System.out.println("Incorrect Input. Please try agin. ");
+                scanner.nextLine();
+            }
+        } while (!continueInputCCV);
+
+        card = new DebitCreditCard(cardNo, expiryDate, cardHolder, ccv);
+
+        return card;
     }
 
     // ==============================================================================================================
@@ -58,9 +277,8 @@ public class DriverJQ {
     // buying, user may ask for modification.
     // Then, user may ask for confirmation and proceed to purchase fnb.
     // ==============================================================================================================
-    public static void main(String[] args) throws Exception {
+    public static ArrayList<Ticket> buyTicket(ArrayList<Ticket> ticketList) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
 
         // yesno1 - add more Ticket, yesno2 - make changes to added ticket
         char yesno1 = 'n', yesno2 = 'n';
@@ -132,6 +350,8 @@ public class DriverJQ {
             }
 
         } while (yesno2 == 'y' || yesno2 == 'Y');
+
+        return ticketList;
     }
 
     // -------------------------------------ADDTICKET----------------------------------------------------
@@ -160,7 +380,7 @@ public class DriverJQ {
         // ---------------------------------------DisplaySchedule--------------------------------------------------------
         for (int i = 0; i < scheduleList.size(); i++) {
             System.out.printf("%d.\n", i + 1);
-            System.out.println(scheduleList.get(i).toString());
+            System.out.println(scheduleList.get(i).displayToCust());
             System.out.println();
         }
         // --------------------------------------------------------------------------------------------------------------
@@ -189,7 +409,11 @@ public class DriverJQ {
 
         } while (!validSchedule);
 
-        ticketSchedule = scheduleList.get(scheduleNo - 1);
+        TrainStation depart = scheduleList.get(scheduleNo - 1).getDepartLocation();
+        TrainStation arrive = scheduleList.get(scheduleNo - 1).getArriveLocation();
+        double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
+        ticketSchedule = new Schedule(depart, arrive, price);
+
         // ---------------------------------------------------------------------------------------------------------------
 
         // ------------------------------------------EnterDate------------------------------------------------------------
@@ -263,6 +487,7 @@ public class DriverJQ {
         Scanner scanner = new Scanner(System.in);
 
         int dltTicket = 0;
+        char confirmDlt;
         boolean validDlt = true;
         int dltOption = 0;
 
@@ -320,14 +545,24 @@ public class DriverJQ {
 
             } while (!validDlt);
 
-            ticketList.remove(dltTicket - 1);
+            System.out.println("=================================");
+            System.out.println("             Ticket");
+            System.out.println("=================================");
+            System.out.println(ticketList.get(dltTicket - 1));
+            System.out.println("Are you sure to delete this ticket? (Y - YES, Other -  NO)   ");
+            confirmDlt = scanner.next().charAt(0);
+            confirmDlt = Character.toUpperCase(confirmDlt);
 
-            System.out.println("Delete successfully. ");
+            if (confirmDlt == 'Y') {
+                ticketList.remove(dltTicket - 1);
+                System.out.println("Delete successfully. ");
+            }
+
             // ---------------------------------------------------------------------------------------------------------------
 
         } else {
 
-            System.out.println("Delete cancelled. ");
+            System.out.println("Exit Deleting. ");
 
         }
 
@@ -338,6 +573,193 @@ public class DriverJQ {
     // User can select either schedule or date of the selected tickets to modify.
     // ----------------------------------------------------------------------------------------------------------
     public static ArrayList<Ticket> modifyTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList) {
+        Scanner scanner = new Scanner(System.in);
+        int editOpt = 0;
+        char confirmEdit;
+        char confirmSchedule;
+        char confirmDate;
+        int editTicket = 0;
+        int scheduleNo = 0;
+        int day = 0, month = 0, year = 0;
+
+        Schedule schedule;
+        LocalDate date;
+        LocalDate today = LocalDate.now();
+
+        boolean continueInputE = true;
+        boolean continueInputT = true;
+        boolean continueInputS = true;
+        boolean continueInputY = true;
+        boolean continueInputM = true;
+        boolean continueInputD = true;
+
+        boolean validEdit = true;
+        boolean validSchedule = true;
+        boolean validDate = true;
+
+        // -----------------------------------------SelectTicket--------------------------------------------------------
+        do {
+            do {
+                try {
+                    System.out.print("Select the ticket you would like to delete : ");
+                    editTicket = scanner.nextInt();
+
+                    continueInputT = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputT);
+
+            if (editTicket > ticketList.size()) {
+                System.out.println("Ticket not found. Please try again. ");
+                validEdit = false;
+            } else {
+                validEdit = true;
+            }
+
+        } while (!validEdit);
+        // --------------------------------------------------------------------------------------------------------------
+
+        // -----------------------------------------DisplayTicket--------------------------------------------------------
+        System.out.println("=================================");
+        System.out.println("             Ticket");
+        System.out.println("=================================");
+        System.out.println(ticketList.get(editTicket - 1));
+        // --------------------------------------------------------------------------------------------------------------
+
+        System.out.println("Are you sure to delete this ticket? (Y - YES, Other -  NO)   ");
+        confirmEdit = scanner.next().charAt(0);
+        confirmEdit = Character.toUpperCase(confirmEdit);
+
+        if (confirmEdit == 'Y') {
+            System.out.println("1. Schedule");
+            System.out.println("2. Date");
+            System.out.println("Other - Exit Editing");
+
+            do {
+                try {
+                    System.out.print("Enter your option : ");
+                    editOpt = scanner.nextInt();
+
+                    continueInputE = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputE);
+
+            if (editOpt == 1) {
+
+                // -----------------------------------------SelectSchedule--------------------------------------------------------
+                do {
+
+                    do {
+                        try {
+                            System.out.print("Select your schedule : ");
+                            scheduleNo = scanner.nextInt();
+
+                            continueInputS = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect input. Please try again. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputS);
+
+                    if (scheduleNo > scheduleList.size()) {
+                        System.out.println("Schedule not found. Please enter again.");
+                        validSchedule = false;
+                    } else {
+                        validSchedule = true;
+                    }
+
+                } while (!validSchedule);
+
+                TrainStation depart = scheduleList.get(scheduleNo - 1).getDepartLocation();
+                TrainStation arrive = scheduleList.get(scheduleNo - 1).getArriveLocation();
+                double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
+                schedule = new Schedule(depart, arrive, price);
+
+                // ---------------------------------------------------------------------------------------------------------------
+
+                System.out.print("Confirm your date (Y - YES, Other - NO) : ");
+                confirmSchedule = scanner.next().charAt(0);
+                confirmSchedule = Character.toUpperCase(confirmSchedule);
+
+                if (confirmSchedule == 'Y') {
+                    ticketList.get(editTicket - 1).setTicketSchedule(schedule);
+                    ;
+                }
+
+            } else if (editOpt == 2) {
+
+                // ------------------------------------------EnterDate------------------------------------------------------------
+                do {
+                    System.out.println("Enter your date ");
+
+                    // Enter year
+                    do {
+                        try {
+                            System.out.print("Year : ");
+                            year = scanner.nextInt();
+
+                            continueInputY = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect Input. Please try agin. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputY);
+
+                    // Enter month
+                    do {
+                        try {
+                            System.out.print("Month : ");
+                            month = scanner.nextInt();
+
+                            continueInputM = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect Input. Please try agin. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputM);
+
+                    // Enter day
+                    do {
+                        try {
+                            System.out.print("Day : ");
+                            day = scanner.nextInt();
+
+                            continueInputD = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect Input. Please try agin. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputD);
+
+                    date = LocalDate.of(year, month, day);
+
+                    if (date.isBefore(today)) {
+                        System.out.println("Invalid Date. Please enter again.");
+                        validDate = false;
+                    } else {
+                        validDate = true;
+                    }
+
+                } while (!validDate);
+                // ---------------------------------------------------------------------------------------------------------------
+
+                System.out.print("Confirm your date (Y - YES, Other - NO) : ");
+                confirmDate = scanner.next().charAt(0);
+                confirmDate = Character.toUpperCase(confirmDate);
+
+                if (confirmDate == 'Y') {
+                    ticketList.get(editTicket - 1).setTicketDate(date);
+                }
+
+            } else {
+                System.out.println("Exit Editing. ");
+            }
+        }
 
         return ticketList;
     }
@@ -345,7 +767,7 @@ public class DriverJQ {
     // ==============================================================================================================
     // BUY FNB
     // ==============================================================================================================
-    public static ArrayList<FoodAndBeverage> buyFnb() throws Exception {
+    public static ArrayList<FoodAndBeverage> buyFnb(ArrayList<FoodAndBeverage> fnbList) throws Exception {
 
         // --------------------------------------ScanFoodAndBeverageList----------------------------------------------
         ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
@@ -358,7 +780,6 @@ public class DriverJQ {
         // ------------------------------------------------------------------------------------------------------------
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
 
         boolean continueInput = true;
         boolean continueInputF = true;
@@ -402,19 +823,17 @@ public class DriverJQ {
 
                 // Display Added Snacks
                 System.out.println("\n============================");
-                System.out.println("       Snacks Orders");
+                System.out.println("            Orders");
                 System.out.println("============================");
                 int z = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
-                    if (fnbs instanceof Snacks) {
-                        System.out.println(z + ".");
-                        System.out.println(fnbs.displayToCust());
-                        System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
-                        System.out.println("Total Amount      >> " + fnbs.calculatePrice());
-                        subtotal += fnbs.calculatePrice();
-                        System.out.println();
-                        z++;
-                    }
+                    System.out.println(z + ".");
+                    System.out.println(fnbs.displayToCust());
+                    System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
+                    System.out.println("Total Amount      >> " + fnbs.calculatePrice());
+                    subtotal += fnbs.calculatePrice();
+                    System.out.println();
+                    z++;
                 }
                 // ----------------------------------------------------------------------------------------------------------
 
@@ -429,19 +848,17 @@ public class DriverJQ {
 
                 // Display Added Drinks
                 System.out.println("\n============================");
-                System.out.println("       Drinks Orders");
+                System.out.println("            Orders");
                 System.out.println("============================");
                 int y = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
-                    if (fnbs instanceof Drinks) {
-                        System.out.println(y + ".");
-                        System.out.println(fnbs.displayToCust());
-                        System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
-                        System.out.println("Total Amount      >> " + fnbs.calculatePrice());
-                        subtotal += fnbs.calculatePrice();
-                        System.out.println();
-                        y++;
-                    }
+                    System.out.println(y + ".");
+                    System.out.println(fnbs.displayToCust());
+                    System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
+                    System.out.println("Total Amount      >> " + fnbs.calculatePrice());
+                    subtotal += fnbs.calculatePrice();
+                    System.out.println();
+                    y++;
                 }
                 // ----------------------------------------------------------------------------------------------------------
 
@@ -1084,6 +1501,78 @@ public class DriverJQ {
         }
 
         return fnbList;
+
+    }
+
+    public static void editAccount() {
+        Customer cust = new Customer();
+        Scanner scanner = new Scanner(System.in);
+        int editOpt = 0;
+        boolean continueInput = true;
+
+        String regex = "^[a-zA-Z0-9 ]+$"; // regex with space
+        String regex2 = "^[a-zA-Z0-9]+$"; // regex without space
+        String regex3 = "^01[2-9]-\\\\d{7,8})$"; // regex for phone no.
+
+        String fullname, email, contactNo;
+        char gender;
+
+        System.out.println("1. Full Name");
+        System.out.println("2. Email");
+        System.out.println("3. Contact Number");
+        System.out.println("4. Gender");
+        System.out.println("Other - Exit");
+        do {
+            try {
+                System.out.print("Enter your option : ");
+                editOpt = scanner.nextInt();
+
+                continueInput = false;
+            } catch (InputMismatchException ex) {
+                System.out.println("Incorrect Input. Please try agin. ");
+                scanner.nextLine();
+            }
+        } while (continueInput);
+
+        if (editOpt == 1) {
+
+            do {
+                System.out.println("Enter  your full name (no special characters) >");
+                fullname = scanner.nextLine();
+            } while (!fullname.matches(regex));
+
+            cust.setFullname(fullname);
+
+        } else if (editOpt == 2) {
+
+            do {
+                System.out.printf("Enter your email (no spaces) > ");
+                email = scanner.next();
+            } while (!email.contains(" "));
+
+            cust.setEmail(email);
+
+        } else if (editOpt == 3) {
+            do {
+                System.out.println("Enter contact Number (eg. 012-3456789) > ");
+                contactNo = scanner.nextLine();
+            } while (!contactNo.matches(regex3));
+
+            cust.setContactNo(contactNo);
+
+        } else if (editOpt == 4) {
+
+            do {
+                System.out.println("Enter gender (F/M only) : ");
+                gender = scanner.next().charAt(0);
+                gender = Character.toUpperCase(gender);
+            } while (gender != 'f' && gender != 'M');
+
+            cust.setGender(gender);
+
+        } else {
+            System.out.println("Exit Editing");
+        }
 
     }
 

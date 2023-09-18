@@ -1,36 +1,37 @@
 import java.io.Serializable;
 
-public class Snacks extends FoodAndBeverage implements Serializable{
+public class Snacks extends FoodAndBeverage implements Serializable {
     private boolean partyPack;
 
-    //-----------------------------------CONSTRUCTOR---------------------------------------- 
+    // -----------------------------------CONSTRUCTOR----------------------------------------
     // NO-ARG CONSTRUCTOR
-    Snacks(){
- 
+    Snacks() {
+
     }
 
     // PARAMETERIZED CONSTRUCTOR
-    Snacks(boolean partyPack){
+    Snacks(boolean partyPack) {
 
     }
 
-    Snacks(String foodName, double foodPrice, int stockQty, boolean partyPack){
-        super(foodName,foodPrice,stockQty);
+    Snacks(String foodName, double foodPrice, int stockQty, boolean partyPack) {
+        super(foodName, foodPrice, stockQty);
         this.partyPack = partyPack;
     }
 
-    Snacks(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty, boolean partyPack){
+    Snacks(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty, boolean partyPack) {
         super(foodId, foodName, foodPrice, purchaseQty, stockQty);
-        this.partyPack =  partyPack;
+        this.partyPack = partyPack;
     }
-    //------------------------------------METHOD-----------------------------------------
+
+    // ------------------------------------METHOD-----------------------------------------
     // UPDATE METHOD
-    public void setPartyPack(boolean partyPack){
+    public void setPartyPack(boolean partyPack) {
         this.partyPack = partyPack;
     }
 
     // READ METHOD
-    public boolean getPartyPack(){
+    public boolean getPartyPack() {
         return partyPack;
     }
 
@@ -40,9 +41,14 @@ public class Snacks extends FoodAndBeverage implements Serializable{
         return super.toString() + "\nParty pack: " + partyPackStatus;
     }
 
-    public String displayToCust(){
+    public String displayToCust() {
         String partyPackStatus = partyPack ? "Yes" : "No";
         return super.displayToCust() +
                 "\nParty Pack    : " + partyPackStatus;
+    }
+
+    // CALCULATION METHOD
+    public double calculatePrice(){
+        return foodPrice * purchaseQty;
     }
 }
