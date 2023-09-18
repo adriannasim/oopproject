@@ -33,6 +33,13 @@ public class Schedule implements Serializable{
         this.ticketPrice = ticketPrice;
     }
 
+    public Schedule(TrainStation departLocation, TrainStation arriveLocation, double ticketPrice){
+        scheduleId = departLocation.getLocationName().substring(0,3) + "-" + arriveLocation.getLocationName().substring(0,3) + String.valueOf((int) (100000 + (Math.random() * (200000 - 100000 + 1))));
+        this.departLocation = departLocation;
+        this.arriveLocation = arriveLocation;
+        this.ticketPrice = ticketPrice;
+    }
+
     //------------------------------------METHOD-----------------------------------------
     // DELETE METHOD
     public void deleteSchedule(){
@@ -102,6 +109,21 @@ public class Schedule implements Serializable{
     // DISPLAY METHOD
     public String toString(){
         return "Schedule id: " + scheduleId + "\nDeparture location: " + departLocation.getLocationName() + "\nArrival location: " + arriveLocation.getLocationName() + "\nDeparture time: " + departTime + "\nArrival time: " + arriveTime + "\nTrain operated: " + trainOperated.getTrainNo() + trainOperated.getTrainName() + "\nTicket Price: RM" + ticketPrice;
+    }
+
+    public String displayToCust(){
+        return  "Schedule id           : " + scheduleId + 
+                "\nDeparture location    : " + departLocation.getLocationName() + 
+                "\nArrival location      : " + arriveLocation.getLocationName() + 
+                "\nDeparture time        : " + departTime + 
+                "\nArrival time          : " + arriveTime + 
+                "\nTicket Price          : RM" + ticketPrice;
+    }
+
+    public String displayInTicket(){
+        return  "Departure location    : " + departLocation.getLocationName() + 
+                "\nArrival location      : " + arriveLocation.getLocationName() + 
+                "\nTicket Price          : RM" + ticketPrice;
     }
 
 }

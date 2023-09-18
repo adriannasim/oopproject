@@ -35,6 +35,6 @@ public class Ticket{
     
     public String toString(){
     	return String.format("\nTicket ID : %s\nSchedule\n-------------------------------------\n%s \n-------------------------------------\nTicket Date : %s\n"
-            , ticketId, ticketSchedule, ticketDate);
+            , ticketId, ticketSchedule.displayInTicket(), ticketDate);
     }
 }

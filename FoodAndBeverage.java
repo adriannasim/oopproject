@@ -91,9 +91,7 @@ public abstract class FoodAndBeverage{
     }
 
     // CALCULATION METHOD
-    public double calculatePrice(){
-        return foodPrice * purchaseQty;
-    }
+    public abstract double calculatePrice();
 
     public boolean checkStockQty(int purchaseQty){
         if (purchaseQty > stockQty){
