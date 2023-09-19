@@ -1,4 +1,7 @@
 import java.io.Serializable;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Snacks extends FoodAndBeverage implements Serializable {
     private boolean partyPack;
@@ -48,7 +51,18 @@ public class Snacks extends FoodAndBeverage implements Serializable {
     }
 
     // CALCULATION METHOD
-    public double calculatePrice(){
+    public double calculatePrice() {
         return foodPrice * purchaseQty;
+    }
+
+    public void writePurchaseFnB(FoodAndBeverage fnb, Login login) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseFnb.txt", true))) {
+            writer.write(login.getUsername() + "||" + fnb.getClass() + "||"
+                    + fnb.getFoodName() + "||" + fnb.calculatePrice() + "||"
+                    + fnb.getPurchaseQty() + "||" + partyPack);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

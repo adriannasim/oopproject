@@ -11,8 +11,9 @@ public class DriverJunq {
     // buying, user may ask for modification.
     // Then, user may ask for confirmation and proceed to purchase fnb.
     // ==============================================================================================================
-    public static ArrayList<Ticket> buyTicket(ArrayList<Ticket> ticketList) throws Exception {
+    public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
+        ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
 
         // yesno1 - add more Ticket, yesno2 - make changes to added ticket
         char yesno1 = 'n', yesno2 = 'n';
@@ -22,15 +23,15 @@ public class DriverJunq {
         boolean continueInput = true;
 
         // ------------------------------------------ScanScheduleFromFile----------------------------------------------
-        // Schedule schedule = new Schedule();
-        ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
-        // DriverJh.readFromFile("scheduleFile.txt", scheduleList, schedule);
+        //Schedule schedule = new Schedule();
+        ArrayList<Schedule> scheduleList = DriverJh.scheduleList;
+        //DriverJh.readFromFile("scheduleFile.txt", scheduleList, schedule);
         // ------------------------------------------------------------------------------------------------------------
 
         // ------------------------------------------ScanStationFromFile----------------------------------------------
-        // TrainStation station = new TrainStation();
+        //TrainStation station = new TrainStation();
         ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
-        // DriverJh.readFromFile("stationFile.txt", stationList, station);
+        //DriverJh.readFromFile("stationFile.txt", stationList, station);
         // ------------------------------------------------------------------------------------------------------------
 
         // --------------------------------------------AddTicketsIntoArrayList-------------------------------------------
@@ -93,7 +94,7 @@ public class DriverJunq {
 
         } while (yesno2 == 'y' || yesno2 == 'Y');
 
-        return ticketList;
+        //return ticketList;
     }
 
     // -------------------------------------ADDTICKET----------------------------------------------------
@@ -305,8 +306,7 @@ public class DriverJunq {
     // -------------------------------------------DELETETICKET-----------------------------------------------------------
     // User can delete all the added tickets or select a particular ticket to delete
     // ------------------------------------------------------------------------------------------------------------------
-    public static ArrayList<Ticket> dltTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList,
-            Scanner scanner)
+    public static ArrayList<Ticket> dltTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList, Scanner scanner)
             throws Exception {
 
         int dltTicket = 0;
@@ -395,8 +395,7 @@ public class DriverJunq {
     // ----------------------------------------------MODIFYTICKET------------------------------------------------
     // User can select either schedule or date of the selected tickets to modify.
     // ----------------------------------------------------------------------------------------------------------
-    public static ArrayList<Ticket> modifyTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList,
-            Scanner scanner) {
+    public static ArrayList<Ticket> modifyTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList, Scanner scanner) {
         int editOpt = 0;
         char confirmEdit;
         char confirmSchedule;
@@ -479,68 +478,24 @@ public class DriverJunq {
 
                     do {
                         try {
-                            System.out.print("Select your arrive station : ");
-                            arriveNo = scanner.nextInt();
+                            System.out.print("Select your schedule : ");
+                            scheduleNo = scanner.nextInt();
 
-                            continueInputAS = false;
+                            continueInputS = false;
                         } catch (InputMismatchException ex) {
                             System.out.println("Incorrect input. Please try again. ");
                             scanner.nextLine();
                         }
-                    } while (continueInputAS);
+                    } while (continueInputS);
 
-                    if (arriveNo > stationList.size()) {
-                        System.out.println("Station not found. Please enter again.");
-                        validArrive = false;
+                    if (scheduleNo > scheduleList.size()) {
+                        System.out.println("Schedule not found. Please enter again.");
+                        validSchedule = false;
                     } else {
-                        validArrive = true;
-                    }
-
-                } while (!validArrive);
-
-                arrive = stationList.get(arriveNo - 1).getLocationName();
-
-                for (Schedule schedules : scheduleList) {
-                    if (depart.equalsIgnoreCase(schedules.getDepartLocation().getLocationName())
-                            && arrive.equalsIgnoreCase(schedules.getArriveLocation().getLocationName())) {
                         validSchedule = true;
                     }
-                }
 
-                if (validSchedule) {
-
-                    // Schedule found
-                    // ---------------------------------------DisplaySchedule--------------------------------------------------------
-                    for (int i = 0; i < scheduleList.size(); i++) {
-                        if (depart.equalsIgnoreCase(scheduleList.get(i).getDepartLocation().getLocationName())
-                                && arrive.equalsIgnoreCase(scheduleList.get(i).getArriveLocation().getLocationName())) {
-                            System.out.printf("%d.\n", i + 1);
-                            System.out.println(scheduleList.get(i).displayToCust());
-                            System.out.println();
-                        }
-
-                    }
-                    // --------------------------------------------------------------------------------------------------------------
-
-                    System.out.println("Depart From : " + depart);
-                    System.out.println("Arrive At : " + arrive);
-                    System.out.println("Confirm? (Y- YES, N - NO) > ");
-                    confirmSchedule = scanner.next().charAt(0);
-                    confirmSchedule = Character.toUpperCase(confirmSchedule);
-
-                    if (confirmSchedule == 'Y') {
-
-                        departStation = stationList.get(departNo - 1);
-                        arriveStation = stationList.get(arriveNo - 1);
-                        double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
-
-                        ticketSchedule = new Schedule(departStation, arriveStation, price);
-
-                    }
-
-                } else {
-                    System.out.println("Schedule not found.");
-                }
+                } while (!validSchedule);
 
                 TrainStation depart = scheduleList.get(scheduleNo - 1).getDepartLocation();
                 TrainStation arrive = scheduleList.get(scheduleNo - 1).getArriveLocation();
