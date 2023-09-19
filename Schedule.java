@@ -145,15 +145,14 @@ public class Schedule implements Serializable{
     }
 
 
-    //===========================================================================================================
-    //                                      SCHEDULE INFORMATION MODIFICATION
-    //===========================================================================================================
-
+    
+    // GET SCHEDULE LIST
     public ArrayList<Schedule> getScheduleList() throws Exception{
-        ArrayList<Schedule> scheduleList = readFromFile("scheduleFile.txt");
+        ArrayList<Schedule> scheduleList = readFromFile("scheduleFile.dat");
         return scheduleList;
     }
     
+    // WRITE INTO FILE
     public static boolean writeIntoFile(String filename, ArrayList<Schedule> scheduleList) {
         boolean write = false;
         File file = new File(filename);
@@ -166,23 +165,25 @@ public class Schedule implements Serializable{
             }
             write = true; // Set write to true if writing is successful
         } catch (IOException e) { // Handle any IOException that might occur during writing 
-            e.printStackTrace();
+            //e.printStackTrace();
         } finally {
             try {
                 if (oos != null) {
                     oos.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         return write;
     }
 
+    // READ FROM FILE
     public static ArrayList<Schedule> readFromFile(String filename) throws Exception {
         File file = new File(filename);
-        ObjectInputStream input = null; // Declare outside the try block
+        ObjectInputStream input = null;
         ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+    
         try {
             input = new ObjectInputStream(new FileInputStream(file));
             while (true) {
@@ -190,25 +191,38 @@ public class Schedule implements Serializable{
                     Schedule obj = (Schedule) input.readObject();
                     scheduleList.add(obj);
                 } catch (EOFException eofe) {
+                    // This exception is expected when the end of the file is reached.
+                    // You can break out of the loop here.
                     break;
                 } catch (IOException ioe) {
-                    //ioe.printStackTrace();
+                    ioe.printStackTrace();
+                    // Add additional logging and handle the exception if needed.
+                } catch (ClassNotFoundException cnfe) {
+                    cnfe.printStackTrace();
+                    // Add additional logging and handle the exception if needed.
                 }
             }
         } catch (IOException ioe) {
-            //ioe.printStackTrace();
+            ioe.printStackTrace();
+            // Handle other IOExceptions if necessary
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (input != null) {
                     input.close();
                 }
             } catch (IOException ioe) {
-                //ioe.printStackTrace();
+                ioe.printStackTrace();
             }
-        }    
-        return scheduleList; 
+        }
+    
+        return scheduleList;
     }
-
+    
+    //===========================================================================================================
+    //                                      SCHEDULE INFORMATION MODIFICATION
+    //===========================================================================================================
     public void scheduleModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
@@ -376,8 +390,7 @@ public class Schedule implements Serializable{
                         noPlatform = true;
                         System.out.println("\nTHE DEPARTURE STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
                     }
-                
-                    
+                   
                     } else {
                         correctTime = false;
                         System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
@@ -492,7 +505,7 @@ public class Schedule implements Serializable{
             if(userInput.equalsIgnoreCase("Y")){
                 Schedule s = new Schedule(departLocation, arriveLocation, departTime, arriveTime, trainOperated, ticketPrice);
                 scheduleList.add(s);
-                added = writeIntoFile("scheduleFile.txt", scheduleList);
+                added = writeIntoFile("scheduleFile.dat", scheduleList);
 
                 if (added){
                     System.out.println("\nSCHEDULE HAS ADDED.\n");
@@ -659,7 +672,7 @@ public class Schedule implements Serializable{
 
         if(confirm.equalsIgnoreCase("Y")){
             scheduleList.get(index).editDepartTime(departTime);
-            updated = writeIntoFile("scheduleFile.txt", scheduleList);
+            updated = writeIntoFile("scheduleFile.dat", scheduleList);
             if(updated){
                 System.out.println("SCHEDULE DEPARTURE TIME HAS UPDATED.");
             }else{
@@ -669,6 +682,8 @@ public class Schedule implements Serializable{
             System.out.println("\nMODIFICATION CANCELLED.\n");
         }
     }
+
+    //----------------------------------CHECK AVAILABILITY OF PLATFORM-------------------------------------------
 
     public int checkPlatformUsage(LocalTime time, int index) throws Exception {
         int usePlatformCount = 1;
@@ -871,7 +886,7 @@ public class Schedule implements Serializable{
 
         if(confirm.equalsIgnoreCase("Y")){
             scheduleList.get(index).editTicketPrice(ticketPrice);
-            updated = writeIntoFile("scheduleFile.txt", scheduleList);
+            updated = writeIntoFile("scheduleFile.dat", scheduleList);
 
             if(updated){
                 System.out.println("TICKET PRICE FOR THE SCHEDULE HAS UPDATED.");
@@ -923,7 +938,7 @@ public class Schedule implements Serializable{
 
                     if(userInput2.equalsIgnoreCase("Y")){
                         scheduleList.remove(index); // Remove the train from the list
-                        deleted = writeIntoFile("scheduleFile.txt",scheduleList);
+                        deleted = writeIntoFile("scheduleFile.dat",scheduleList);
 
                         if (deleted) {
                              System.out.println("SCHEDULE HAS REMOVED.");

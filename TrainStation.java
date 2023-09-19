@@ -20,6 +20,7 @@ public class TrainStation implements Serializable{
          locationName = "Undefined";
          numOfPlatform = 0;
       }
+
       // PARAMETERIZED CONSTRUCTOR
       TrainStation(String locationId, String locationName, int numOfPlatform){
          this.locationId = locationId;
@@ -35,14 +36,7 @@ public class TrainStation implements Serializable{
  
       //------------------------------------METHOD----------------------------------------- 
 
-      // DELETE METHOD
-      public void deleteStation(){
-         locationId = null;
-         locationName = null;
-         numOfPlatform = 0;
-      }
-
-      // READ METHOD
+      // GETTER
       public String getLocationId(){
          return locationId;
       }
@@ -56,7 +50,7 @@ public class TrainStation implements Serializable{
       }
 
 
-      // UPDATE METHOD
+      // SETTER
       public void changeLocationName(String locationName){
          this.locationName = locationName;
      }
@@ -65,16 +59,18 @@ public class TrainStation implements Serializable{
          this.numOfPlatform = numOfPlatform;
       }
 
-      // DISPLAY METHOD
+      // TO STRING
       public String toString(){
          return "Location Id : " + locationId + "\nLocation Name : " + locationName + "\nNumber of platform :" + numOfPlatform + "\n";
       }
 
+      // GET STATION LIST
       public ArrayList<TrainStation> getStationList() throws Exception{
          ArrayList<TrainStation> stationList = readFromFile("stationFile.txt");
          return stationList;
      }
 
+      // WRITE INTO FILE
       public static boolean writeIntoFile(String filename, ArrayList<TrainStation> stationList) throws Exception{
          boolean write = false;
 
@@ -93,6 +89,8 @@ public class TrainStation implements Serializable{
         }
         return write;
     }
+
+    // READ FROM FILE
     public static ArrayList<TrainStation> readFromFile(String filename) throws Exception {
         File file = new File(filename);
         ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
@@ -111,6 +109,7 @@ public class TrainStation implements Serializable{
         return stationList;   
     }
 
+    // TRAIN STATION MODIFICATION (DRIVER)
     public void stationModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
@@ -148,6 +147,7 @@ public class TrainStation implements Serializable{
         }
     }
 
+    // ----------------------------------------------VIEW STATION----------------------------------------------
     public void viewStation() throws Exception{
         ArrayList<TrainStation> stationList = getStationList();
         if (stationList.size()==0){
@@ -159,8 +159,8 @@ public class TrainStation implements Serializable{
 
     }
 
-    //--------------------------------------------ADD TRAIN STATION---------------------------------------------- 
-
+    
+    // ----------------------------------------------ADD STATION----------------------------------------------
     public void addStation(Scanner scanner) throws Exception {
       String locationName;
       int numOfPlatform; 
@@ -203,12 +203,10 @@ public class TrainStation implements Serializable{
           }
       }else{
           System.out.println("\nMODIFICATION.\n");
-      }    
-      
+      }       
   }
-
-  //-------------------------------------------UPDATE TRAIN STATION--------------------------------------------
-
+  
+  // ----------------------------------------------UPDATE STATION----------------------------------------------
   public void updateStationInfo(Scanner scanner) throws Exception{
    String userInput;
    String userInput2;
@@ -223,7 +221,6 @@ public class TrainStation implements Serializable{
    Schedule obj = new Schedule();
    ArrayList<TrainStation> stationList = getStationList();
    ArrayList<Schedule> scheduleList = obj.getScheduleList();
-
 
    System.out.println("==================================================");
    System.out.println("         Update Train station Information");
@@ -290,7 +287,7 @@ public class TrainStation implements Serializable{
                                }
                                stationList.get(index).changeLocationName(locationName);
                                updated = writeIntoFile("stationFile.txt", stationList);
-                               updated2 = Schedule.writeIntoFile("scheduleFile.txt", scheduleList);
+                               updated2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
                                if(updated && updated2){
                                    System.out.println("\nTHE STATION HAS UPDATED.\n");
                                }else{
@@ -315,7 +312,7 @@ public class TrainStation implements Serializable{
                                }
                                stationList.get(index).changeNumOfPlatform(numOfPlatform);
                                updated = writeIntoFile("stationfile.txt", stationList);
-                               updated2 = Schedule.writeIntoFile("scheduleFile.txt", scheduleList);
+                               updated2 = Schedule.writeIntoFile("\"scheduleFile.dat\"", scheduleList);
                                if(updated && updated2){
                                    System.out.println("\nTHE STATION HAS UPDATED.\n");
                                }else{
@@ -349,8 +346,7 @@ public class TrainStation implements Serializable{
    } while (!found);
 }
 
-//-------------------------------------------DELETE TRAIN STATION--------------------------------------------
-
+// ----------------------------------------------DELETE STATIONS----------------------------------------------
 public void deleteStation(Scanner scanner) throws Exception {
    boolean found = false;
    boolean deleted = false;
@@ -407,7 +403,6 @@ public void deleteStation(Scanner scanner) throws Exception {
                    }
                }
            
-               
                System.out.print("Do you confirm to delete the station (Y-Yes/N-No)? ");
                userInput = BackendStaff.validateYNInput(scanner,"Do you confirm to delete the station (Y-Yes/N-No) ?");
                if(userInput.equalsIgnoreCase("Y")){
@@ -419,7 +414,7 @@ public void deleteStation(Scanner scanner) throws Exception {
                    }
                    stationList.remove(index); 
                    deleted = writeIntoFile("stationFile.txt", stationList);
-                   deleted2 = Schedule.writeIntoFile("scheduleFile.txt", scheduleList);
+                   deleted2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
                        
                    if (deleted && deleted2){
                        System.out.println("TRAIN HAS DELETED.");
@@ -438,8 +433,6 @@ public void deleteStation(Scanner scanner) throws Exception {
        }        
    } while (!found);
 }
-
-
 
      
 }

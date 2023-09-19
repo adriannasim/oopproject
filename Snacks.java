@@ -39,17 +39,17 @@ public class Snacks extends FoodAndBeverage implements Serializable {
     }
 
     // ------------------------------------METHOD-----------------------------------------
-    // UPDATE METHOD
+    // SETTER
     public void setPartyPack(boolean partyPack) {
         this.partyPack = partyPack;
     }
 
-    // READ METHOD
+    // GETTER
     public boolean getPartyPack() {
         return partyPack;
     }
 
-    // DISPLAY METHOD
+    // TO STRING
     public String toString() {
         String partyPackStatus = partyPack ? "true" : "false";
         return super.toString() + "\nParty pack: " + partyPackStatus;
@@ -66,6 +66,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         return foodPrice * purchaseQty;
     }
 
+    // WRITE PURCHASE INTO FILE
     public void writePurchaseFnB(FoodAndBeverage fnb, String username) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseSnack.txt", true))) {
             writer.write(username + "||" +
@@ -78,6 +79,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
+    // READ FROM FILE
     public static ArrayList<Snacks> readFromFile(String filename) throws Exception {
         File file = new File(filename);
         ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
@@ -87,14 +89,10 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 while (inputFile.hasNext()) {
                     String foodId = inputFile.nextLine();
                     String foodName = inputFile.nextLine();
-                    double foodPrice = inputFile.nextDouble();
-                    inputFile.nextLine();
-                    int purchaseQty = inputFile.nextInt();
-                    inputFile.nextLine();
-                    int stockQty = inputFile.nextInt();
-                    inputFile.nextLine();
-                    boolean partyPack = inputFile.nextBoolean();
-                    inputFile.nextLine();
+                    double foodPrice = Double.parseDouble(inputFile.nextLine());
+                    int purchaseQty = Integer.parseInt(inputFile.nextLine());
+                    int stockQty = Integer.parseInt(inputFile.nextLine());
+                    boolean partyPack = Boolean.parseBoolean(inputFile.nextLine());
                     snacksList.add(new Snacks(foodId, foodName, foodPrice, purchaseQty, stockQty, partyPack));
                 }
             }
@@ -102,11 +100,13 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         return snacksList;
     }
 
+    // WRITE INTO FILE
     public static boolean writeIntoFile(String filename, ArrayList<Snacks> snacksList) throws FileNotFoundException {
         boolean write = false;
+        FileWriter fwrite = null;
 
         try {
-            FileWriter fwrite = new FileWriter(filename, false);
+            fwrite = new FileWriter(filename, false);
             try (Writer output = new BufferedWriter(fwrite)) {
                 for (int i = 0; i < snacksList.size(); i++) {
                     output.write(snacksList.get(i).getFoodId() + "\n");
@@ -120,15 +120,26 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             }
         } catch (IOException e) {
             System.err.println("\nERROR WRITING TO THE FILE.\n");
+        }finally {
+            if (fwrite != null) {
+                try {
+                    fwrite.close();
+                } catch (IOException e) {
+                    
+                }
+            }
         }
         return write;
     }
 
+    // GET SNACKS LIST
     public ArrayList<Snacks> getSnacksList() throws Exception {
-        ArrayList<Snacks> snacksList = readFromFile("snacksFile.txt");
+        ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
+        snacksList = readFromFile("snacksFile.txt");
         return snacksList;
     }
 
+    // SNACKS MODIFICATION (DRIVER)
     public void snacksModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
@@ -172,8 +183,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
-    // -----------------------------------------ADD SNACKS
-    // INFORMATION--------------------------------------------
+    // ----------------------------------------------VIEW SNACKS----------------------------------------------
     public void viewSnacks() throws Exception {
         ArrayList<Snacks> snacksList = getSnacksList();
         if (snacksList.size() == 0) {
@@ -185,9 +195,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // -----------------------------------------ADD SNACKS
-    // INFORMATION--------------------------------------------
-
+    // ----------------------------------------------ADD SNACKS----------------------------------------------
     public void addSnacks(Scanner scanner) throws Exception {
         String foodName;
         double foodPrice;
@@ -239,9 +247,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------UPDATE
-    // SNACKS------------------------------------------------
-
+    // ----------------------------------------------UPDATE SNACKS----------------------------------------------
     public void updateSnacks(Scanner scanner) throws Exception {
         String foodId;
         String foodName;
@@ -413,9 +419,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------DELETE
-    // SNACKS------------------------------------------------
-
+    // ----------------------------------------------DELETE SNACKS----------------------------------------------
     public void deleteSnacks(Scanner scanner) throws Exception {
         boolean found = false;
         String userInput;

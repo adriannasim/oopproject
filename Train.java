@@ -40,14 +40,7 @@ public class Train implements Serializable{
 
     //------------------------------------METHOD-----------------------------------------
 
-    // DELETE METHOD
-    public void deleteTrain(){
-        trainNo = 0;
-        trainName = null;
-        trainModel = null;
-    }
-
-    // READ METHOD
+    // GETTER
     public int getTrainNo(){
         return trainNo;
     }
@@ -60,19 +53,14 @@ public class Train implements Serializable{
         return trainModel;
     }
 
-    // UPDATE METHOD
+    // SETTER
     public void changeTrainName(String trainName){
         this.trainName = trainName;
     }
 
-    // DISPLAY METHOD
+    // TOSTRING
     public String toString(){
            return "Train No: " + trainNo + "\nTrain Name: " + trainName + "\nTrain Model: " + trainModel + "\n";
-    }
-
-    public ArrayList<Train> getTrainList() throws FileNotFoundException{
-        ArrayList<Train> trainList = readFromFile("trainFile.txt");
-        return trainList;
     }
 
     // READ FROM FILE
@@ -94,6 +82,12 @@ public class Train implements Serializable{
         return trainList;
    }
 
+    // GET TRAIN LIST
+    public ArrayList<Train> getTrainList() throws FileNotFoundException{
+        ArrayList<Train> trainList = readFromFile("trainFile.txt");
+        return trainList;
+    }
+
     // WRITE INTO FILE
     public static boolean writeIntoFile(String filename, ArrayList<Train> trainList)  throws FileNotFoundException {
         boolean write = false;
@@ -114,6 +108,7 @@ public class Train implements Serializable{
         return write;
     }
 
+    // TRAIN MODIFICATION (DRIVER)
     public void trainModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
@@ -150,6 +145,7 @@ public class Train implements Serializable{
         }
     }
 
+    // ----------------------------------------------VIEW TRAINS----------------------------------------------
     public void viewTrain() throws Exception{
         ArrayList<Train> trainList = getTrainList();
         if (trainList.size()==0){
@@ -161,13 +157,13 @@ public class Train implements Serializable{
 
     }
 
+    // ----------------------------------------------ADD TRAIN----------------------------------------------
     public void addTrain(Scanner scanner) throws FileNotFoundException {
         String trainName;
         String trainModel; 
         String userInput;
         boolean added = false;
         ArrayList<Train> trainList = getTrainList();
-
 
         System.out.println("==================================================");
         System.out.println("              Add Train Information");
@@ -196,9 +192,7 @@ public class Train implements Serializable{
         
     }
 
-
-    //----------------------------------------------UPDATE TRAIN-------------------------------------------------
-
+    // ----------------------------------------------UPDATE TRAIN----------------------------------------------
     public static void updateTrainInfo(Scanner scanner) throws Exception {
         String userInput;
         String userInput2;
@@ -213,7 +207,6 @@ public class Train implements Serializable{
         Schedule obj2 = new Schedule();
         ArrayList<Train> trainList = obj.getTrainList();
         ArrayList<Schedule> scheduleList = obj2.getScheduleList();
-
 
         System.out.println("==================================================");
         System.out.println("              Update Train Information");
@@ -263,7 +256,7 @@ public class Train implements Serializable{
                                     }
                                     trainList.get(index).changeTrainName(trainName);
                                     updated = writeIntoFile("trainfile.txt", trainList);
-                                    updated2 = Schedule.writeIntoFile("scheduleFile.txt", scheduleList);
+                                    updated2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
                                     if (updated && updated2){
                                         System.out.println("\nTRAIN INFORMATION HAS UPDATED.\n");
                                     }else{
@@ -297,8 +290,7 @@ public class Train implements Serializable{
         } while (!found);      
     }
 
-    //----------------------------------------------DELETE TRAIN-------------------------------------------------
-
+    // ----------------------------------------------DELETE TRAIN----------------------------------------------
     public static void deleteTrain(Scanner scanner) throws Exception {
         int trainNo;
         boolean found = false;
@@ -380,8 +372,7 @@ public class Train implements Serializable{
                     } else {
                         System.out.println("\nMODIFICATION CANCELLED.\n");
                     }
-                               
-                                
+                                                     
                 } else {
                     found = false;
                 }
@@ -389,13 +380,8 @@ public class Train implements Serializable{
             } else {
                 System.out.println("\nTRAIN NOT FOUND. PLEASE SEARCH AGAIN.\n");
             }
-    
            
         } while (!found);
     }
-   
-    
-
-
 
 }

@@ -42,7 +42,7 @@ public abstract class FoodAndBeverage {
     }
 
     // ------------------------------------METHOD-----------------------------------------
-    // READ METHOD
+    // GETTER
     public String getFoodId() {
         return foodId;
     }
@@ -63,7 +63,7 @@ public abstract class FoodAndBeverage {
         return purchaseQty;
     }
 
-    // UPDATE METHOD
+    // SETTER
     public void editFoodName(String foodName) {
         this.foodName = foodName;
     }
