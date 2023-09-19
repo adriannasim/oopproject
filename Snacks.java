@@ -132,7 +132,6 @@ public class Snacks extends FoodAndBeverage implements Serializable {
     public void snacksModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
-        ArrayList<Snacks> snacksList = getSnacksList();
 
         while (cont) {
             System.out.println("==================================================");
@@ -150,9 +149,13 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 userInput = scanner.nextLine();
 
                 if (userInput.equals("1")) {
+<<<<<<< HEAD
                     for (int i = 0; i < snacksList.size(); i++) {
                         System.out.println(snacksList.get(i).toString());
                     }
+=======
+                    viewSnacks();
+>>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
                 } else if (userInput.equals("2")) {
                     updateSnacks(scanner);
                 } else if (userInput.equals("3")) {
@@ -170,8 +173,23 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
+<<<<<<< HEAD
     // -----------------------------------------ADD SNACKS
     // INFORMATION--------------------------------------------
+=======
+    public void viewSnacks() throws Exception{
+        ArrayList<Snacks> snacksList = getSnacksList();
+        if (snacksList.size()==0){
+            System.out.println("\nNO SNACKS IN THE RECORD.\n");
+        }
+        for (int i=0; i< snacksList.size(); i++){
+            System.out.println(snacksList.get(i).toString() + "\n");
+        }
+
+    }
+
+    //-----------------------------------------ADD SNACKS INFORMATION-------------------------------------------- 
+>>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
 
     public void addSnacks(Scanner scanner) throws Exception {
         String foodName;
@@ -213,7 +231,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             added = writeIntoFile("snacksFile.txt", snacksList);
 
             if (added) {
-                System.out.println("Snacks has been added.");
+                System.out.println("SNACKS HAS ADDED");
             } else {
                 System.out.println("\nFAILED TO ADD SNACKS\n");
             }
@@ -284,9 +302,15 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                             if (confirm.equalsIgnoreCase("Y")) {
                                 snacksList.get(index).editFoodName(foodName);
                                 updated = writeIntoFile("snacksFile.txt", snacksList);
+<<<<<<< HEAD
                                 if (updated) {
                                     System.out.println("Food name has updated.");
                                 } else {
+=======
+                                if(updated){
+                                    System.out.println("SNACKS NAME HAS UPDATED");
+                                }else{
+>>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
                                     System.out.println("\nFAILED TO UPDATE FOOD MENU.\n");
                                 }
                             } else {
@@ -301,9 +325,15 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                             if (confirm.equalsIgnoreCase("Y")) {
                                 snacksList.get(index).editFoodPrice(foodPrice);
                                 updated = writeIntoFile("snacksFile.txt", snacksList);
+<<<<<<< HEAD
                                 if (updated) {
                                     System.out.println("Food price has updated.");
                                 } else {
+=======
+                                if(updated){
+                                    System.out.println("SNACKS PRICE HAS UPDATED.");
+                                }else{
+>>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
                                     System.out.println("\nFAILED TO UPDATE SNACKS PRICE\n");
                                 }
                             } else {
@@ -343,9 +373,15 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                             if (confirm.equalsIgnoreCase("Y")) {
                                 boolean success = snacksList.get(index).editStockQty(sign, stockQty);
                                 updated = writeIntoFile("snacksFile.txt", snacksList);
+<<<<<<< HEAD
                                 if (updated && success) {
                                     System.out.println("Food stock qty has updated.");
                                 } else {
+=======
+                                if(updated && success){
+                                    System.out.println("SNACKS STOCK QTY HAS UPDATED");
+                                }else{
+>>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
                                     System.out.println("\nFAILED TO UPDATE SNACKS STOCK QTY.\n");
                                 }
                             } else {
@@ -365,9 +401,15 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                                     snacksList.get(index).setPartyPack(false);
                                 }
                                 updated = writeIntoFile("snacksFile.txt", snacksList);
+<<<<<<< HEAD
                                 if (updated) {
                                     System.out.println("Party pack setting has updated.");
                                 } else {
+=======
+                                if(updated){
+                                    System.out.println("PARTY PACK SETTING HAS UPDATED.");
+                                }else{
+>>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
                                     System.out.println("\nFAILED TO UPDATE PARTY PACK SETTING.\n");
                                 }
                             } else {
@@ -427,6 +469,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             }
             if (found == true) {
                 System.out.println("Do you want to delete the snacks information as shown below? ");
+                System.out.println();
                 System.out.println(snacksList.get(index).toString());
                 System.out.print("Enter your option (Y-Yes/N-No)> ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");
@@ -440,9 +483,15 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                         deleted = writeIntoFile("snacksFile.txt", snacksList);
 
                         if (deleted) {
+<<<<<<< HEAD
                             System.out.println("Snacks has been removed.");
                         } else {
                             System.out.println("\nFAILED TO REMOVE THE SNACKS.\n");
+=======
+                             System.out.println("SNACKS HAS REMOVED.");
+                        }else{
+                             System.out.println("\nFAILED TO REMOVE THE SNACKS.\n");
+>>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
 
                         }
 
@@ -452,10 +501,17 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 } else {
                     found = false;
                 }
+<<<<<<< HEAD
 
             } else {
                 System.out.println("The snacks is not found. Please search again.");
             }
+=======
+            
+            }else{
+                System.out.println("\nSNACKS NOT FOUND. PLEASE SEARCH AGAIN.");
+            } 
+>>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
         } while (!found);
 
     }

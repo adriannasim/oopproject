@@ -183,7 +183,6 @@ public class Schedule implements Serializable{
         File file = new File(filename);
         ObjectInputStream input = null; // Declare outside the try block
         ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
-    
         try {
             input = new ObjectInputStream(new FileInputStream(file));
             while (true) {
@@ -206,14 +205,13 @@ public class Schedule implements Serializable{
             } catch (IOException ioe) {
                 //ioe.printStackTrace();
             }
-        }  
-        return scheduleList;   
+        }    
+        return scheduleList; 
     }
 
     public void scheduleModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
-        ArrayList<Schedule> scheduleList = getScheduleList();
     
         while (cont) {
             System.out.println("==================================================");
@@ -231,10 +229,7 @@ public class Schedule implements Serializable{
                 userInput = scanner.nextLine();
                
                 if (userInput.equals("1")) {
-                    for (int i = 0; i < scheduleList.size(); i++) {
-                        System.out.println(scheduleList.get(i).toString());
-                        System.out.println();
-                    }
+                    viewSchedule();
                 } else if (userInput.equals("2")) {
                     updateScheduleInfo(scanner);
                 } else if (userInput.equals("3")) {
@@ -249,6 +244,17 @@ public class Schedule implements Serializable{
     
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
         }
+    }
+
+    public void viewSchedule() throws Exception{
+        ArrayList<Schedule> scheduleList = getScheduleList();
+        if (scheduleList.size()==0){
+            System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
+        }
+        for (int i=0; i< scheduleList.size(); i++){
+            System.out.println(scheduleList.get(i).toString() + "\n");
+        }
+
     }
 
     //-----------------------------------------------ADD SCHEDULE------------------------------------------------ 
@@ -268,6 +274,7 @@ public class Schedule implements Serializable{
         boolean correctTime = false;
         boolean incompatible;
         boolean noPlatform;
+        boolean cont = true;
         int usePlatformCount;
         Train obj1 = new Train();
         TrainStation obj2 = new TrainStation();
@@ -296,199 +303,213 @@ public class Schedule implements Serializable{
             System.out.println("==================================================");
 
         }
-        System.out.println("Select a departure station : ");
-        for (int i = 0; i < stationList.size(); i++) {
-            System.out.println((i+1) + ". " + stationList.get(i).getLocationName());
-        }
         do{
-            System.out.print("Enter the station number stated above > ");
-            userInput2 = BackendStaff.validateIntegerInput(scanner, "Enter the station number stated above > ");
-            if(userInput2>stationList.size()){
-                System.out.println("\nINVALID OPTION. PLEASE ENTER THE NUMBER ABOVE.\n");
-            }else{
-                departLocation = stationList.get(userInput2-1);
-                departureIndex = stationList.indexOf(departLocation);
+            System.out.println("Select a departure station : ");
+            for (int i = 0; i < stationList.size(); i++) {
+                System.out.println((i+1) + ". " + stationList.get(i).getLocationName());
             }
-        }while(userInput2>stationList.size());
-        
-        stationNumber = 1; // Initialize the station number
-        System.out.println("Select an arrival station : ");
-        for (int i = 0; i < stationList.size(); i++) {
-            if (i != departureIndex){
-                System.out.println(stationNumber + ". " + stationList.get(i).getLocationName());
-                stationNumber++; // Increment the station number
+            do{
+                System.out.print("Enter the station number stated above > ");
+                userInput2 = BackendStaff.validateIntegerInput(scanner, "Enter the station number stated above > ");
+                if(userInput2>stationList.size()){
+                    System.out.println("\nINVALID OPTION. PLEASE ENTER THE NUMBER ABOVE.\n");
+                }else{
+                    departLocation = stationList.get(userInput2-1);
+                    departureIndex = stationList.indexOf(departLocation);
+                }
+            }while(userInput2>stationList.size());
+            
+            stationNumber = 1; // Initialize the station number
+            System.out.println("Select an arrival station : ");
+            for (int i = 0; i < stationList.size(); i++) {
+                if (i != departureIndex){
+                    System.out.println(stationNumber + ". " + stationList.get(i).getLocationName());
+                    stationNumber++; // Increment the station number
+                }
             }
-        }
-        do{
-            System.out.print("Enter the station number stated above > ");
-            userInput2 = BackendStaff.validateIntegerInput(scanner, "Enter the station number stated above > ");
-            if(userInput2>(stationList.size()-1)){
-                System.out.println("\nINVALID OPTION. PLEASE ENTER THE NUMBER STATED ABOVE.\n");
-            }
-        }while(userInput2>(stationList.size()-1));
+            do{
+                System.out.print("Enter the station number stated above > ");
+                userInput2 = BackendStaff.validateIntegerInput(scanner, "Enter the station number stated above > ");
+                if(userInput2>(stationList.size()-1)){
+                    System.out.println("\nINVALID OPTION. PLEASE ENTER THE NUMBER STATED ABOVE.\n");
+                }
+            }while(userInput2>(stationList.size()-1));
 
-        // Adjust user input based on the excluded departure station
-        if (userInput2 > departureIndex) {
-            userInput2++; // Increment the input station number to account for the excluded departure station
-        }
-        arriveLocation = stationList.get(userInput2 - 1);
-        
-        do{
-        	noPlatform = false;
-        	usePlatformCount = 1;
-            System.out.print("Enter a departure time (HH:MM) (Press # to exit) > ");
-            userInput = scanner.nextLine(); 
-            if (userInput.equals("#")){
-            	return;
+            // Adjust user input based on the excluded departure station
+            if (userInput2 > departureIndex) {
+                userInput2++; // Increment the input station number to account for the excluded departure station
             }
-            if (BackendStaff.isValidTimeFormat(userInput)) {
-                departTime = BackendStaff.parseTime(userInput);
-                if (departTime != null) {
-                    correctTime = true;
-                    for (int j = 0; j < scheduleList.size(); j++) {
-                		if (scheduleList.get(j).getDepartLocation().getLocationName().equals(departLocation.getLocationName())) {
-                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
-                        		usePlatformCount++;
-                    		}
-                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                       			 usePlatformCount++;
-                    		}
-               	 	}
-               	 	if (scheduleList.get(j).getArriveLocation().getLocationName().equals(departLocation.getLocationName())) {
-                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
-                        		usePlatformCount++;
-                    		}
-                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                       			 usePlatformCount++;
-                    		}
-               	 	}
-               	 	
-            	}
-            	if (usePlatformCount > departLocation.getNumOfPlatform()){
-        			noPlatform = true;
-        			System.out.println("\nTHE DEPARTURE STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
-        		}
-			
-        		
+            arriveLocation = stationList.get(userInput2 - 1);
+            
+            do{
+                noPlatform = false;
+                usePlatformCount = 1;
+                System.out.print("Enter a departure time (HH:MM) (Press # to exit) > ");
+                userInput = scanner.nextLine(); 
+                if (userInput.equals("#")){
+                    return;
+                }
+                if (BackendStaff.isValidTimeFormat(userInput)) {
+                    departTime = BackendStaff.parseTime(userInput);
+                    if (departTime != null) {
+                        correctTime = true;
+                        for (int j = 0; j < scheduleList.size(); j++) {
+                            if (scheduleList.get(j).getDepartLocation().getLocationName().equals(departLocation.getLocationName())) {
+                                if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                                    usePlatformCount++;
+                                }
+                                if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                                    usePlatformCount++;
+                                }
+                        }
+                        if (scheduleList.get(j).getArriveLocation().getLocationName().equals(departLocation.getLocationName())) {
+                                if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                                    usePlatformCount++;
+                                }
+                                if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                                    usePlatformCount++;
+                                }
+                        }
+                        
+                    }
+                    if (usePlatformCount > departLocation.getNumOfPlatform()){
+                        noPlatform = true;
+                        System.out.println("\nTHE DEPARTURE STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
+                    }
+                
+                    
+                    } else {
+                        correctTime = false;
+                        System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
+                    }
+                } else {
+                    correctTime = false;
+                    System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
+                }    
+                
+            }while(correctTime==false || noPlatform == true);
+            
+            do{
+                noPlatform = false;
+                usePlatformCount = 1;
+                System.out.print("Enter an arrival time (HH:MM)  (Press # to exit) > ");
+                userInput = scanner.nextLine(); 
+                if (userInput.equals("#")){
+                    return;
+                }
+                if (BackendStaff.isValidTimeFormat(userInput)) {
+                    arriveTime = BackendStaff.parseTime(userInput);
+                    if (arriveTime != null) {
+                        correctTime = true;
+                        for (int j = 0; j < scheduleList.size(); j++) {
+                            if (scheduleList.get(j).getDepartLocation().getLocationName().equals(arriveLocation.getLocationName())) {
+                                if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                                    usePlatformCount++;
+                                }
+                                if (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                                    usePlatformCount++;
+                                }
+                        }
+                        if (scheduleList.get(j).getArriveLocation().getLocationName().equals(arriveLocation.getLocationName())) {
+                                if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                                    usePlatformCount++;
+                                }
+                                if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                                    usePlatformCount++;
+                                }
+                        }
+                        
+                    }
+                    if (usePlatformCount > arriveLocation.getNumOfPlatform()){
+                        noPlatform = true;
+                        System.out.println("\nTHE ARRIVAL STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
+                    }
+                    } else {
+                        correctTime = false;
+                        System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
+                    }
                 } else {
                     correctTime = false;
                     System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
                 }
-            } else {
-                correctTime = false;
-                System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
-            }    
-            
-        }while(correctTime==false || noPlatform == true);
-        
-        do{
-        	noPlatform = false;
-        	usePlatformCount = 1;
-            System.out.print("Enter an arrival time (HH:MM) > ");
-            userInput = scanner.nextLine(); 
-            if (BackendStaff.isValidTimeFormat(userInput)) {
-                arriveTime = BackendStaff.parseTime(userInput);
-                if (arriveTime != null) {
+                int compareDepartTime = arriveTime.compareTo(departTime);
+                if(compareDepartTime>=0){
                     correctTime = true;
-                    for (int j = 0; j < scheduleList.size(); j++) {
-                		if (scheduleList.get(j).getDepartLocation().getLocationName().equals(arriveLocation.getLocationName())) {
-                    		if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
-                        		usePlatformCount++;
-                    		}
-                    		if (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                       			 usePlatformCount++;
-                    		}
-               	 	}
-               	 	if (scheduleList.get(j).getArriveLocation().getLocationName().equals(arriveLocation.getLocationName())) {
-                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
-                        		usePlatformCount++;
-                    		}
-                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                       			 usePlatformCount++;
-                    		}
-               	 	}
-               	 	
-            	}
-            	if (usePlatformCount > arriveLocation.getNumOfPlatform()){
-        			noPlatform = true;
-        			System.out.println("\nTHE ARRIVAL STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
-        		}
-                } else {
+                }else{
                     correctTime = false;
-                    System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
+                    System.out.println("\nINVALID TIME. ARRIVAL TIME CANNOT BE EARLIER THAN DEPARTURE TIME.\n");
                 }
-            } else {
-                correctTime = false;
-                System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
+            }while(correctTime==false || noPlatform == true);
+
+            System.out.println("==================================================");
+            System.out.println("Select a train for this schedule : ");
+            ArrayList<Train> availableTrains = new ArrayList<>(trainList);
+        
+            for (int i = 0; i < availableTrains.size(); i++) {
+                    System.out.println((i+1) + ". " + availableTrains.get(i).getTrainNo());
             }
-            int compareDepartTime = arriveTime.compareTo(departTime);
-            if(compareDepartTime>=0){
-            	correctTime = true;
+            System.out.println("==================================================");
+            do{
+                incompatible = false;
+                System.out.print("Enter the train number stated above (Press # to exit) > ");
+                
+                userInput2 = BackendStaff.validateIntegerInput(scanner, "Enter the train number stated above (Press # to exit) > ");
+                if (userInput2==-1)
+                    return;
+                if(userInput2>availableTrains.size()){
+                    System.out.println("\nINVALID OPTION. PLEASE ENTER  THE NUMBER AS STATED ABOVE.\n");
+                }else{
+                    trainOperated = availableTrains.get(userInput2-1);
+                }
+                
+                for (int j=0; j<scheduleList.size(); j++){
+                    if(scheduleList.get(j).getOperatedTrain().getTrainNo()==trainOperated.getTrainNo()){
+                            if ((departTime.compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                                departTime.compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
+                                incompatible = true;
+                                break;
+                            }
+                            if ((arriveTime.plusMinutes(15).compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                            (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
+                                incompatible = true;
+                                break;
+                            }
+                    
+                    }
+                }
+                if(incompatible == true){
+                    System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
+                } 	
+                
+            }while(userInput2>trainList.size()||incompatible == true);
+
+            System.out.print("Enter the ticket price (RM) > ");
+            ticketPrice = BackendStaff.validateDoubleInput(scanner, "Enter the ticket price (RM) > ");
+
+            System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
+            userInput = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
+
+            if(userInput.equalsIgnoreCase("Y")){
+                Schedule s = new Schedule(departLocation, arriveLocation, departTime, arriveTime, trainOperated, ticketPrice);
+                scheduleList.add(s);
+                added = writeIntoFile("scheduleFile.txt", scheduleList);
+
+                if (added){
+                    System.out.println("\nSCHEDULE HAS ADDED.\n");
+                }else{
+                    System.out.println("\nFAILED TO ADD THE SCHEDULE.\n");
+                }
             }else{
-            	correctTime = false;
-            	System.out.println("\nINVALID TIME. ARRIVAL TIME CANNOT BE EARLIER THAN DEPARTURE TIME.\n");
+                System.out.println("\nMODIFICATION CANCELLED.\n");
             }
-        }while(correctTime==false || noPlatform == true);
- 
-        System.out.println("Select a train for this schedule : ");
-        ArrayList<Train> availableTrains = new ArrayList<>(trainList);
-       
-        for (int i = 0; i < availableTrains.size(); i++) {
-                System.out.println((i+1) + ". " + availableTrains.get(i).getTrainNo());
-        }
-        do{
-        	incompatible = false;
-            System.out.print("Enter the train number stated above (Press # to exit) > ");
-            
-            userInput2 = BackendStaff.validateIntegerInput(scanner, "Enter the train number stated above (Press # to exit) > ");
-            if (userInput2==-1)
-                return;
-            if(userInput2>availableTrains.size()){
-                System.out.println("\nINVALID OPTION. PLEASE ENTER  THE NUMBER AS STATED ABOVE.\n");
+            System.out.print("Do you want to continue add schedules? (Y-Yes/N-No) > ");
+            userInput = BackendStaff.validateYNInput(scanner, "Do you want to continue make changes? (Y-Yes/N-No) > ");
+            if (userInput.equalsIgnoreCase("Y")){
+                cont = true;
             }else{
-                trainOperated = availableTrains.get(userInput2-1);
+                cont = false;
             }
-            
-            for (int j=0; j<scheduleList.size(); j++){
-            	if(scheduleList.get(j).getOperatedTrain().getTrainNo()==trainOperated.getTrainNo()){
-                 		if ((departTime.compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
-                    		departTime.compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
-                         	incompatible = true;
-                         	break;
-                 		}
-                 		if ((arriveTime.plusMinutes(15).compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
-                    	(arriveTime.compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
-                        	incompatible = true;
-                        	break;
-                		}
-                 
-            	}
-        	}
-        	if(incompatible == true){
-        		System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
-        	} 	
-            
-        }while(userInput2>trainList.size()||incompatible == true);
-
-        System.out.print("Enter the ticket price (RM) > ");
-        ticketPrice = BackendStaff.validateDoubleInput(scanner, "Enter the ticket price (RM) > ");
-
-        System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
-        userInput = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
-
-        if(userInput.equalsIgnoreCase("Y")){
-            Schedule s = new Schedule(departLocation, arriveLocation, departTime, arriveTime, trainOperated, ticketPrice);
-            scheduleList.add(s);
-            added = writeIntoFile("scheduleFile.txt", scheduleList);
-
-            if (added){
-                System.out.println("\nSchedule has added.\n");
-            }else{
-                System.out.println("\nFAILED TO ADD THE SCHEDULE.\n");
-            }
-        }else{
-            System.out.println("\nMODIFICATION CANCELLED.\n");
-        }
+        }while(cont==true);
     }
 
      //----------------------------------------------UPDATE SCHEDULE----------------------------------------------
@@ -510,7 +531,7 @@ public class Schedule implements Serializable{
             System.out.print("Enter the schedule id to search the schedule (Press # to exit) > ");
             scheduleId = scanner.nextLine();
 
-            if (scheduleId.equals("#"))
+            if (scheduleId.equalsIgnoreCase("#"))
                 break;
 
             for (int i = 0; i < scheduleList.size(); i++) {
@@ -521,7 +542,9 @@ public class Schedule implements Serializable{
             }
             if(found==true){
                 System.out.println("Do you want to update the schedule information as shown below? ");
+                System.out.println();
                 System.out.println(scheduleList.get(index).toString());
+                System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No)> ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");
                 do{
@@ -585,80 +608,51 @@ public class Schedule implements Serializable{
         boolean updated = false;
         boolean correctTime = false;
         boolean noPlatform;
-        int usePlatformCount;
+        int usePlatformCount = 1;
         boolean incompatible;
         ArrayList<Schedule> scheduleList = getScheduleList();
         
         System.out.println("Current departure time: " + scheduleList.get(index).getDepartTime());
                
-        do{
-        	noPlatform = false;
-        	usePlatformCount = 1;
+        do {
+            correctTime = false;
+            noPlatform = false;
             incompatible = false;
-            System.out.print("Enter a new departure time (HH:MM) > ");
-            userInput = scanner.nextLine(); 
+            
+            System.out.print("Enter a new departure time (HH:MM) (Press # to exit)> ");
+            userInput = scanner.nextLine();
+            
+            if (userInput.equals("#")) {
+                return; // Exit the loop and function if user enters '#'
+            }
+            
+            // Validate the time format
             if (BackendStaff.isValidTimeFormat(userInput)) {
                 departTime = BackendStaff.parseTime(userInput);
+                
                 if (departTime != null) {
                     correctTime = true;
-                    for (int j = 0; j < scheduleList.size(); j++) {
-                		if (scheduleList.get(j).getDepartLocation().getLocationName().equals(scheduleList.get(index).getDepartLocation().getLocationName())) {
-                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
-                        		if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
-                        			usePlatformCount++;
-                        		}	
-                    		}
-                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                       			 if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
-                        			usePlatformCount++;
-                        		}
-                    		}
-               	 	}
-               	 	if (scheduleList.get(j).getArriveLocation().getLocationName().equals(scheduleList.get(index).getDepartLocation().getLocationName())) {
-                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
-                        		if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
-                        			usePlatformCount++;
-                        		}
-                    		}
-                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                       			 if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
-                        			usePlatformCount++;
-                        		}
-                    		}
-               	 	}
-               	 	
-            	}
-            	if (usePlatformCount > scheduleList.get(index).getDepartLocation().getNumOfPlatform()){
-        			noPlatform = true;
-        			System.out.println("\nTHE DEPARTURE STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
-        		}
-                } else {
-                    correctTime = false;
-                    System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
+                    checkPlatformUsage(, LocalTime time, int index)
+                    // Check if there are available platforms
+                    if (usePlatformCount > scheduleList.get(index).getDepartLocation().getNumOfPlatform()) {
+                        noPlatform = true;
+                        System.out.println("\nTHE DEPARTURE STATION'S PLATFORMS ARE FULLY OCCUPIED.\n");
+                    }
                 }
             } else {
-                correctTime = false;
                 System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
-            for (int j=0; j<scheduleList.size(); j++){
-            	if(scheduleList.get(j).getOperatedTrain().getTrainNo()==scheduleList.get(index).getOperatedTrain().getTrainNo()){
-                 		if ((departTime.compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
-                    	scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
-                         	incompatible = true;
-                         	break;
-                 		}
-                 		if ((departTime.compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
-                    	(scheduleList.get(index).getArriveTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
-                        	incompatible = true;
-                        	break;
-                		}
-                 
-            	}
-        	}
-        	if(incompatible == true){
-        		System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
-        	}
-        }while(correctTime==false || noPlatform == true || incompatible == true);
+            
+            // Check for time conflicts with other schedules
+            for (int j = 0; j < scheduleList.size(); j++) {
+                if (j != index && scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())) {
+                    if (isTimeConflict(scheduleList.get(j), scheduleList.get(index))) {
+                        incompatible = true;
+                        break;
+                    }
+                }
+            }
+        } while (!correctTime || noPlatform || incompatible);
 
         System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
         confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
@@ -667,13 +661,38 @@ public class Schedule implements Serializable{
             scheduleList.get(index).editDepartTime(departTime);
             updated = writeIntoFile("scheduleFile.txt", scheduleList);
             if(updated){
-                System.out.println("Schedule departure time has updated.");
+                System.out.println("SCHEDULE DEPARTURE TIME HAS UPDATED.");
             }else{
                 System.out.println("\nFAILED TO UPDATE THE DEPARTURE TIME.\n");
             }
         }else{
             System.out.println("\nMODIFICATION CANCELLED.\n");
         }
+    }
+
+    public int checkPlatformUsage(Schedule schedule1, LocalTime time, int index) throws Exception {
+        int usePlatformCount = 1;
+        ArrayList<Schedule> scheduleList = getScheduleList();
+    
+        // Iterate through the scheduleList to check for conflicts with schedule1
+        for (int j = 0; j < scheduleList.size(); j++) {
+            if (j != index) {
+                Schedule schedule2 = scheduleList.get(j); // Get the other schedule
+    
+                // Check if schedule1's departure location matches schedule2's departure location
+                if (schedule1.getDepartLocation().equals(schedule2.getDepartLocation())) {
+                    // Check if schedule1's departure time matches schedule2's departure time or arrive time
+                    if (schedule1.getDepartTime().compareTo(schedule2.getDepartTime()) == 0 ||
+                        schedule1.getDepartTime().compareTo(schedule2.getArriveTime()) == 0) {
+                        // Check if the operated trains are different
+                        if (!schedule1.getOperatedTrain().equals(schedule2.getOperatedTrain())) {
+                            usePlatformCount++;
+                        }
+                    }
+                }
+            }
+        }
+        return usePlatformCount; // Return true if there are conflicts, false otherwise
     }
 
     //-------------------------------------UPDATE SCHEDULE ARRIVAL INFO-------------------------------------------
@@ -695,8 +714,11 @@ public class Schedule implements Serializable{
         	noPlatform = false;
         	usePlatformCount = 1;
             incompatible = false;
-            System.out.print("Enter a new arrival time (HH:MM) > ");
+            System.out.print("Enter a new arrival time (HH:MM) (Press # to exit)> ");
             userInput = scanner.nextLine(); 
+            if (userInput.equals("#")){
+            	return;
+            }
             if (BackendStaff.isValidTimeFormat(userInput)) {
                 arriveTime = BackendStaff.parseTime(userInput);
                 if (arriveTime != null) {
@@ -744,22 +766,10 @@ public class Schedule implements Serializable{
             	System.out.println("\nINVALID TIME. ARRIVAL TIME CANNOT BE EARLIER THAN DEPARTURE TIME.\n");
             }
             for (int j=0; j<scheduleList.size(); j++){
-            	if(scheduleList.get(j).getOperatedTrain().getTrainNo()==scheduleList.get(index).getOperatedTrain().getTrainNo()){
-                 		if ((scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
-                    	scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
-                         	incompatible = true;
-                         	break;
-                 		}
-                 		if ((scheduleList.get(index).getArriveTime().plusMinutes(15).compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
-                    	(scheduleList.get(index).getArriveTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
-                        	incompatible = true;
-                        	break;
-                		}
-                 
-            	}
-        	}
-        	if(incompatible == true){
-        		System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
+            	if(scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
+                    incompatible = isTimeConflict(scheduleList.get(j), scheduleList.get(index));
+                    break;
+                }	
         	}
         }while(correctTime==false || noPlatform == true || incompatible == true);
 
@@ -770,7 +780,7 @@ public class Schedule implements Serializable{
             scheduleList.get(index).editArriveTime(arriveTime);
             updated = writeIntoFile("scheduleFile.txt", scheduleList);
             if(updated){
-                System.out.println("Schedule arrival time has updated.");
+                System.out.println("SCHEDULE ARRIVAL TIME HAS UPDATED.");
             }else{
                 System.out.println("\nFAILED TO UPDATE THE ARRIVAL TIME.\n");
             }
@@ -800,6 +810,7 @@ public class Schedule implements Serializable{
             return;
         }
         System.out.println("Current operated train: " + scheduleList.get(index).getOperatedTrain().toString());
+        System.out.println("==================================================");
         System.out.println("Select a new train to replace train above: ");
         
         int trainNumber = 1; // Initialize the train number
@@ -807,6 +818,7 @@ public class Schedule implements Serializable{
             System.out.println(trainNumber + ". " + availableTrains.get(n).getTrainNo());
             trainNumber++; // Increment the station number
         }
+        System.out.println("==================================================");
         do{
         	incompatible = false;
             System.out.print("Enter the station number stated above > ");
@@ -818,33 +830,22 @@ public class Schedule implements Serializable{
                 if(confirm.equalsIgnoreCase("Y")){
                     trainOperated = availableTrains.get(userInput - 1);
                     for (int j=0; j<scheduleList.size(); j++){
-            		if(scheduleList.get(j).getOperatedTrain().getTrainNo()==trainOperated.getTrainNo()){
-                 			if ((scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
-                    		scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
-                         		incompatible = true;
-                         		break;
-                 			}
-                 			if ((scheduleList.get(index).getArriveTime().plusMinutes(15).compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
-                    			(scheduleList.get(index).getArriveTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
-                        		incompatible = true;
-                        		break;
-                			}
-                 
-            		}
-        		}
-        		if(incompatible == true){
-        			System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
-        		} else{
-        			scheduleList.get(index).editTrainOperated(trainOperated);
+            		    if(scheduleList.get(j).getOperatedTrain().equals(trainOperated)){
+                 			incompatible = isTimeConflict(scheduleList.get(j), scheduleList.get(index));
+                         	break;
+            		    }
+        		    }
+    
+        		    if(incompatible == false){
+        			    scheduleList.get(index).editTrainOperated(trainOperated);
                     	updated = writeIntoFile("scheduleFile.txt", scheduleList);
 
                     	if(updated){
-                        	System.out.println("\nThe train operated for the schedule has updated.");
+                        	System.out.println("\nTRAIN OPERATED FOR THE SCHEDULE HAS UPDATED");
                     	}else{
                         	System.out.println("\nFAILED TO UPDATE THE TRAIN OPERATED FOR THE SCHEDULE.\n");
                     	}
-        		}	
-                    
+        		    }	
 
                 }else{
                     System.out.println("\nMODIFICATION CANCELLED.\n");
@@ -853,6 +854,24 @@ public class Schedule implements Serializable{
                 System.out.println("\nINVALID TRAIN NUMBER.\n");
             }
         }while ((userInput < 1 && userInput > availableTrains.size())||incompatible == true);    
+    }
+
+    public boolean isTimeConflict(Schedule schedule1, Schedule schedule2) {
+        // Check if schedule1's departure time is between schedule2's departure and arrival times
+        if (schedule1.getDepartTime().compareTo(schedule2.getDepartTime()) >= 0 &&
+            schedule1.getDepartTime().compareTo(schedule2.getArriveTime()) <= 0) {
+                System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
+                return true;
+        }
+        
+        // Check if schedule1's arrival time is between schedule2's departure and arrival times
+        if (schedule1.getArriveTime().compareTo(schedule2.getDepartTime()) >= 0 &&
+            schedule1.getArriveTime().compareTo(schedule2.getArriveTime()) <= 0) {
+            return true;
+        }
+        
+        // No time conflict
+        return false;
     }
 
     //-----------------------------------UPDATE SCHEDULE TICKET PRICE INFO---------------------------------------
@@ -876,7 +895,7 @@ public class Schedule implements Serializable{
             updated = writeIntoFile("scheduleFile.txt", scheduleList);
 
             if(updated){
-                System.out.println("Ticket price for the schedule has updated.");
+                System.out.println("TICKET PRICE FOR THE SCHEDULE HAS UPDATED.");
             }else{
                 System.out.println("\nFAILED TO UPDATE THE TICKET PRICE FOR THE SCHEDULE.\n");
             }
@@ -907,13 +926,14 @@ public class Schedule implements Serializable{
                 break;
     
             for (int i = 0; i < scheduleList.size(); i++) {
-                if (userInput.equals(scheduleList.get(i).getScheduleId())) {
+                if (userInput.equalsIgnoreCase(scheduleList.get(i).getScheduleId())) {
                     index = i;
                     found = true;
                 }
             }
             if (found==true){
                 System.out.println("Do you want to delete the schedule information as shown below? ");
+                System.out.println();
                 System.out.println(scheduleList.get(index).toString());
                 System.out.print("Enter your option (Y-Yes/N-No)> ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");
@@ -927,7 +947,7 @@ public class Schedule implements Serializable{
                         deleted = writeIntoFile("scheduleFile.txt",scheduleList);
 
                         if (deleted) {
-                             System.out.println("Schedule has been removed.");
+                             System.out.println("SCHEDULE HAS REMOVED.");
                         }else{
                             System.out.println("\nFAILED TO REMOVE THE SCHEDULE.\n");
                         }
