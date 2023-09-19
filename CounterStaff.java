@@ -21,14 +21,31 @@ public class CounterStaff extends Staff{
     public void counterMenu() {
         Scanner input = new Scanner(System.in); //scanner
 
-        System.out.printf("=================================\n");
-        System.out.printf("%-3s%s\n"," ", "COUNTER STAFF MENU");
-        System.out.printf("=================================\n");
-        System.out.printf("1. Buy Ticket\n");
-        System.out.printf("2. Buy Food and Beverage\n");
-        System.out.printf("3. Log out\n");
-        System.out.printf("=================================\n > ");
+        System.out.println("==================================================");
+        System.out.println("                Counter Staff Menu");
+        System.out.println("==================================================");
+        System.out.printf("1. Buy Tickets\n");
+        System.out.printf("2. Buy Food and Beverages\n");
+        System.out.println("\n* Press # to log out");
+        System.out.println("==================================================");
+        System.out.print("Enter your option > ");
 
+        //accept user input
+        if (input.hasNextInt()) {
+            int choice = input.nextInt();
+            //make purchase
+            DriverJQ.makePurchase(choice);
+            //choose user's input choice
+        } else {
+            if (input.next().equals("#")) {
+                System.out.printf("Logged out.\n\n");
+                return;
+            } else {
+                System.out.printf("Invalid input, please enter your choice again.\n");
+                //clear buffer
+                input.next();
+            }
+        }
     }
 
     //create counter staff account
@@ -43,9 +60,9 @@ public class CounterStaff extends Staff{
         //methods declaration
         Scanner input = new Scanner(System.in); //scanner
 
-        System.out.printf("=================================\n");
-        System.out.printf("%-3s%s\n"," ", "CREATE COUNTER STAFF ACCOUNT");
-        System.out.printf("=================================\n");
+        System.out.println("==================================================");
+        System.out.println("            Create Counter Staff Login");
+        System.out.println("==================================================");
         System.out.printf("Enter 'X' to exit at any point\n\n");
         
         //set staff type
