@@ -156,7 +156,6 @@ public class Drinks extends FoodAndBeverage implements Serializable {
     public void drinksModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
-        ArrayList<Drinks> drinksList = getDrinksList();
     
         while (cont) {
             System.out.println("==================================================");
@@ -194,6 +193,9 @@ public class Drinks extends FoodAndBeverage implements Serializable {
     
     public void viewDrinks() throws Exception{
         ArrayList<Drinks> drinksList = getDrinksList();
+        if (drinksList.size()==0){
+            System.out.println("\nNO DRINKS IN THE RECORD.\n");
+        }
         for (int i=0; i< drinksList.size(); i++){
             System.out.println(drinksList.get(i).toString() + "\n");
         }

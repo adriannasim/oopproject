@@ -117,8 +117,7 @@ public class Train implements Serializable{
     public void trainModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
-        ArrayList<Train> trainList = getTrainList();
-
+    
         while(cont==true){
             System.out.println("==================================================");
             System.out.println("          Train Information Modification");
@@ -153,6 +152,9 @@ public class Train implements Serializable{
 
     public void viewTrain() throws Exception{
         ArrayList<Train> trainList = getTrainList();
+        if (trainList.size()==0){
+            System.out.println("\nNO TRAINS IN THE RECORD.\n");
+        }
         for (int i=0; i< trainList.size(); i++){
             System.out.println(trainList.get(i).toString() + "\n");
         }
@@ -231,6 +233,7 @@ public class Train implements Serializable{
             }
             if (found == true){
                 System.out.println("Do you want to update the train information as shown below ?");
+                System.out.println();
                 System.out.println(trainList.get(index).toString());
                 
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
@@ -273,7 +276,7 @@ public class Train implements Serializable{
                                 cont = false;
                                 return; 
                             }else {
-                                System.out.println("INVALID OPTION. PLEASE ENTER (1/#).");
+                                System.out.println("\nINVALID OPTION. PLEASE ENTER (1/#).\n");
                             }            
                         } while (!userInput.equals("1") && !userInput.equals("#"));
                 

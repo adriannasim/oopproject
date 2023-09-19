@@ -1,12 +1,7 @@
 import java.io.BufferedWriter;
-import java.io.EOFException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -119,7 +114,6 @@ public class TrainStation implements Serializable{
     public void stationModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
-        ArrayList<TrainStation> stationList = getStationList();
     
         while (cont) {
             System.out.println("==================================================");
@@ -156,6 +150,9 @@ public class TrainStation implements Serializable{
 
     public void viewStation() throws Exception{
         ArrayList<TrainStation> stationList = getStationList();
+        if (stationList.size()==0){
+            System.out.println("\nNO STATION IN THE RECORD.\n");
+        }
         for (int i=0; i< stationList.size(); i++){
             System.out.println(stationList.get(i).toString() + "\n");
         }
