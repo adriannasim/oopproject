@@ -653,7 +653,7 @@ public class Schedule implements Serializable {
                 
                 if (departTime != null) {
                     correctTime = true;
-                    checkPlatformUsage(, LocalTime time, int index)
+                    usePlatformCount = checkPlatformUsage(departTime, index);
                     // Check if there are available platforms
                     if (usePlatformCount > scheduleList.get(index).getDepartLocation().getNumOfPlatform()) {
                         noPlatform = true;
@@ -693,10 +693,11 @@ public class Schedule implements Serializable {
     }
     }
 
-    public int checkPlatformUsage(Schedule schedule1, LocalTime time, int index) throws Exception {
+    public int checkPlatformUsage(LocalTime time, int index) throws Exception {
         int usePlatformCount = 1;
         ArrayList<Schedule> scheduleList = getScheduleList();
-    
+        Schedule schedule1 = scheduleList.get(index);
+
         // Iterate through the scheduleList to check for conflicts with schedule1
         for (int j = 0; j < scheduleList.size(); j++) {
             if (j != index) {
@@ -748,37 +749,11 @@ public class Schedule implements Serializable {
                 arriveTime = BackendStaff.parseTime(userInput);
                 if (arriveTime != null) {
                     correctTime = true;
-                    for (int j = 0; j < scheduleList.size(); j++) {
-                        if (scheduleList.get(j).getDepartLocation().getLocationName()
-                                .equals(scheduleList.get(index).getDepartLocation().getLocationName())) {
-                            if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0) {
-                                if (!scheduleList.get(j).getOperatedTrain()
-                                        .equals(scheduleList.get(index).getOperatedTrain())) {
-                                    usePlatformCount++;
-                                }
-                            }
-                            if (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                                if (!scheduleList.get(j).getOperatedTrain()
-                                        .equals(scheduleList.get(index).getOperatedTrain())) {
-                                    usePlatformCount++;
-                                }
-                            }
-                        }
-                        if (scheduleList.get(j).getArriveLocation().getLocationName()
-                                .equals(scheduleList.get(index).getArriveLocation().getLocationName())) {
-                            if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0) {
-                                usePlatformCount++;
-                            }
-                            if (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                                usePlatformCount++;
-                            }
-                        }
-
-                    }
-                    if (usePlatformCount > scheduleList.get(index).getArriveLocation().getNumOfPlatform()) {
-                        noPlatform = true;
-                        System.out.println("\nTHE ARRIVAL STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
-                    }
+                    usePlatformCount = checkPlatformUsage(arriveTime, index);
+            	if (usePlatformCount > scheduleList.get(index).getArriveLocation().getNumOfPlatform()){
+        			noPlatform = true;
+        			System.out.println("\nTHE ARRIVAL STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
+        		}
                 } else {
                     correctTime = false;
                     System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");

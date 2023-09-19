@@ -237,7 +237,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
             added = writeIntoFile("drinksFile.txt", drinksList, drinks);
 
             if (added) {
-                System.out.println("DRINKS HAS ADDED");
+                System.out.println("\nDRINKS HAS ADDED\n");
             } else {
                 System.out.println("\nFAILED TO ADD DRINKS.\n");
             }
@@ -272,7 +272,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
         System.out.println("==================================================");
 
         do {
-            System.out.print("Enter the snacks id to search the snacks (Press # to exit) > ");
+            System.out.print("Enter the drinks id to search the drinks (Press # to exit) > ");
             foodId = scanner.nextLine();
 
             if (foodId.equals("#"))
@@ -299,7 +299,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                         userInput = scanner.nextLine();
 
                         if (userInput.equals("1")) {
-                            System.out.print("New snacks name > ");
+                            System.out.print("New drinks name > ");
                             foodName = scanner.nextLine();
                             System.out.print("Do you confirm? (Y-Yes/N-No) > ");
                             confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
@@ -307,7 +307,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                                 drinksList.get(index).editFoodName(foodName);
                                 updated = writeIntoFile("drinksFile.txt", drinksList, obj);
                                 if(updated){
-                                    System.out.println("Food name has updated.");
+                                    System.out.println("\nDRINKS NAME HAS UPDATED.\n");
                                 }else{
                                     System.out.println("\nFAILED TO UPDATE DRINKS NAME.\n");
                                 }
@@ -324,7 +324,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                                 drinksList.get(index).editFoodPrice(foodPrice);
                                 updated = writeIntoFile("drinksFile.txt", drinksList, obj);
                                 if(updated){
-                                    System.out.println("Food price has updated.");
+                                    System.out.println("\nDRINKS PRICE HAS UPDATED.\n");
                                 }else{
                                     System.out.println("\nFAILED TO UPDATE DRINKS PRICE.\n");
                                 }
@@ -365,9 +365,9 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                                 boolean success = drinksList.get(index).editStockQty(sign, stockQty);
                                 updated = writeIntoFile("drinksFile.txt", drinksList, obj);
                                 if(updated && success){
-                                    System.out.println("Food stock qty has updated.");
+                                    System.out.println("\nFood stock qty has updated.\n");
                                 }else{
-                                    System.out.println("\nIFAILED TO UPDATE DRINKS STOCK QTY.\n");
+                                    System.out.println("\nFAILED TO UPDATE DRINKS STOCK QTY.\n");
                                 }
                             } else {
                                 System.out.println("\nMODIFICATION CANCELLED.\n");
@@ -439,7 +439,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                         deleted = writeIntoFile("drinksFile.txt", drinksList, obj);
 
                         if (deleted) {
-                             System.out.println("Drinks has been removed.");
+                             System.out.println("\nDRINKS HAS REMOVED.\n");
                         }else{
                             System.out.println("\nFAILED TO REMOVE THE DRINKS.\n");
                         }

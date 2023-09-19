@@ -76,9 +76,9 @@ public abstract class FoodAndBeverage {
         if (sign.equals("+")) {
             this.stockQty += stockQty;
             return true;
-        } else {
-            if (stockQty > this.stockQty) {
-                System.out.println("Error: This quantity is larger than the stock qty.");
+        }else{
+            if(stockQty>this.stockQty){
+                System.out.println("\nERROR. THIS QUANTITY IS LARGER THAN THE STOCK QTY.\n");
                 return false;
             } else {
                 this.stockQty -= stockQty;

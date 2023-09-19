@@ -144,7 +144,7 @@ public class BackendStaff extends Staff {
                 } else {
                     System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4/#).\n");
                     //clear buffer
-                    input.next();
+                    input.nextLine();
                 }
             }
         } while (loop);
