@@ -6,78 +6,82 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
-public class Drinks extends FoodAndBeverage implements Serializable{
+public class Drinks extends FoodAndBeverage implements Serializable {
     private String temperature;
     private String size;
     private boolean ice;
 
-    //-----------------------------------CONSTRUCTOR---------------------------------------- 
+    // -----------------------------------CONSTRUCTOR----------------------------------------
     // NO-ARG CONSTRUCTOR
-    Drinks(){
+    Drinks() {
         this("NotDefined", 0, 0);
     }
 
     // PARAMETERIZED CONSTRUCTOR
-    Drinks(String foodName, double foodPrice, int stockQty){
+    Drinks(String foodName, double foodPrice, int stockQty) {
         super(foodName, foodPrice, stockQty);
     }
 
-    Drinks(String foodName, double foodPrice, int stockQty, String temperature, String size){
+    Drinks(String foodName, double foodPrice, int stockQty, String temperature, String size) {
         super(foodName, foodPrice, stockQty);
         this.temperature = temperature;
         this.size = size;
     }
 
-    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty, String temperature, String size, boolean ice){
+    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty, String temperature,
+            String size, boolean ice) {
         super(foodId, foodName, foodPrice, purchaseQty, stockQty);
         this.temperature = temperature;
         this.size = size;
         this.ice = ice;
     }
-     //------------------------------------METHOD-----------------------------------------
-     
+    // ------------------------------------METHOD-----------------------------------------
+
     // UPDATE METHOD
-    public void setSize(String size){
+    public void setSize(String size) {
         this.size = size;
     }
 
-    public void setIce(boolean ice){
+    public void setIce(boolean ice) {
         this.ice = ice;
     }
 
-    public void setTemperature(String temperature){
-        this.temperature =  temperature;
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
     }
 
     // READ METHOD
-    public String getSize(){
+    public String getSize() {
         return size;
     }
 
-    public String getTemperature(){
+    public String getTemperature() {
         return temperature;
     }
 
-    public boolean getIce(){
+    public boolean getIce() {
         return ice;
     }
 
     // DISPLAY METHOD
-    public String displayToCust(){
+    public String displayToCust() {
         String iceStatus = ice ? "Yes" : "No";
-        return super.displayToCust() + 
+        return super.displayToCust() +
                 "\nIce           : " + iceStatus +
-                "\nTemperature   : " + temperature  +
+                "\nTemperature   : " + temperature +
                 "\nSize          : " + size;
     }
 
     // CALCULATION METHOD
-    public double calculatePrice(){
+    public double calculatePrice() {
         double sizePrice;
-        if (size.equalsIgnoreCase("Medium")){
+        if (size.equalsIgnoreCase("Medium")) {
             sizePrice = 1.2;
-        } else if (size.equalsIgnoreCase("Big")){
+        } else if (size.equalsIgnoreCase("Big")) {
             sizePrice = 2;
         } else {
             sizePrice = 0;
@@ -137,5 +141,15 @@ public class Drinks extends FoodAndBeverage implements Serializable{
     }
     
     
+    public void writePurchaseFnB(FoodAndBeverage fnb, Login login) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseFnb.txt", true))) {
+            writer.write(login.getUsername() + "||" + fnb.getClass() + "||"
+                    + fnb.getFoodName() + "||" + fnb.calculatePrice() + "||"
+                    + fnb.getPurchaseQty());
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -1,3 +1,4 @@
+
 public abstract class FoodAndBeverage{
     protected String foodId;
     protected String foodName;
@@ -115,4 +116,5 @@ public abstract class FoodAndBeverage{
 
    
     
+    public abstract void writePurchaseFnB(FoodAndBeverage fnbList , Login login);
 }

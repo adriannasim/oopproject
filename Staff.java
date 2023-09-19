@@ -114,12 +114,14 @@ public class Staff extends User{
 
         //choose staff type
         do {
-            System.out.printf("=================================\n");
-            System.out.printf("%-8s%s\n"," ", "CREATE STAFF ACCOUNT");
-            System.out.printf("=================================\n");
+            System.out.println("==================================================");
+            System.out.println("                Create Staff Login");
+            System.out.println("==================================================");
             System.out.printf("1. Create backend staff\n");
             System.out.printf("2. Create counter staff\n");
-            System.out.printf("3. Return\n > ");
+            System.out.println("\n* Press # to return");
+            System.out.println("==================================================");
+            System.out.print("Enter your option > ");
 
             if (input.hasNextInt()) {
                 int choice = input.nextInt();
@@ -138,9 +140,13 @@ public class Staff extends User{
                     System.out.printf("Invalid input, please enter your choice again.\n"); 
                 }   
             } else {
-                System.out.printf("Invalid input, please enter your choice again.\n");
-                //clear buffer
-                input.next();
+                if (input.next().equals("#")) {
+                    return;
+                } else {
+                    System.out.printf("Invalid input, please enter your choice again.\n");
+                    //clear buffer
+                    input.next();
+                }
             }
         } while (loop);
         input.close();

@@ -55,7 +55,7 @@ public class DriverJh {
             System.out.println("2. Schedule Modification");
             System.out.println("3. Train Station Information Modification");
             System.out.println("4. Food and Beverage Information Modification");
-             System.out.println("\n* Press # to exit");
+            System.out.println("\n* Press # to exit");
             System.out.println("==================================================");
  
             do{

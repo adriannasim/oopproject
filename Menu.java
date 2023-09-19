@@ -8,16 +8,17 @@ public class Menu{
         Scanner input = new Scanner(System.in); //scanner
         Login login = new Login();
         
-        System.out.printf("=================================\n");
-        System.out.printf("Welcome to Train Ticketing System\n");
+        System.out.println("==================================================");
+        System.out.println("        WELCOME TO TRAIN TICKETING SYSTEM");
         do {
-            System.out.printf("=================================\n");
-            System.out.printf("%-14s%s\n"," ", "MENU");
-            System.out.printf("=================================\n");
+            System.out.println("==================================================");
+            System.out.println("                       Menu");
+            System.out.println("==================================================");
             System.out.printf("1. Customer Login Menu\n");
             System.out.printf("2. Staff Login Menu\n");
-            System.out.printf("3. Exit\n");
-            System.out.printf("=================================\n > ");
+            System.out.println("\n* Press # to exit");
+            System.out.println("==================================================");
+            System.out.print("Enter your option > ");
 
             //accept user input
             if (input.hasNextInt()) {
@@ -30,8 +31,12 @@ public class Menu{
                 case 2:
                     login.driverLogin(choice);
                     break;
+                default:
+                    System.out.printf("Invalid input, please enter your choice again.\n");
+                }
+            } else {
                 //quit
-                case 3:
+                if (input.next().equals("#")) {
                     boolean loop2 = true;
                     do {
                         System.out.printf("Are you sure you want to quit (Y/N)? > ");
@@ -57,14 +62,11 @@ public class Menu{
                             System.out.printf("Invalid input, please enter your choice again.\n");
                         }
                     } while (loop2);
-                    break;
-                default:
+                } else {
                     System.out.printf("Invalid input, please enter your choice again.\n");
+                    //clear buffer
+                    input.next();
                 }
-            } else {
-                System.out.printf("Invalid input, please enter your choice again.\n");
-                //clear buffer
-                input.next();
             }
         } while (loop);
     }  

@@ -3,138 +3,145 @@ import java.util.*;
 import java.time.LocalDate;
 
 public class DriverJQ {
-    public static void makePurchase() throws Exception {
+    // Without Login
+    // With Login
+    public static void makePurchase(int userOpt1, Login login) throws Exception {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
         ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
         Purchase userPurchase = new Purchase();
         PaymentType pType = new PaymentType();
 
-        boolean continueInput = true;
         boolean continueInputPT = true;
 
-        int userOpt1 = 0;
         int paymentTypeOpt = 0;
         char yesno1;
 
-        do {
-
-            // =================================================================================
-            // BUY TICKETS OR FOOD AND BEVERAGE
-            // =================================================================================
-            System.out.println("1. Tickets");
-            System.out.println("2. Food and Beverage");
-
-            do {
-                try {
-                    System.out.print("Enter your option : ");
-                    userOpt1 = scanner.nextInt();
-
-                    continueInput = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
-                }
-            } while (continueInput);
-
-            switch (userOpt1) {
-                case 1:
-                    ticketList = buyTicket(ticketList);
-                    break;
-                case 2:
-                    fnbList = buyFnb(fnbList);
-                    break;
-                default:
-                    System.out.println("Invalid Input. ");
-                    break;
-            }
-
-            System.out.println("================================");
-            System.out.println("            Tickets");
-            System.out.println("================================");
-            int z = 1;
-            for (Ticket tickets : ticketList) {
-                System.out.println(z + ".");
-                System.out.println(tickets);
-                z++;
-            }
-
-            System.out.println("================================");
-            System.out.println("        Food And Beverage");
-            System.out.println("================================");
-            int y = 1;
-            for (FoodAndBeverage fnbs : fnbList) {
-                System.out.println(y + ".");
-                System.out.println(fnbs.displayToCust());
-                System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
-                System.out.println("Total Amount      >> " + fnbs.calculatePrice());
-                System.out.println();
-                y++;
-            }
-
-            System.out.println("Confirm your purchase tickets and orders? (Y - YES, other - NO)");
-            yesno1 = scanner.next().charAt(0);
-
-        } while (yesno1 != 'y' || yesno1 != 'Y');
-
-        // =================================================================================
-        // ADD INTO PURCHASE ARRAYLIST
-        // =================================================================================
-        Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
-        userPurchase.purchaseTicket(tickets);
-
-        FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
-        userPurchase.purchaseFnb(fnbs);
-
-        // =================================================================================
-        // PROCEED TO PAYMENT
-        // =================================================================================
-        System.out.println("================================");
-        System.out.println("           Payment Type");
-        System.out.println("================================");
-        System.out.println("1. Online Banking");
-        System.out.println("2. E-wallet");
-        System.out.println("3. Debit / Credit Card");
-        do {
-
-            do {
-                try {
-                    System.out.print("Choose your payment type : ");
-                    paymentTypeOpt = scanner.nextInt();
-
-                    continueInputPT = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
-                }
-            } while (continueInputPT);
-
-        } while (paymentTypeOpt != 1 && paymentTypeOpt != 1 && paymentTypeOpt != 1);
-
-        switch (paymentTypeOpt) {
+        switch (userOpt1) {
             case 1:
-                pType = addOnlinebanking(scanner);
+                ticketList = buyTicket(ticketList, scanner);
+                System.out.println("=========================================================");
+                System.out.println("                           Tickets");
+                System.out.println("=========================================================");
+                int z = 1;
+                for (Ticket tickets : ticketList) {
+                    System.out.println();
+                    System.out.println(z + ".");
+                    System.out.println(tickets);
+                    z++;
+                    System.out.println();
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println();
+                }
                 break;
             case 2:
-                pType = addEwallet(scanner);
-                break;
-            case 3:
-                pType = addCard(scanner);
+                fnbList = buyFnb(fnbList, scanner);
+                System.out.println("\n============================");
+                System.out.println("        Order Summary");
+                System.out.println("============================");
+                System.out.println();
+                int y = 1;
+                for (FoodAndBeverage fnbs : fnbList) {
+                    System.out.println(y + ".");
+                    System.out.println(fnbs.displayToCust());
+                    System.out.println("Purchase Quantity >>  " + fnbs.getPurchaseQty());
+                    System.out.println("Total Amount      >>  " + fnbs.calculatePrice());
+                    y++;
+                    System.out.println();
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println();
+                }
                 break;
             default:
-                System.out.println("Invalid Input");
+                System.out.println("Invalid Input. ");
                 break;
         }
 
-        userPurchase.setPaymentType(pType);
+        System.out.println("Confirm your purchase? (Y - YES, other - NO) > ");
+        yesno1 = scanner.next().charAt(0);
+        yesno1 = Character.toUpperCase(yesno1);
 
-        System.out.println("Purchase successsfully. ");
+        if (yesno1 == 'Y') {
+
+            // Confirm purchase
+            // =================================================================================
+            // ADD INTO PURCHASE ARRAYLIST
+            // =================================================================================
+            Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
+            userPurchase.purchaseTicket(tickets);
+
+            FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
+            userPurchase.purchaseFnb(fnbs);
+
+            // =================================================================================
+            // PROCEED TO PAYMENT
+            // =================================================================================
+            System.out.println("================================");
+            System.out.println("           Payment Type");
+            System.out.println("================================");
+            System.out.println("1. Online Banking");
+            System.out.println("2. E-wallet");
+            System.out.println("3. Debit / Credit Card");
+            do {
+
+                do {
+                    try {
+                        System.out.print("Choose your payment type > ");
+                        paymentTypeOpt = scanner.nextInt();
+
+                        continueInputPT = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputPT);
+
+            } while (paymentTypeOpt != 1 && paymentTypeOpt != 1 && paymentTypeOpt != 1);
+
+            switch (paymentTypeOpt) {
+                case 1:
+                    pType = addOnlinebanking(scanner);
+                    break;
+                case 2:
+                    pType = addEwallet(scanner);
+                    break;
+                case 3:
+                    pType = addCard(scanner);
+                    break;
+                default:
+                    System.out.println("Invalid Input");
+                    break;
+            }
+
+            userPurchase.setPaymentType(pType);
+
+            System.out.println("Purchase successsfully. ");
+
+            // Write into file
+            Ticket ticket = new Ticket();
+            Snacks snack = new Snacks();
+            Drinks drink = new Drinks();
+
+            ticket.writePurchaseTicket(tickets, login);
+
+            for (FoodAndBeverage foodAndBeverage : fnbs){
+                if (foodAndBeverage instanceof Snacks){
+                    snack.writePurchaseFnB(foodAndBeverage, login);
+                } else  if (foodAndBeverage instanceof Drinks){
+                    drink.writePurchaseFnB(foodAndBeverage, login);
+                }
+            }
+
+        } else {
+            return;
+        }
+
     }
 
     public static OnlineBanking addOnlinebanking(Scanner scanner) {
         OnlineBanking onlineBanking;
 
-        System.out.println("Enter bank : ");
+        System.out.println("Enter bank > ");
         String bank = scanner.next();
 
         onlineBanking = new OnlineBanking(bank);
@@ -147,7 +154,7 @@ public class DriverJQ {
         boolean continueInput = true;
         int telNo = 0;
 
-        System.out.println("Enter e-wallet used : ");
+        System.out.println("Enter e-wallet used > ");
         String eWalletType = scanner.next();
 
         do {
@@ -186,7 +193,7 @@ public class DriverJQ {
         // Enter cardNo
         do {
             try {
-                System.out.print("Enter phone number : ");
+                System.out.print("Enter phone number > ");
                 cardNo = scanner.nextInt();
 
                 continueInputNo = false;
@@ -199,11 +206,14 @@ public class DriverJQ {
         // Enter expiry date
         do {
             System.out.println("Enter expiry date ");
+            System.out.println();
+            System.out.println("---------------------------------------------------------");
+            System.out.println();
 
             // Enter year
             do {
                 try {
-                    System.out.print("Year : ");
+                    System.out.print("Year > ");
                     year = scanner.nextInt();
 
                     continueInputY = false;
@@ -216,7 +226,7 @@ public class DriverJQ {
             // Enter month
             do {
                 try {
-                    System.out.print("Month : ");
+                    System.out.print("Month > ");
                     month = scanner.nextInt();
 
                     continueInputM = false;
@@ -229,7 +239,7 @@ public class DriverJQ {
             // Enter day
             do {
                 try {
-                    System.out.print("Day : ");
+                    System.out.print("Day > ");
                     day = scanner.nextInt();
 
                     continueInputD = false;
@@ -250,13 +260,13 @@ public class DriverJQ {
 
         } while (!validDate);
 
-        System.out.println("Enter card holder name : ");
+        System.out.println("Enter card holder name > ");
         cardHolder = scanner.nextLine();
 
         // Enter ccv
         do {
             try {
-                System.out.print("Enter ccv : ");
+                System.out.print("Enter ccv > ");
                 ccv = scanner.nextInt();
 
                 continueInputCCV = false;
@@ -277,8 +287,7 @@ public class DriverJQ {
     // buying, user may ask for modification.
     // Then, user may ask for confirmation and proceed to purchase fnb.
     // ==============================================================================================================
-    public static ArrayList<Ticket> buyTicket(ArrayList<Ticket> ticketList) throws Exception {
-        Scanner scanner = new Scanner(System.in);
+    public static ArrayList<Ticket> buyTicket(ArrayList<Ticket> ticketList, Scanner scanner) throws Exception {
 
         // yesno1 - add more Ticket, yesno2 - make changes to added ticket
         char yesno1 = 'n', yesno2 = 'n';
@@ -288,15 +297,20 @@ public class DriverJQ {
         boolean continueInput = true;
 
         // ------------------------------------------ScanScheduleFromFile----------------------------------------------
-        Schedule schedule = new Schedule();
+        // Schedule schedule = new Schedule();
         ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
-        DriverJh.readFromFile("scheduleFile.txt", scheduleList, schedule);
+        // DriverJh.readFromFile("scheduleFile.txt", scheduleList, schedule);
+        // ------------------------------------------------------------------------------------------------------------
+
+        // ------------------------------------------ScanStationFromFile----------------------------------------------
+        // TrainStation station = new TrainStation();
+        ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
+        // DriverJh.readFromFile("stationFile.txt", stationList, station);
         // ------------------------------------------------------------------------------------------------------------
 
         // --------------------------------------------AddTicketsIntoArrayList-------------------------------------------
         do {
-
-            ticketList.add(addTicket(scheduleList));
+            ticketList = addTicket(ticketList, stationList, scheduleList, scanner);
             System.out.print("Would you like to add more ticket? (Y - YES, OTHER - NO)    ");
             yesno1 = scanner.next().charAt(0);
 
@@ -305,11 +319,18 @@ public class DriverJQ {
 
         do {
             // --------------------------------------------DisplayTicketArrayList---------------------------------------------
+            System.out.println("=========================================================");
+            System.out.println("                           Tickets");
+            System.out.println("=========================================================");
             int z = 1;
             for (Ticket tickets : ticketList) {
+                System.out.println();
                 System.out.println(z + ".");
                 System.out.println(tickets);
                 z++;
+                System.out.println();
+                System.out.println("---------------------------------------------------------");
+                System.out.println();
             }
             // -----------------------------------------------------------------------------------------------------------------
 
@@ -317,16 +338,22 @@ public class DriverJQ {
 
             System.out.print("Would you like to make changes on tickets? (Y - YES, others - NO) : ");
             yesno2 = scanner.next().charAt(0);
+            yesno2 = Character.toUpperCase(yesno2);
 
-            if (yesno2 == 'y' || yesno2 == 'Y') {
+            if (yesno2 == 'Y') {
 
+                System.out.println("=========================================================");
+                System.out.println("                           Modification");
+                System.out.println("=========================================================");
                 System.out.println("1.Delete added tickets");
                 System.out.println("2.Edit added tickets");
-                System.out.println("Other - EXIT Modifying");
+                System.out.println();
+                System.out.println("* Press other to exit");
+                System.out.println("=========================================================");
 
                 do {
                     try {
-                        System.out.print("Enter your option : ");
+                        System.out.print("Enter your option > ");
                         userOpt1 = scanner.nextInt();
 
                         continueInput = false;
@@ -338,13 +365,15 @@ public class DriverJQ {
 
                 switch (userOpt1) {
                     case 1:
-                        ticketList = dltTicket(ticketList, scheduleList);
+                        // Delete tickets
+                        ticketList = dltTicket(ticketList, scheduleList, scanner);
                         break;
                     case 2:
-                        ticketList = modifyTicket(ticketList, scheduleList);
+                        // Edit tickets
+                        ticketList = modifyTicket(ticketList, scheduleList, stationList, scanner);
                         break;
                     default:
-                        System.out.println("Invalid Input. ");
+                        System.out.println("Exit Modifying. ");
                         break;
                 }
             }
@@ -358,11 +387,11 @@ public class DriverJQ {
     // User can buy tickets for DIFFERENT details or SAME details. User can only buy
     // tickets for current day and after current day.
     // --------------------------------------------------------------------------------------------------
-    public static Ticket addTicket(ArrayList<Schedule> scheduleList) throws Exception {
-        Scanner scanner = new Scanner(System.in);
+    public static ArrayList<Ticket> addTicket(ArrayList<Ticket> ticketList, ArrayList<TrainStation> stationList,
+            ArrayList<Schedule> scheduleList, Scanner scanner) throws Exception {
 
-        Ticket ticket;
-        Schedule ticketSchedule;
+        Ticket ticket = new Ticket();
+        Schedule ticketSchedule = new Schedule();
         LocalDate ticketDate;
         LocalDate today = LocalDate.now();
 
@@ -372,119 +401,202 @@ public class DriverJQ {
         int scheduleNo = 0;
         boolean validSchedule = true;
 
-        boolean continueInputS = true;
+        String depart;
+        String arrive;
+        int departNo = 0;
+        boolean validDepart = true;
+        int arriveNo = 0;
+        boolean validArrive = true;
+        char confirmSchedule;
+
+        TrainStation departStation;
+        TrainStation arriveStation;
+
+        boolean continueInputAS = true;
+        boolean continueInputDS = true;
         boolean continueInputY = true;
         boolean continueInputD = true;
         boolean continueInputM = true;
 
-        // ---------------------------------------DisplaySchedule--------------------------------------------------------
-        for (int i = 0; i < scheduleList.size(); i++) {
-            System.out.printf("%d.\n", i + 1);
-            System.out.println(scheduleList.get(i).displayToCust());
+        // ---------------------------------------DisplayStation---------------------------------------------------------
+        System.out.println("=========================================================");
+        System.out.println("                    Train Station");
+        System.out.println("=========================================================");
+        for (int i = 0; i < stationList.size(); i++) {
+            System.out.println();
+            System.out.printf("%d. ", i + 1);
+            System.out.println(stationList.get(i).getLocationName());
+            System.out.println();
+            System.out.println("---------------------------------------------------------");
             System.out.println();
         }
+        System.out.println("=========================================================");
         // --------------------------------------------------------------------------------------------------------------
 
-        // -----------------------------------------SelectSchedule--------------------------------------------------------
+        // -----------------------------------------SelectStation--------------------------------------------------------
+        // Select depart station
         do {
 
             do {
                 try {
-                    System.out.print("Select your schedule : ");
-                    scheduleNo = scanner.nextInt();
+                    System.out.print("Select your depart station > ");
+                    departNo = scanner.nextInt();
 
-                    continueInputS = false;
+                    continueInputDS = false;
                 } catch (InputMismatchException ex) {
                     System.out.println("Incorrect input. Please try again. ");
                     scanner.nextLine();
                 }
-            } while (continueInputS);
+            } while (continueInputDS);
 
-            if (scheduleNo > scheduleList.size()) {
-                System.out.println("Schedule not found. Please enter again.");
-                validSchedule = false;
+            if (departNo > stationList.size()) {
+                System.out.println("Station not found. Please enter again.");
+                validDepart = false;
             } else {
+                validDepart = true;
+            }
+
+        } while (!validDepart);
+
+        depart = stationList.get(departNo - 1).getLocationName();
+
+        // Select arrive station
+        do {
+
+            do {
+                try {
+                    System.out.print("Select your arrive station > ");
+                    arriveNo = scanner.nextInt();
+
+                    continueInputAS = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect input. Please try again. ");
+                    scanner.nextLine();
+                }
+            } while (continueInputAS);
+
+            if (arriveNo > stationList.size()) {
+                System.out.println("Station not found. Please enter again.");
+                validArrive = false;
+            } else {
+                validArrive = true;
+            }
+
+        } while (!validArrive);
+
+        arrive = stationList.get(arriveNo - 1).getLocationName();
+
+        for (Schedule schedules : scheduleList) {
+            if (depart.equalsIgnoreCase(schedules.getDepartLocation().getLocationName())
+                    && arrive.equalsIgnoreCase(schedules.getArriveLocation().getLocationName())) {
                 validSchedule = true;
             }
+        }
 
-        } while (!validSchedule);
+        if (validSchedule) {
 
-        TrainStation depart = scheduleList.get(scheduleNo - 1).getDepartLocation();
-        TrainStation arrive = scheduleList.get(scheduleNo - 1).getArriveLocation();
-        double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
-        ticketSchedule = new Schedule(depart, arrive, price);
+            // Schedule found
+            // ---------------------------------------DisplaySchedule--------------------------------------------------------
 
-        // ---------------------------------------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------------------------------------------
 
-        // ------------------------------------------EnterDate------------------------------------------------------------
-        do {
-            System.out.println("Enter your date ");
+            System.out.println("Depart From : " + depart);
+            System.out.println("Arrive At : " + arrive);
+            System.out.println("Confirm? (Y- YES, N - NO) > ");
+            confirmSchedule = scanner.next().charAt(0);
+            confirmSchedule = Character.toUpperCase(confirmSchedule);
 
-            // Enter year
-            do {
-                try {
-                    System.out.print("Year : ");
-                    year = scanner.nextInt();
+            if (confirmSchedule == 'Y') {
 
-                    continueInputY = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
-                }
-            } while (continueInputY);
+                departStation = stationList.get(departNo - 1);
+                arriveStation = stationList.get(arriveNo - 1);
+                double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
 
-            // Enter month
-            do {
-                try {
-                    System.out.print("Month : ");
-                    month = scanner.nextInt();
+                ticketSchedule = new Schedule(departStation, arriveStation, price);
 
-                    continueInputM = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
-                }
-            } while (continueInputM);
-
-            // Enter day
-            do {
-                try {
-                    System.out.print("Day : ");
-                    day = scanner.nextInt();
-
-                    continueInputD = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
-                }
-            } while (continueInputD);
-
-            ticketDate = LocalDate.of(year, month, day);
-
-            if (ticketDate.isBefore(today)) {
-                System.out.println("Invalid Date. Please enter again.");
-                validDate = false;
-            } else {
-                validDate = true;
             }
 
-        } while (!validDate);
+        } else {
+            System.out.println("Schedule not found.");
+        }
+
         // ---------------------------------------------------------------------------------------------------------------
 
-        // -------------------------------------CreateTempTicketObj--------------------------------------------------------
-        ticket = new Ticket(ticketSchedule, ticketDate);
+        // Continue when schedule is found.
+        // ------------------------------------------EnterDate------------------------------------------------------------
+        if (validSchedule) {
+
+            do {
+                System.out.println("Enter your date");
+                System.out.println();
+                System.out.println("---------------------------------------------------------");
+                System.out.println();
+
+                // Enter year
+                do {
+                    try {
+                        System.out.print("Year > ");
+                        year = scanner.nextInt();
+
+                        continueInputY = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputY);
+
+                // Enter month
+                do {
+                    try {
+                        System.out.print("Month > ");
+                        month = scanner.nextInt();
+
+                        continueInputM = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputM);
+
+                // Enter day
+                do {
+                    try {
+                        System.out.print("Day > ");
+                        day = scanner.nextInt();
+
+                        continueInputD = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputD);
+
+                ticketDate = LocalDate.of(year, month, day);
+
+                if (ticketDate.isBefore(today)) {
+                    System.out.println("Invalid Date. Please enter again.");
+                    validDate = false;
+                } else {
+                    validDate = true;
+                }
+
+            } while (!validDate);
+
+            ticket = new Ticket(ticketSchedule, ticketDate);
+            ticketList.add(ticket);
+
+        }
         // ---------------------------------------------------------------------------------------------------------------
 
-        return ticket;
+        return ticketList;
     }
 
     // -------------------------------------------DELETETICKET-----------------------------------------------------------
     // User can delete all the added tickets or select a particular ticket to delete
     // ------------------------------------------------------------------------------------------------------------------
-    public static ArrayList<Ticket> dltTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList)
+    public static ArrayList<Ticket> dltTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList,
+            Scanner scanner)
             throws Exception {
-
-        Scanner scanner = new Scanner(System.in);
 
         int dltTicket = 0;
         char confirmDlt;
@@ -496,11 +608,15 @@ public class DriverJQ {
 
         System.out.println("1. Delete all added tickets");
         System.out.println("2. Delete a particular ticket");
-        System.out.println("Other - Exit Deleting");
+        System.out.println();
+        System.out.println("* Press other to exit");
+        System.out.println();
+        System.out.println("---------------------------------------------------------");
+        System.out.println();
 
         do {
             try {
-                System.out.print("Enter your option : ");
+                System.out.print("Enter your option > ");
                 dltOption = scanner.nextInt();
 
                 continueInputA = false;
@@ -526,7 +642,7 @@ public class DriverJQ {
 
                 do {
                     try {
-                        System.out.print("Select the ticket you would like to delete : ");
+                        System.out.print("Select the ticket you would like to delete > ");
                         dltTicket = scanner.nextInt();
 
                         continueInputP = false;
@@ -549,7 +665,7 @@ public class DriverJQ {
             System.out.println("             Ticket");
             System.out.println("=================================");
             System.out.println(ticketList.get(dltTicket - 1));
-            System.out.println("Are you sure to delete this ticket? (Y - YES, Other -  NO)   ");
+            System.out.println("Are you sure to delete this ticket? (Y - YES, Other -  NO) >> ");
             confirmDlt = scanner.next().charAt(0);
             confirmDlt = Character.toUpperCase(confirmDlt);
 
@@ -572,8 +688,8 @@ public class DriverJQ {
     // ----------------------------------------------MODIFYTICKET------------------------------------------------
     // User can select either schedule or date of the selected tickets to modify.
     // ----------------------------------------------------------------------------------------------------------
-    public static ArrayList<Ticket> modifyTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList) {
-        Scanner scanner = new Scanner(System.in);
+    public static ArrayList<Ticket> modifyTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList,
+            ArrayList<TrainStation> stationList, Scanner scanner) {
         int editOpt = 0;
         char confirmEdit;
         char confirmSchedule;
@@ -582,13 +698,23 @@ public class DriverJQ {
         int scheduleNo = 0;
         int day = 0, month = 0, year = 0;
 
-        Schedule schedule;
+        Schedule ticketSchedule;
+        TrainStation departStation = new TrainStation();
+        TrainStation arriveStation = new TrainStation();
+        String depart;
+        String arrive;
+        int departNo = 0;
+        boolean validDepart = true;
+        int arriveNo = 0;
+        boolean validArrive = true;
+
         LocalDate date;
         LocalDate today = LocalDate.now();
 
         boolean continueInputE = true;
         boolean continueInputT = true;
-        boolean continueInputS = true;
+        boolean continueInputAS = true;
+        boolean continueInputDS = true;
         boolean continueInputY = true;
         boolean continueInputM = true;
         boolean continueInputD = true;
@@ -601,7 +727,7 @@ public class DriverJQ {
         do {
             do {
                 try {
-                    System.out.print("Select the ticket you would like to delete : ");
+                    System.out.print("Select the ticket you would like to edit > ");
                     editTicket = scanner.nextInt();
 
                     continueInputT = false;
@@ -628,18 +754,22 @@ public class DriverJQ {
         System.out.println(ticketList.get(editTicket - 1));
         // --------------------------------------------------------------------------------------------------------------
 
-        System.out.println("Are you sure to delete this ticket? (Y - YES, Other -  NO)   ");
+        System.out.println("Are you sure to edit this ticket? (Y - YES, Other -  NO) >> ");
         confirmEdit = scanner.next().charAt(0);
         confirmEdit = Character.toUpperCase(confirmEdit);
 
         if (confirmEdit == 'Y') {
             System.out.println("1. Schedule");
             System.out.println("2. Date");
-            System.out.println("Other - Exit Editing");
+            System.out.println();
+            System.out.println("* Press other to exit ");
+            System.out.println();
+            System.out.println("---------------------------------------------------------");
+            System.out.println();
 
             do {
                 try {
-                    System.out.print("Enter your option : ");
+                    System.out.print("Enter your option > ");
                     editOpt = scanner.nextInt();
 
                     continueInputE = false;
@@ -652,55 +782,109 @@ public class DriverJQ {
             if (editOpt == 1) {
 
                 // -----------------------------------------SelectSchedule--------------------------------------------------------
+                // Select depart station
                 do {
 
                     do {
                         try {
-                            System.out.print("Select your schedule : ");
-                            scheduleNo = scanner.nextInt();
+                            System.out.print("Select your depart station > ");
+                            departNo = scanner.nextInt();
 
-                            continueInputS = false;
+                            continueInputDS = false;
                         } catch (InputMismatchException ex) {
                             System.out.println("Incorrect input. Please try again. ");
                             scanner.nextLine();
                         }
-                    } while (continueInputS);
+                    } while (continueInputDS);
 
-                    if (scheduleNo > scheduleList.size()) {
-                        System.out.println("Schedule not found. Please enter again.");
-                        validSchedule = false;
+                    if (departNo > stationList.size()) {
+                        System.out.println("Station not found. Please enter again.");
+                        validDepart = false;
                     } else {
-                        validSchedule = true;
+                        validDepart = true;
                     }
 
-                } while (!validSchedule);
+                } while (!validDepart);
 
-                TrainStation depart = scheduleList.get(scheduleNo - 1).getDepartLocation();
-                TrainStation arrive = scheduleList.get(scheduleNo - 1).getArriveLocation();
-                double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
-                schedule = new Schedule(depart, arrive, price);
+                depart = stationList.get(departNo - 1).getLocationName();
+
+                // Select arrive station
+                do {
+
+                    do {
+                        try {
+                            System.out.print("Select your arrive station > ");
+                            arriveNo = scanner.nextInt();
+
+                            continueInputAS = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect input. Please try again. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputAS);
+
+                    if (arriveNo > stationList.size()) {
+                        System.out.println("Station not found. Please enter again.");
+                        validArrive = false;
+                    } else {
+                        validArrive = true;
+                    }
+
+                } while (!validArrive);
+
+                arrive = stationList.get(arriveNo - 1).getLocationName();
+
+                for (Schedule schedules : scheduleList) {
+                    if (depart.equalsIgnoreCase(schedules.getDepartLocation().getLocationName())
+                            && arrive.equalsIgnoreCase(schedules.getArriveLocation().getLocationName())) {
+                        validSchedule = true;
+                    }
+                }
+
+                if (validSchedule) {
+
+                    // Schedule found
+                    // ---------------------------------------DisplaySchedule--------------------------------------------------------
+
+                    // --------------------------------------------------------------------------------------------------------------
+
+                    System.out.println("Depart From : " + depart);
+                    System.out.println("Arrive At : " + arrive);
+                    System.out.println("Confirm? (Y- YES, N - NO) >> ");
+                    confirmSchedule = scanner.next().charAt(0);
+                    confirmSchedule = Character.toUpperCase(confirmSchedule);
+
+                    if (confirmSchedule == 'Y') {
+
+                        departStation = stationList.get(departNo - 1);
+                        arriveStation = stationList.get(arriveNo - 1);
+                        double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
+
+                        ticketSchedule = new Schedule(departStation, arriveStation, price);
+
+                        ticketList.get(editTicket - 1).setTicketSchedule(ticketSchedule);
+
+                    }
+
+                } else {
+                    System.out.println("Schedule not found.");
+                }
 
                 // ---------------------------------------------------------------------------------------------------------------
-
-                System.out.print("Confirm your date (Y - YES, Other - NO) : ");
-                confirmSchedule = scanner.next().charAt(0);
-                confirmSchedule = Character.toUpperCase(confirmSchedule);
-
-                if (confirmSchedule == 'Y') {
-                    ticketList.get(editTicket - 1).setTicketSchedule(schedule);
-                    ;
-                }
 
             } else if (editOpt == 2) {
 
                 // ------------------------------------------EnterDate------------------------------------------------------------
                 do {
                     System.out.println("Enter your date ");
+                    System.out.println();
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println();
 
                     // Enter year
                     do {
                         try {
-                            System.out.print("Year : ");
+                            System.out.print("Year > ");
                             year = scanner.nextInt();
 
                             continueInputY = false;
@@ -713,7 +897,7 @@ public class DriverJQ {
                     // Enter month
                     do {
                         try {
-                            System.out.print("Month : ");
+                            System.out.print("Month > ");
                             month = scanner.nextInt();
 
                             continueInputM = false;
@@ -726,7 +910,7 @@ public class DriverJQ {
                     // Enter day
                     do {
                         try {
-                            System.out.print("Day : ");
+                            System.out.print("Day > ");
                             day = scanner.nextInt();
 
                             continueInputD = false;
@@ -767,7 +951,8 @@ public class DriverJQ {
     // ==============================================================================================================
     // BUY FNB
     // ==============================================================================================================
-    public static ArrayList<FoodAndBeverage> buyFnb(ArrayList<FoodAndBeverage> fnbList) throws Exception {
+    public static ArrayList<FoodAndBeverage> buyFnb(ArrayList<FoodAndBeverage> fnbList, Scanner scanner)
+            throws Exception {
 
         // --------------------------------------ScanFoodAndBeverageList----------------------------------------------
         ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
@@ -778,8 +963,6 @@ public class DriverJQ {
         Drinks drinks = new Drinks();
         DriverJh.readFromFile("drinksFile.txt", drinksList, drinks);
         // ------------------------------------------------------------------------------------------------------------
-
-        Scanner scanner = new Scanner(System.in);
 
         boolean continueInput = true;
         boolean continueInputF = true;
@@ -792,7 +975,6 @@ public class DriverJQ {
         char cont1;
 
         int addFnb = 0;
-        double subtotal = 0;
 
         do {
             // --------------------------------------SelectSnacksOrDrinks--------------------------------------------------
@@ -801,7 +983,7 @@ public class DriverJQ {
 
             do {
                 try {
-                    System.out.print("Enter your option : ");
+                    System.out.print("Enter your option > ");
                     addFnb = scanner.nextInt();
 
                     continueInput = false;
@@ -816,7 +998,7 @@ public class DriverJQ {
 
                 // -----------------------------------------AddSnacks--------------------------------------------------------
                 do {
-                    fnbList = addSnacks(snacksList, fnbList);
+                    fnbList = addSnacks(snacksList, fnbList, scanner);
                     System.out.print("Would you like to buy more snacks? (Y - YES, OTHER - NO)  ");
                     yesno2 = scanner.next().charAt(0);
                 } while (yesno2 == 'y' || yesno2 == 'Y');
@@ -825,15 +1007,17 @@ public class DriverJQ {
                 System.out.println("\n============================");
                 System.out.println("            Orders");
                 System.out.println("============================");
+                System.out.println();
                 int z = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
                     System.out.println(z + ".");
                     System.out.println(fnbs.displayToCust());
                     System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
                     System.out.println("Total Amount      >> " + fnbs.calculatePrice());
-                    subtotal += fnbs.calculatePrice();
-                    System.out.println();
                     z++;
+                    System.out.println();
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println();
                 }
                 // ----------------------------------------------------------------------------------------------------------
 
@@ -841,7 +1025,7 @@ public class DriverJQ {
 
                 // -----------------------------------------AddDrinks--------------------------------------------------------
                 do {
-                    fnbList = addDrinks(drinksList, fnbList);
+                    fnbList = addDrinks(drinksList, fnbList, scanner);
                     System.out.print("Would you like to buy more drinks? (Y - YES, OTHER - NO)  ");
                     yesno3 = scanner.next().charAt(0);
                 } while (yesno3 == 'y' || yesno3 == 'Y');
@@ -850,15 +1034,17 @@ public class DriverJQ {
                 System.out.println("\n============================");
                 System.out.println("            Orders");
                 System.out.println("============================");
+                System.out.println();
                 int y = 1;
                 for (FoodAndBeverage fnbs : fnbList) {
                     System.out.println(y + ".");
                     System.out.println(fnbs.displayToCust());
                     System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
                     System.out.println("Total Amount      >> " + fnbs.calculatePrice());
-                    subtotal += fnbs.calculatePrice();
-                    System.out.println();
                     y++;
+                    System.out.println();
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println();
                 }
                 // ----------------------------------------------------------------------------------------------------------
 
@@ -879,33 +1065,39 @@ public class DriverJQ {
             System.out.println("\n============================");
             System.out.println("        Order Summary");
             System.out.println("============================");
+            System.out.println();
             int y = 1;
             for (FoodAndBeverage fnbs : fnbList) {
                 System.out.println(y + ".");
                 System.out.println(fnbs.displayToCust());
                 System.out.println("Purchase Quantity >>  " + fnbs.getPurchaseQty());
                 System.out.println("Total Amount      >>  " + fnbs.calculatePrice());
-                subtotal += fnbs.calculatePrice();
-                System.out.println();
                 y++;
-
+                System.out.println();
+                System.out.println("---------------------------------------------------------");
+                System.out.println();
             }
             // -----------------------------------------------------------------------------------------------------------------
 
             // ------------------------------------------MakeChangesToOrder-----------------------------------------------------
-            System.out.print("Would you like to make changes to orders? (Y - YES, other - NO)  ");
+            System.out.print("Would you like to make changes to orders? (Y - YES, other - NO) >> ");
             cont1 = scanner.next().charAt(0);
 
             if (cont1 == 'y' || cont1 == 'Y') {
 
                 do {
-
+                    System.out.println("=========================================================");
+                    System.out.println("                       Modification");
+                    System.out.println("=========================================================");
                     System.out.println("1. Delete orders ");
-                    System.out.println("2. Modify orders ");
+                    System.out.println("2. Edit orders ");
+                    System.out.println();
+                    System.out.println("=========================================================");
+                    System.out.println();
 
                     do {
                         try {
-                            System.out.print("Enter your option : ");
+                            System.out.print("Enter your option > ");
                             userOpt1 = scanner.nextInt();
 
                             continueInputF = false;
@@ -919,10 +1111,10 @@ public class DriverJQ {
 
                 switch (userOpt1) {
                     case 1:
-                        fnbList = dltFnb(fnbList);
+                        fnbList = dltFnb(fnbList, scanner);
                         break;
                     case 2:
-                        fnbList = editFnb(drinksList, fnbList);
+                        fnbList = editFnb(drinksList, fnbList, scanner);
                         break;
                     default:
                         System.out.println("Invalid. ");
@@ -941,10 +1133,8 @@ public class DriverJQ {
     // ------------------------------------------------ADDSNACKS-----------------------------------------------------------
     // User can buy one or many different and same snacks
     // ---------------------------------------------------------------------------------------------------------------------
-    public static ArrayList<FoodAndBeverage> addSnacks(ArrayList<Snacks> snacksList, ArrayList<FoodAndBeverage> fnbList)
-            throws Exception {
-
-        Scanner scanner = new Scanner(System.in);
+    public static ArrayList<FoodAndBeverage> addSnacks(ArrayList<Snacks> snacksList, ArrayList<FoodAndBeverage> fnbList,
+            Scanner scanner) throws Exception {
 
         Snacks snack;
         int addSnacks = 0;
@@ -957,12 +1147,19 @@ public class DriverJQ {
         boolean foundSnack = false;
 
         // ----------------------------------------------DisplaySnacks--------------------------------------------------------------
+        System.out.println("=========================================================");
+        System.out.println("                       Snacks Available");
+        System.out.println("=========================================================");
+        System.out.println();
         for (int i = 0; i < snacksList.size(); i++) {
             System.out.printf("%d.\n", i + 1);
             System.out.println(snacksList.get(i).toString());
             System.out.println();
+            System.out.println("---------------------------------------------------------");
+            System.out.println();
         }
-        System.out.println("Which snack would you like to add?");
+        System.out.println("=========================================================");
+        System.out.println("\nWhich snack would you like to add?\n\n");
         // ------------------------------------------------------------------------------------------------------------------------
 
         // -----------------------------------------------SelectSnacks--------------------------------------------------------------
@@ -970,7 +1167,7 @@ public class DriverJQ {
 
             do {
                 try {
-                    System.out.print("Enter your option : ");
+                    System.out.print("Enter your option > ");
                     addSnacks = scanner.nextInt();
 
                     continueInputS = false;
@@ -999,7 +1196,7 @@ public class DriverJQ {
                 // -------------------------------------------EnterQty-------------------------------------------------------------
                 do {
                     try {
-                        System.out.print("Enter quantity : ");
+                        System.out.print("Enter quantity > ");
                         snackQty = scanner.nextInt();
 
                         continueInputSQ = false;
@@ -1012,8 +1209,8 @@ public class DriverJQ {
                 if (!snack.checkStockQty(snackQty)) {
 
                     // Purchase quantity > stock quantity
-                    System.out.println("Sorry, we have only " + snack.getStockQty() + " for " + snack.getFoodName());
-                    System.out.println("Please enter again. ");
+                    System.out.print("Sorry, we have only " + snack.getStockQty() + " for " + snack.getFoodName());
+                    System.out.print(". Please enter again.\n");
 
                 }
 
@@ -1046,9 +1243,8 @@ public class DriverJQ {
     // ---------------------------------------ADDDRINKS-----------------------------------------------------------------------------
     // User can buy one or many different and same drinks
     // -----------------------------------------------------------------------------------------------------------------------------
-    public static ArrayList<FoodAndBeverage> addDrinks(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList)
-            throws Exception {
-        Scanner scanner = new Scanner(System.in);
+    public static ArrayList<FoodAndBeverage> addDrinks(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList,
+            Scanner scanner) throws Exception {
         Drinks drink;
 
         int addDrinks = 0;
@@ -1064,12 +1260,19 @@ public class DriverJQ {
         boolean validDrink = true;
 
         // -----------------------------------------------DisplayDrinks---------------------------------------------------------
+        System.out.println("=========================================================");
+        System.out.println("                       Drinks Available");
+        System.out.println("=========================================================");
+        System.out.println();
         for (int i = 0; i < drinksList.size(); i++) {
             System.out.printf("%d.\n", i + 1);
             System.out.println(drinksList.get(i).toString());
             System.out.println();
+            System.out.println("---------------------------------------------------------");
+            System.out.println();
         }
-        System.out.println("Which drink would you like to add?");
+        System.out.println("=========================================================");
+        System.out.println("\nWhich drink would you like to add?\n\n");
         // ----------------------------------------------------------------------------------------------------------------------
 
         // -------------------------------------------------SelectDrink----------------------------------------------------------
@@ -1078,7 +1281,7 @@ public class DriverJQ {
             do {
 
                 try {
-                    System.out.print("Enter your option : ");
+                    System.out.print("Enter your option > ");
                     addDrinks = scanner.nextInt();
 
                     continueInputD = false;
@@ -1108,7 +1311,7 @@ public class DriverJQ {
                 // -------------------------------------------------EnterQty--------------------------------------------------------
                 do {
                     try {
-                        System.out.print("Enter quantity : ");
+                        System.out.print("Enter quantity > ");
                         drinkQty = scanner.nextInt();
 
                         continueInputDQ = false;
@@ -1143,7 +1346,7 @@ public class DriverJQ {
             // Select size
             do {
 
-                System.out.print("Enter (S, M, B) : ");
+                System.out.print("Enter (S, M, B) > ");
                 size = scanner.next().charAt(0);
                 size = Character.toUpperCase(size);
 
@@ -1174,7 +1377,7 @@ public class DriverJQ {
                 System.out.println("2. Hot");
                 do {
                     try {
-                        System.out.print("Enter (1 / 2) : ");
+                        System.out.print("Enter (1 / 2) > ");
                         temperature = scanner.nextInt();
 
                         continueInputT = false;
@@ -1190,7 +1393,7 @@ public class DriverJQ {
                 drink.setTemperature("Cold");
 
                 // Select Iced
-                System.out.print("Y - ICED, other - NO ICE : ");
+                System.out.print("Y - ICED, other - NO ICE > ");
                 ice = scanner.next().charAt(0);
 
                 if (ice == 'Y' || ice == 'y') {
@@ -1214,8 +1417,8 @@ public class DriverJQ {
     // ---------------------------------------DLTFNB----------------------------------------------------------------------
     // User can buy delete one or many orders
     // -------------------------------------------------------------------------------------------------------------------
-    public static ArrayList<FoodAndBeverage> dltFnb(ArrayList<FoodAndBeverage> fnbList) throws Exception {
-        Scanner scanner = new Scanner(System.in);
+    public static ArrayList<FoodAndBeverage> dltFnb(ArrayList<FoodAndBeverage> fnbList, Scanner scanner)
+            throws Exception {
         int dltFnbOpt = 0;
         char confirmDlt;
         boolean continueInputD = true;
@@ -1250,7 +1453,7 @@ public class DriverJQ {
         System.out.println("            Order");
         System.out.println("============================");
         System.out.println(fnbList.get(dltFnbOpt - 1).displayToCust());
-        System.out.print("\nAre you sure to delete this order? (Y - YES, other - NO)   ");
+        System.out.print("\nAre you sure to delete this order? (Y - YES, other - NO) >> ");
         confirmDlt = scanner.next().charAt(0);
         confirmDlt = Character.toUpperCase(confirmDlt);
 
@@ -1266,9 +1469,8 @@ public class DriverJQ {
     }
 
     // --------------------------------------EDITFNB----------------------------------------------------------------------
-    public static ArrayList<FoodAndBeverage> editFnb(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList)
-            throws Exception {
-        Scanner scanner = new Scanner(System.in);
+    public static ArrayList<FoodAndBeverage> editFnb(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList,
+            Scanner scanner) throws Exception {
 
         int editFnbOpt = 0;
         int fnbIndex = 0;
@@ -1316,7 +1518,7 @@ public class DriverJQ {
         System.out.println("            Order");
         System.out.println("============================");
         System.out.println(fnbList.get(fnbIndex).displayToCust());
-        System.out.print("\nAre you sure to edit this order? (Y - YES, other - NO)   ");
+        System.out.print("\nAre you sure to edit this order? (Y - YES, other - NO) >> ");
         confirmEdit = scanner.next().charAt(0);
         confirmEdit = Character.toUpperCase(confirmEdit);
 
@@ -1333,7 +1535,7 @@ public class DriverJQ {
 
             do {
                 try {
-                    System.out.print("Enter your option : ");
+                    System.out.print("Enter your option > ");
                     editOpt = scanner.nextInt();
 
                     continueInput = false;
@@ -1352,7 +1554,7 @@ public class DriverJQ {
 
                         do {
                             try {
-                                System.out.print("Enter quantity : ");
+                                System.out.print("Enter quantity > ");
                                 editQty = scanner.nextInt();
 
                                 continueInputEQ = false;
@@ -1408,7 +1610,7 @@ public class DriverJQ {
 
                     do {
 
-                        System.out.print("Enter (S, M, B) : ");
+                        System.out.print("Enter (S, M, B) > ");
                         editSize = scanner.next().charAt(0);
                         editSize = Character.toUpperCase(editSize);
 
@@ -1445,7 +1647,7 @@ public class DriverJQ {
                         System.out.println("2. Hot");
                         do {
                             try {
-                                System.out.print("Enter (1 / 2) : ");
+                                System.out.print("Enter (1 / 2) > ");
                                 editTemp = scanner.nextInt();
 
                                 continueInputET = false;
@@ -1504,76 +1706,89 @@ public class DriverJQ {
 
     }
 
-    public static void editAccount() {
-        Customer cust = new Customer();
+    public static void editAccount(Login login) {
         Scanner scanner = new Scanner(System.in);
         int editOpt = 0;
         boolean continueInput = true;
 
+        Customer cust = new Customer();
+        boolean validAcc = false;
+
         String regex = "^[a-zA-Z0-9 ]+$"; // regex with space
-        String regex2 = "^[a-zA-Z0-9]+$"; // regex without space
         String regex3 = "^01[2-9]-\\\\d{7,8})$"; // regex for phone no.
 
         String fullname, email, contactNo;
         char gender;
 
-        System.out.println("1. Full Name");
-        System.out.println("2. Email");
-        System.out.println("3. Contact Number");
-        System.out.println("4. Gender");
-        System.out.println("Other - Exit");
-        do {
-            try {
-                System.out.print("Enter your option : ");
-                editOpt = scanner.nextInt();
-
-                continueInput = false;
-            } catch (InputMismatchException ex) {
-                System.out.println("Incorrect Input. Please try agin. ");
-                scanner.nextLine();
+        Customer.readCustInfo();
+        ArrayList<Customer> customers = Customer.custDetails;
+        for (int i = 0; i < customers.size(); i++) {
+            if (login.getUsername().equals(customers.get(i).getUsername())
+                    && login.getPassword().equals(customers.get(i).getPassword())) {
+                cust = customers.get(i);
+                validAcc = true;
             }
-        } while (continueInput);
-
-        if (editOpt == 1) {
-
-            do {
-                System.out.println("Enter  your full name (no special characters) >");
-                fullname = scanner.nextLine();
-            } while (!fullname.matches(regex));
-
-            cust.setFullname(fullname);
-
-        } else if (editOpt == 2) {
-
-            do {
-                System.out.printf("Enter your email (no spaces) > ");
-                email = scanner.next();
-            } while (!email.contains(" "));
-
-            cust.setEmail(email);
-
-        } else if (editOpt == 3) {
-            do {
-                System.out.println("Enter contact Number (eg. 012-3456789) > ");
-                contactNo = scanner.nextLine();
-            } while (!contactNo.matches(regex3));
-
-            cust.setContactNo(contactNo);
-
-        } else if (editOpt == 4) {
-
-            do {
-                System.out.println("Enter gender (F/M only) : ");
-                gender = scanner.next().charAt(0);
-                gender = Character.toUpperCase(gender);
-            } while (gender != 'f' && gender != 'M');
-
-            cust.setGender(gender);
-
-        } else {
-            System.out.println("Exit Editing");
         }
 
+        if (validAcc) {
+            System.out.println("1. Full Name");
+            System.out.println("2. Email");
+            System.out.println("3. Contact Number");
+            System.out.println("4. Gender");
+            System.out.println("Other - Exit");
+            do {
+                try {
+                    System.out.print("Enter your option : ");
+                    editOpt = scanner.nextInt();
+
+                    continueInput = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInput);
+
+            if (editOpt == 1) {
+
+                do {
+                    System.out.println("Enter  your full name (no special characters) >");
+                    fullname = scanner.nextLine();
+                } while (!fullname.matches(regex));
+
+                cust.setFullname(fullname);
+
+            } else if (editOpt == 2) {
+
+                do {
+                    System.out.printf("Enter your email (no spaces) > ");
+                    email = scanner.next();
+                } while (!email.contains(" "));
+
+                cust.setEmail(email);
+
+            } else if (editOpt == 3) {
+                do {
+                    System.out.println("Enter contact Number (eg. 012-3456789) > ");
+                    contactNo = scanner.nextLine();
+                } while (!contactNo.matches(regex3));
+
+                cust.setContactNo(contactNo);
+
+            } else if (editOpt == 4) {
+
+                do {
+                    System.out.println("Enter gender (F/M only) : ");
+                    gender = scanner.next().charAt(0);
+                    gender = Character.toUpperCase(gender);
+                } while (gender != 'f' && gender != 'M');
+
+                cust.setGender(gender);
+
+            } else {
+                System.out.println("Exit Editing");
+            }
+
+        }
     }
 
 }
