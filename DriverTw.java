@@ -8,9 +8,7 @@ public class DriverTw {
         String userInput = "";
         boolean cont = true;
         ArrayList<Schedule> scheduleList = new ArrayList<>();
-        ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
         ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
-        Purchase userPurchase = new Purchase();
     //========================================Read from File=========================================================//
         Train train = new Train();
         TrainStation station = new TrainStation();
@@ -57,11 +55,11 @@ public class DriverTw {
 
         } while (cont);
 
-        Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
-        userPurchase.purchaseTicket(tickets);
+        // Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
+        // userPurchase.purchaseTicket(tickets);
 
-        FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
-        userPurchase.purchaseFnb(fnbs);
+        // FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
+        // userPurchase.purchaseFnb(fnbs);
 
     }
 
@@ -74,6 +72,9 @@ public class DriverTw {
         String userInput;
 
         do{
+            System.out.println("==================================================");
+            System.out.println("               View Purchase History");
+            System.out.println("==================================================\n");
             System.out.println("1. View F&B Purchase History");
             System.out.println("2. View Train Ticket Purchase History");
             System.out.println("* Press 'x' to exit\n");
@@ -93,6 +94,15 @@ public class DriverTw {
         }while(cont == true);
     }
 
+    public static void viewFnbHistory(){
+
+    }
+
+    public static void viewTicketHistory(){
+
+    }
+
+
 
     //====================================================================================================================//
     //                                             View Schedules                                                         //
@@ -100,9 +110,9 @@ public class DriverTw {
     public static void viewSchedule(ArrayList<Train> trainList, ArrayList<TrainStation> stationList, ArrayList<Schedule> scheduleList) {
         System.out.println("==================================================");
         System.out.println("                Train Schedules");
-        System.out.println("==================================================");
+        System.out.println("==================================================\n");
         for (int i = 0; i < scheduleList.size(); i++) {
-            System.out.println("Schedule No. " + (i+1) + "\n" + scheduleList.get(i).displayToCust());
+            System.out.println("Schedule No. " + (i+1) + "\n\n" + scheduleList.get(i).displayViewTicket());
             System.out.println();
         }
     }

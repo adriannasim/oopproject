@@ -135,4 +135,8 @@ public class Schedule implements Serializable{
                 "\nTicket Price          : RM" + ticketPrice;
     }
 
+    public String displayViewTicket(){
+        return "Departure Location %10s Arrival Location %10s Departure Time %10s Arrival Time %10s Ticket Price";
+    }
+
 }
