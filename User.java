@@ -29,7 +29,7 @@ public class User {
         return login.getUsername();
     }
     public String getPassword() {
-        return login.getPassword(login.getUsername());
+        return login.getPassword();
     }
     public String getFullname(String username) {
         return fullname;

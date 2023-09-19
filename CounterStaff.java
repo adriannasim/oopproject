@@ -10,14 +10,29 @@ public class CounterStaff extends Staff{
         nextCounterStaffId = 1000;
         int count = 0;
         for (int i = 0; i < staffDetails.size(); i++) {
-            if (staffDetails.get(i).getStaffType(getStaffId()) == 'C') {
+            if (staffDetails.get(i).getStaffType() == 'C') {
                 count++;
             }
         }
         return nextCounterStaffId + count;
     }
 
-    public void createCounterStaff(){
+    //counter menu
+    public void counterMenu() {
+        Scanner input = new Scanner(System.in); //scanner
+
+        System.out.printf("=================================\n");
+        System.out.printf("%-3s%s\n"," ", "COUNTER STAFF MENU");
+        System.out.printf("=================================\n");
+        System.out.printf("1. Buy Ticket\n");
+        System.out.printf("2. Buy Food and Beverage\n");
+        System.out.printf("3. Log out\n");
+        System.out.printf("=================================\n > ");
+
+    }
+
+    //create counter staff account
+    public void createCounterStaff() {
         //variables declaration
         String regex = "^[a-zA-Z0-9 ]+$";  //regex with space
         String regex2 = "^[a-zA-Z0-9]+$";  //regex without space
@@ -104,5 +119,6 @@ public class CounterStaff extends Staff{
         Staff staff = new Staff(inUsername, inPassword, inFullname, inEmail, inStaffId, inStaffType);
         writeStaffInfo();
         System.out.println("Registration successful. Please login now.");
+        input.close();
     }
 }

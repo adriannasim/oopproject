@@ -28,64 +28,60 @@ public class Login {
     public String getUsername() {
         return username;
     }
-    public String getPassword(String username) {
+    public String getPassword() {
         return password;
     }
 
     //login to account
     //staff
-    public void checkStaffLogin(String username, String password, Staff staff) {
+    public boolean checkStaffLogin(Login login) {
         //read from staff file
         Staff.readStaffInfo();
         //access array in staff class
         ArrayList<Staff> staffDetails = Staff.staffDetails;
 
         //check if user input matches any username and password in file
-        boolean loginSuccessful = false;
         for (int i=0; i < staffDetails.size(); i++) {
             //matches
-            if (username.equals(staffDetails.get(i).getUsername()) && password.equals(staffDetails.get(i).getPassword())) {
-                System.out.printf("Login Successful\n");
-                loginSuccessful = true;
-                staff.staffMenu();
+            if (login.getUsername().equals(staffDetails.get(i).getUsername()) && login.getPassword().equals(staffDetails.get(i).getPassword())) { 
+                return true;
             }
         }
         //no match
-        if (loginSuccessful == false) {
-            System.out.printf("Incorrect username/password. Please try again.\n");
-        }
+        return false;
     }
     //customer
-    public void checkCustLogin(String username, String password, Customer cust) {
+    public boolean checkCustLogin(Login login) {
         //read from cust file
         Customer.readCustInfo();
         //access array in customer class
         ArrayList<Customer> custDetails = Customer.custDetails;
 
         //check if user input matches any username and password in file
-        boolean loginSuccessful = false;
         for (int i=0; i < custDetails.size(); i++) {
             //matches
-            if (username.equals(custDetails.get(i).getUsername()) && password.equals(custDetails.get(i).getPassword())) {
-                System.out.printf("Login Successful\n");
-                loginSuccessful = true;
-                cust.custMenu();
+            if (login.getUsername().equals(custDetails.get(i).getUsername()) && login.getPassword().equals(custDetails.get(i).getPassword())) {
+                return true;
             }
         }
         //no match
-        if (loginSuccessful == false) {
-            System.out.printf("Incorrect username/password. Please try again.\n");
-        }
+        return false;
     }
 
     //DRIVER login
     public void driverLogin(int choice) {
+
         //variables declaration
         String inUsername, inPassword;
+        boolean loginSuccessful;
+
         //method declaration
         Scanner input = new Scanner(System.in); //scanner
         Staff staff = new Staff();
+        BackendStaff back = new BackendStaff();
+        CounterStaff counter = new CounterStaff();
         Customer cust = new Customer();
+        Login login = new Login();
 
         //login menu
         //customer
@@ -109,9 +105,20 @@ public class Login {
                         System.out.printf("=================================\n");
                         System.out.printf("Please enter your username > ");
                         inUsername = input.next();
+                        login.setUsername(inUsername);
                         System.out.printf("Please enter your password > ");
                         inPassword = input.next();
-                        checkCustLogin(inUsername, inPassword, cust);
+                        login.setPassword(inPassword);
+                        //check login
+                        loginSuccessful = checkCustLogin(login);
+                        //if username and password is correct
+                        if (loginSuccessful == true) {
+                            System.out.printf("Login Successful\n");
+                            cust.custMenu();
+                        //if username and password is wrong
+                        } else {
+                            System.out.printf("Incorrect username/password. Please try again.\n");
+                        }
                         break;
                     //create account
                     case 2:
@@ -149,9 +156,28 @@ public class Login {
                             System.out.printf("=================================\n");
                             System.out.printf("Please enter your username > ");
                             inUsername = input.next();
+                            login.setUsername(inUsername);
                             System.out.printf("Please enter your password > ");
                             inPassword = input.next();
-                            checkStaffLogin(inUsername, inPassword, staff);
+                            login.setPassword(inPassword);
+                            //check login
+                            loginSuccessful = checkStaffLogin(login);
+                            //if username and password is correct
+                            if (loginSuccessful == true) {
+                                System.out.printf("Login Successful\n");
+                                int menuType = staff.staffMenu(login);
+                                if (menuType == 1) {
+                                    back.backendMenu();
+                                } else if (menuType == 2) {
+                                    counter.counterMenu();
+                                } else {
+                                    System.out.println("ERROR");
+                                    return;
+                                }
+                            //if username and password is wrong
+                            } else {
+                                System.out.printf("Incorrect username/password. Please try again.\n");
+                            }
                             break;
                         //create account
                         case 2:
