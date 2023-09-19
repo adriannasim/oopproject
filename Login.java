@@ -88,21 +88,23 @@ public class Login {
         if (choice == 1) {
             boolean loop = true;
             do {
-                System.out.printf("=================================\n");
-                System.out.printf("%-7s%s\n"," ", "CUSTOMER LOGIN MENU");
-                System.out.printf("=================================\n");
+                System.out.println("==================================================");
+                System.out.println("               Customer Login Menu");
+                System.out.println("==================================================");
                 System.out.printf("1. Login\n");
                 System.out.printf("2. Create Account\n");
-                System.out.printf("3. Return\n > ");
+                System.out.println("\n* Press # to return");
+                System.out.println("==================================================");
+                System.out.print("Enter your option > ");
 
                 if (input.hasNextInt()) {
                     int choice2 = input.nextInt();
                     switch (choice2) {
                     //login
                     case 1:
-                        System.out.printf("=================================\n");
-                        System.out.printf("%-8s%s\n"," ", "CUSTOMER LOGIN");
-                        System.out.printf("=================================\n");
+                        System.out.println("==================================================");
+                        System.out.println("                  Customer Login");
+                        System.out.println("==================================================");
                         System.out.printf("Please enter your username > ");
                         inUsername = input.next();
                         login.setUsername(inUsername);
@@ -114,7 +116,7 @@ public class Login {
                         //if username and password is correct
                         if (loginSuccessful == true) {
                             System.out.printf("Login Successful\n");
-                            cust.custMenu();
+                            cust.custMenu(login);
                         //if username and password is wrong
                         } else {
                             System.out.printf("Incorrect username/password. Please try again.\n");
@@ -130,30 +132,36 @@ public class Login {
                         System.out.printf("Invalid input, please enter your choice again.\n");
                     }
                 } else {
-                    System.out.printf("Invalid input, please enter your choice again.\n");
-                    //clear buffer
-                    input.next();
+                    if (input.next().equals("#")) {
+                        return;
+                    } else {
+                        System.out.printf("Invalid input, please enter your choice again.\n");
+                        //clear buffer
+                        input.next();
+                    }
                 }
             } while (loop);  
         //staff
         } else if (choice == 2) {
             boolean loop = true;
             do {
-                System.out.printf("=================================\n");
-                System.out.printf("%-8s%s\n"," ", "STAFF LOGIN MENU");
-                System.out.printf("=================================\n");
+                System.out.println("==================================================");
+                System.out.println("                 Staff Login Menu");
+                System.out.println("==================================================");
                 System.out.printf("1. Login\n");
                 System.out.printf("2. Create Account\n");
-                System.out.printf("3. Return\n > ");
+                System.out.println("\n* Press # to return");
+                System.out.println("==================================================");
+                System.out.print("Enter your option > ");
 
                 if (input.hasNextInt()) {
                     int choice2 = input.nextInt();
                     switch (choice2) {
                         //login
                         case 1:
-                            System.out.printf("=================================\n");
-                            System.out.printf("%-11s%s\n"," ", "STAFF LOGIN");
-                            System.out.printf("=================================\n");
+                            System.out.println("==================================================");
+                            System.out.println("                   Staff Login");
+                            System.out.println("==================================================");
                             System.out.printf("Please enter your username > ");
                             inUsername = input.next();
                             login.setUsername(inUsername);
@@ -183,15 +191,17 @@ public class Login {
                         case 2:
                             staff.driverStaff();
                             break;
-                        case 3: 
-                            return;
                         default: 
                             System.out.printf("Invalid input, please enter your choice again.\n");
                     }
                 } else {
-                    System.out.printf("Invalid input, please enter your choice again.\n");
-                    //clear buffer
-                    input.next();
+                    if (input.next().equals("#")) {
+                        return;
+                    } else {
+                        System.out.printf("Invalid input, please enter your choice again.\n");
+                        //clear buffer
+                        input.next();
+                    }
                 }
             } while (loop); 
         }

@@ -23,16 +23,17 @@ public class BackendStaff extends Staff {
         boolean loop = true;
 
         do {
-            System.out.printf("=================================\n");
-            System.out.printf("%-3s%s\n"," ", "BACKEND STAFF MENU");
-            System.out.printf("=================================\n");
+            System.out.println("==================================================");
+            System.out.println("                Backend Staff Menu");
+            System.out.println("==================================================");
             System.out.printf("1. Train Information Modification\n");
             System.out.printf("2. Schedule Modification\n");
             System.out.printf("3. Train Station Information Modification\n");
             System.out.printf("4. Food and Beverage Modification\n");
             System.out.printf("5. Reports\n");
-            System.out.printf("6. Log out\n");
-            System.out.printf("=================================\n > ");
+            System.out.println("\n* Press # to logout");
+            System.out.println("==================================================");
+            System.out.print("Enter your option > ");
 
             //accept user input
             if (input.hasNextInt()) {
@@ -42,7 +43,7 @@ public class BackendStaff extends Staff {
                 switch (choice) {
                 //Train Modification Menu
                 case 1:
-
+                    
                     break;
                 //Schedule Modification
                 case 2:
@@ -58,42 +59,20 @@ public class BackendStaff extends Staff {
                     break;
                 //Reports
                 case 5:
-                    
-                    break;
-                case 6:
-                    boolean loop2 = true;
-                    do {
-                        System.out.printf("Are you sure you want to quit (Y/N)? > ");
-                        String choice1 = input.next();
-                        if (choice1.length() == 1) {
-                            switch (choice1.charAt(0)) {
-                                //confirm quit
-                                case 'Y':
-                                case 'y':
-                                    System.out.printf("Bye bye!");
-                                    input.close();
-                                    System.exit(0);
-                                    break;
-                                //cancel quit
-                                case 'N':
-                                case 'n':
-                                    loop2 = false;
-                                    break;
-                                default: 
-                                    System.out.printf("Invalid input, please enter your choice again.\n");
-                            }
-                        } else {
-                            System.out.printf("Invalid input, please enter your choice again.\n");
-                        }
-                    } while (loop2);
+                    DriverTw.viewReport();
                     break;
                 default:
                     System.out.printf("Invalid input, please enter your choice again.\n");
                 }
             } else {
-                System.out.printf("Invalid input, please enter your choice again.\n");
-                //clear buffer
-                input.next();
+                if (input.next().equals("#")) {
+                    System.out.printf("Logged out.\n\n");
+                    return;
+                } else {
+                    System.out.printf("Invalid input, please enter your choice again.\n");
+                    //clear buffer
+                    input.next();
+                }
             }
         } while (loop);
 
@@ -112,9 +91,9 @@ public class BackendStaff extends Staff {
         //methods declaration
         Scanner input = new Scanner(System.in); //scanner
 
-        System.out.printf("=================================\n");
-        System.out.printf("%-3s%s\n"," ", "CREATE BACKEND STAFF ACCOUNT");
-        System.out.printf("=================================\n");
+        System.out.println("==================================================");
+        System.out.println("            Create Backend Staff Login");
+        System.out.println("==================================================");
         System.out.printf("Enter 'X' to exit at any point\n\n");
 
         //set staff type

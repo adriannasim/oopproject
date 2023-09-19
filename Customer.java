@@ -50,11 +50,6 @@ public class Customer extends User {
     //     return super.toString() + String.format("Contact: %s\nGender: %c", contactNo, gender);
     // }
 
-    //customer menu
-    public void custMenu(){
-        
-    }
-
     //writing all info into file
     public static void writeCustInfo() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("custFile.txt", true))) {
@@ -93,6 +88,48 @@ public class Customer extends User {
         }
     }
 
+    //customer menu
+    public void custMenu(Login login){
+        Scanner input = new Scanner(System.in); //scanner
+
+        System.out.println("==================================================");
+        System.out.println("                  Customer Menu");
+        System.out.println("==================================================");
+        System.out.printf("1. Buy Tickets\n");
+        System.out.printf("2. Buy Food and Beverages\n");
+        System.out.printf("3. Edit Profile\n");
+
+        System.out.println("\n* Press # to log out");
+        System.out.println("==================================================");
+        System.out.print("Enter your option > ");
+
+        //accept user input
+        if (input.hasNextInt()) {
+            int choice = input.nextInt();
+            switch (choice) {
+                case 1:
+                case 2:
+                    //make purchase
+                    DriverJQ.makePurchase(choice);
+                    break;
+                case 3:
+                    DriverJQ.editAccount(login);
+            }
+            
+            
+            //choose user's input choice
+        } else {
+            if (input.next().equals("#")) {
+                System.out.printf("Logged out.\n\n");
+                return;
+            } else {
+                System.out.printf("Invalid input, please enter your choice again.\n");
+                //clear buffer
+                input.next();
+            }
+        }
+    }
+
     //DRIVER customer
     public void driverCustomer() {
         //create account
@@ -105,9 +142,9 @@ public class Customer extends User {
         //variables declaration
         String inUsername, inPassword, inFullname, inEmail, inContact, inGender;
 
-        System.out.printf("=================================\n");
-        System.out.printf("%-5s%s\n"," ", "CREATE CUSTOMER ACCOUNT");
-        System.out.printf("=================================\n");
+        System.out.println("==================================================");
+        System.out.println("              Create Customer Login");
+        System.out.println("==================================================");
         System.out.printf("Enter 'X' to exit at any point\n\n");
 
         //username
