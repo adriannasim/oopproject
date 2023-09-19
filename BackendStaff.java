@@ -1,8 +1,15 @@
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BackendStaff extends Staff {
     //variables declaration
     private static int nextBackendStaffId;
+    private static final String TIME_REGEX = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
+    private static final Pattern TIME_PATTERN = Pattern.compile(TIME_REGEX);
 
     //getter
     public int getBackendStaffId() {
@@ -17,10 +24,77 @@ public class BackendStaff extends Staff {
         return nextBackendStaffId + count;
     }
 
+    //------------------------------------------VALIDATE DOUBLE INPUT-------------------------------------------- 
+
+    public static double validateDoubleInput(Scanner scanner, String str) {
+
+        while (true) {
+            try {
+                String userInput = scanner.nextLine();
+                return Double.parseDouble(userInput);
+            } catch (NumberFormatException e) {
+                System.out.println("\nINVALID INPUT. PLEASE ENTER A VALID PRICE.\n");
+                System.out.print(str);
+            }
+        }
+    }
+    
+    //-----------------------------------------VALIDATE INTEGER INPUT-------------------------------------------- 
+
+    public static int validateIntegerInput(Scanner scanner, String str) {
+        while (true) {
+            try {
+                String userInput = scanner.nextLine();
+                if(userInput.equals("#")){
+                    return -1;
+                }
+                return Integer.parseInt(userInput);
+            } catch (NumberFormatException e) {
+                System.out.println("\nINVALID INPUT. PLEASE ENTER A NUMBER.\n");
+                System.out.print(str);
+            }
+        }
+    }
+
+    //------------------------------------------VALIDATE Y/N INPUT---------------------------------------------- 
+
+    public static String validateYNInput(Scanner scanner, String str) {
+        while (true) {
+            String userInput = scanner.nextLine();
+            if (userInput.equalsIgnoreCase("Y")||userInput.equalsIgnoreCase("N")){
+                return userInput;
+            }else{
+                System.out.println("\nINVALID INPUT. PLEASE ENTER (Y/N).\n");
+                System.out.print(str);
+            }
+        }
+    }
+
+    //------------------------------------------VALIDATE TIME INPUT---------------------------------------------- 
+
+    public static boolean isValidTimeFormat(String time) {
+        Matcher matcher = TIME_PATTERN.matcher(time);
+        return matcher.matches();
+    }
+
+    public static LocalTime parseTime(String time) {
+        try {
+            return LocalTime.parse(time);
+        } catch (DateTimeParseException e) {
+            // Handle the exception if the time format is invalid
+            return null;
+        }
+    }
+
+
     //backend menu
-    public void backendMenu() {
+    public void backendMenu() throws Exception{
         Scanner input = new Scanner(System.in); //scanner
         boolean loop = true;
+        Train train = new Train();
+        ArrayList<Train> trainList = train.getTrainList();
+        Schedule schedule = new Schedule();
+        ArrayList<Schedule> scheduleList = schedule.getScheduleList();
 
         do {
             System.out.printf("=================================\n");
@@ -42,11 +116,11 @@ public class BackendStaff extends Staff {
                 switch (choice) {
                 //Train Modification Menu
                 case 1:
-
+                    train.trainModification(input);
                     break;
                 //Schedule Modification
                 case 2:
-                    
+                    schedule.scheduleModification(input);
                     break;
                 //Train Station Information Modification
                 case 3:
@@ -189,5 +263,36 @@ public class BackendStaff extends Staff {
         writeStaffInfo();
         System.out.println("Registration successful. Please login now.");
         input.close();
+    }
+
+    public void foodAndBeverageModification(Scanner scanner) throws Exception {
+        String userInput = "";
+        boolean cont = true;
+    
+        while (cont) {
+            System.out.println("==================================================");
+            System.out.println("   Food and Beverage Information Modification");
+            System.out.println("==================================================");
+            System.out.println("1. Snacks modification");
+            System.out.println("2. Drinks modification");
+            System.out.println("\n* Press # to go back");
+            System.out.println("==================================================");
+            
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.nextLine();
+               
+                if (userInput.equals("1")) {
+                    snacksModification(snacksList, scanner);
+                } else if (userInput.equals("2")) {
+                    drinksModification(drinksList, scanner);
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                } else {
+                    System.out.println("\nINVALID OPTION. PLEASE ENETER (1/2/#).\n");
+                }
+    
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
+        }
     }
 }
