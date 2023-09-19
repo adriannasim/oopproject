@@ -878,6 +878,14 @@ public class DriverJh {
                        			 usePlatformCount++;
                     		}
                	 	}
+               	 	if (scheduleList.get(j).getArriveLocation().getLocationName().equals(departLocation.getLocationName())) {
+                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                        		usePlatformCount++;
+                    		}
+                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                       			 usePlatformCount++;
+                    		}
+               	 	}
                	 	
             	}
             	if (usePlatformCount > departLocation.getNumOfPlatform()){
@@ -907,11 +915,19 @@ public class DriverJh {
                 if (arriveTime != null) {
                     correctTime = true;
                     for (int j = 0; j < scheduleList.size(); j++) {
-                		if (scheduleList.get(j).getArriveLocation().getLocationName().equals(arriveLocation.getLocationName())) {
+                		if (scheduleList.get(j).getDepartLocation().getLocationName().equals(arriveLocation.getLocationName())) {
                     		if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
                         		usePlatformCount++;
                     		}
                     		if (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                       			 usePlatformCount++;
+                    		}
+               	 	}
+               	 	if (scheduleList.get(j).getArriveLocation().getLocationName().equals(arriveLocation.getLocationName())) {
+                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                        		usePlatformCount++;
+                    		}
+                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
                        			 usePlatformCount++;
                     		}
                	 	}
@@ -975,11 +991,6 @@ public class DriverJh {
         	if(incompatible == true){
         		System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
         	} 	
-        
-            
-            
-        	
-        	
             
         }while(userInput2>trainList.size()||incompatible == true);
 
@@ -1098,12 +1109,14 @@ public class DriverJh {
         Schedule obj = new Schedule();
         boolean noPlatform;
         int usePlatformCount;
+        boolean incompatible;
         
         System.out.println("Current departure time: " + scheduleList.get(index).getDepartTime());
                
         do{
         	noPlatform = false;
         	usePlatformCount = 1;
+            incompatible = false;
             System.out.print("Enter a new departure time (HH:MM) > ");
             userInput = scanner.nextLine(); 
             if (isValidTimeFormat(userInput)) {
@@ -1113,10 +1126,26 @@ public class DriverJh {
                     for (int j = 0; j < scheduleList.size(); j++) {
                 		if (scheduleList.get(j).getDepartLocation().getLocationName().equals(scheduleList.get(index).getDepartLocation().getLocationName())) {
                     		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
-                        		usePlatformCount++;
+                        		if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
+                        			usePlatformCount++;
+                        		}	
                     		}
                     		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
-                       			 usePlatformCount++;
+                       			 if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
+                        			usePlatformCount++;
+                        		}
+                    		}
+               	 	}
+               	 	if (scheduleList.get(j).getArriveLocation().getLocationName().equals(scheduleList.get(index).getDepartLocation().getLocationName())) {
+                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                        		if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
+                        			usePlatformCount++;
+                        		}
+                    		}
+                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                       			 if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
+                        			usePlatformCount++;
+                        		}
                     		}
                	 	}
                	 	
@@ -1133,7 +1162,25 @@ public class DriverJh {
                 correctTime = false;
                 System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
-        }while(correctTime==false || noPlatform == true);
+            for (int j=0; j<scheduleList.size(); j++){
+            	if(scheduleList.get(j).getOperatedTrain().getTrainNo()==scheduleList.get(index).getOperatedTrain().getTrainNo()){
+                 		if ((departTime.compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                    	scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
+                         	incompatible = true;
+                         	break;
+                 		}
+                 		if ((departTime.compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                    	(scheduleList.get(index).getArriveTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
+                        	incompatible = true;
+                        	break;
+                		}
+                 
+            	}
+        	}
+        	if(incompatible == true){
+        		System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
+        	}
+        }while(correctTime==false || noPlatform == true || incompatible == true);
 
         System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
         confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
@@ -1162,12 +1209,14 @@ public class DriverJh {
         Schedule obj = new Schedule();
         boolean noPlatform;
         int usePlatformCount;
+        boolean incompatible;
 
         System.out.println("Current arrival time: " + scheduleList.get(index).getArriveTime());
                
         do{
         	noPlatform = false;
         	usePlatformCount = 1;
+            incompatible = false;
             System.out.print("Enter a new arrival time (HH:MM) > ");
             userInput = scanner.nextLine(); 
             if (isValidTimeFormat(userInput)) {
@@ -1175,7 +1224,19 @@ public class DriverJh {
                 if (arriveTime != null) {
                     correctTime = true;
                     for (int j = 0; j < scheduleList.size(); j++) {
-                		if (scheduleList.get(j).getArriveLocation().getLocationName().equals(scheduleList.get(index).getArriveLocation().getLocationName())) {
+                		if (scheduleList.get(j).getDepartLocation().getLocationName().equals(scheduleList.get(index).getDepartLocation().getLocationName())) {
+                    		if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                        		if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
+                        			usePlatformCount++;
+                        		}
+                    		}
+                    		if (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                       			 if(!scheduleList.get(j).getOperatedTrain().equals(scheduleList.get(index).getOperatedTrain())){
+                        			usePlatformCount++;
+                        		 }
+                    		}
+               	 	}
+               	 	if (scheduleList.get(j).getArriveLocation().getLocationName().equals(scheduleList.get(index).getArriveLocation().getLocationName())) {
                     		if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
                         		usePlatformCount++;
                     		}
@@ -1197,7 +1258,32 @@ public class DriverJh {
                 correctTime = false;
                 System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
-        }while(correctTime==false || noPlatform == true);
+            int compareDepartTime = arriveTime.compareTo(scheduleList.get(index).getArriveTime());
+            if(compareDepartTime>=0){
+            	correctTime = true;
+            }else{
+            	correctTime = false;
+            	System.out.println("\nINVALID TIME. ARRIVAL TIME CANNOT BE EARLIER THAN DEPARTURE TIME.\n");
+            }
+            for (int j=0; j<scheduleList.size(); j++){
+            	if(scheduleList.get(j).getOperatedTrain().getTrainNo()==scheduleList.get(index).getOperatedTrain().getTrainNo()){
+                 		if ((scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                    	scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
+                         	incompatible = true;
+                         	break;
+                 		}
+                 		if ((scheduleList.get(index).getArriveTime().plusMinutes(15).compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                    	(scheduleList.get(index).getArriveTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
+                        	incompatible = true;
+                        	break;
+                		}
+                 
+            	}
+        	}
+        	if(incompatible == true){
+        		System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
+        	}
+        }while(correctTime==false || noPlatform == true || incompatible == true);
 
         System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
         confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
@@ -1242,6 +1328,7 @@ public class DriverJh {
             trainNumber++; // Increment the station number
         }
         do{
+        	incompatible = false;
             System.out.print("Enter the station number stated above > ");
             userInput = validateIntegerInput(scanner, "Enter the station number stated above > ");
 
@@ -1267,15 +1354,17 @@ public class DriverJh {
         		}
         		if(incompatible == true){
         			System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
-        		} 	
-                    scheduleList.get(index).editTrainOperated(trainOperated);
-                    updated = writeIntoFile("scheduleFile.txt", scheduleList, obj);
+        		} else{
+        			scheduleList.get(index).editTrainOperated(trainOperated);
+                    	updated = writeIntoFile("scheduleFile.txt", scheduleList, obj);
 
-                    if(updated){
-                        System.out.println("\nThe train operated for the schedule has updated.");
-                    }else{
-                        System.out.println("\nFAILED TO UPDATE THE TRAIN OPERATED FOR THE SCHEDULE.\n");
-                    }
+                    	if(updated){
+                        	System.out.println("\nThe train operated for the schedule has updated.");
+                    	}else{
+                        	System.out.println("\nFAILED TO UPDATE THE TRAIN OPERATED FOR THE SCHEDULE.\n");
+                    	}
+        		}	
+                    
 
                 }else{
                     System.out.println("\nMODIFICATION CANCELLED.\n");
@@ -1283,7 +1372,7 @@ public class DriverJh {
             }else{
                 System.out.println("\nINVALID TRAIN NUMBER.\n");
             }
-        }while ((userInput < 1 && userInput > availableTrains.size()));    
+        }while ((userInput < 1 && userInput > availableTrains.size())||incompatible == true);    
     }
 
     //-----------------------------------UPDATE SCHEDULE TICKET PRICE INFO---------------------------------------
