@@ -110,7 +110,7 @@ public class Customer extends User {
                 case 1:
                 case 2:
                     //make purchase
-                    DriverJQ.makePurchase(choice);
+                    DriverJQ.makePurchase(choice, login);
                     break;
                 case 3:
                     DriverJQ.editAccount(login);
