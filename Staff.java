@@ -41,7 +41,7 @@ public class Staff extends User{
     public String getStaffId() {
         return staffId;
     }
-    public char getStaffType(String staffId) {
+    public char getStaffType() {
         return staffType;
     }
 
@@ -50,9 +50,18 @@ public class Staff extends User{
     //     return super.toString() + String.format("Staff Id: %s\nStaff Type: %c\n", staffId, staffType);
     // }
 
-    //customer menu
-    public void staffMenu() {
-        
+    //staff menu
+    public int staffMenu(Login login) {
+        //read from file
+        readStaffInfo();
+        for (int i = 0; i < staffDetails.size(); i++) {
+            if ((login.getUsername().equals(staffDetails.get(i).getUsername())) && staffDetails.get(i).getStaffType() == 'B') {
+                return 1;
+            } else if ((login.getUsername().equals(staffDetails.get(i).getUsername())) && staffDetails.get(i).getStaffType() == 'C') {
+                return 2;
+            }
+        }
+        return 0;
     }
 
     //write file

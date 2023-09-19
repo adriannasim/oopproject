@@ -42,7 +42,7 @@ public class DriverAdr {
         Staff.readStaffInfo();
         System.out.println(staffDetails);
         for (Staff staff : staffDetails) {
-            System.out.print(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.getStaffId() + "||" + staff.getStaffType(staff.getStaffId()) + "\n");
+            System.out.print(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.getStaffId() + "||" + staff.getStaffType() + "\n");
         }
 
         /*END OF MAIN PROGRAM*/

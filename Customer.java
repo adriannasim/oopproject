@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Customer extends User{
+public class Customer extends User {
     //variables declaration
     private String contactNo;
     private char gender;
