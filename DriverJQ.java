@@ -3,7 +3,7 @@ import java.util.*;
 import java.time.LocalDate;
 
 public class DriverJQ {
-    public static void makePurchase() throws Exception {
+    public static void makePurchase(int userOpt1) throws Exception {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
         ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
@@ -13,122 +13,108 @@ public class DriverJQ {
         boolean continueInput = true;
         boolean continueInputPT = true;
 
-        int userOpt1 = 0;
         int paymentTypeOpt = 0;
         char yesno1;
 
-        do {
-
-            // =================================================================================
-            // BUY TICKETS OR FOOD AND BEVERAGE
-            // =================================================================================
-            System.out.println("1. Tickets");
-            System.out.println("2. Food and Beverage");
-
-            do {
-                try {
-                    System.out.print("Enter your option : ");
-                    userOpt1 = scanner.nextInt();
-
-                    continueInput = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
-                }
-            } while (continueInput);
-
-            switch (userOpt1) {
-                case 1:
-                    ticketList = buyTicket(ticketList);
-                    break;
-                case 2:
-                    fnbList = buyFnb(fnbList);
-                    break;
-                default:
-                    System.out.println("Invalid Input. ");
-                    break;
-            }
-
-            System.out.println("================================");
-            System.out.println("            Tickets");
-            System.out.println("================================");
-            int z = 1;
-            for (Ticket tickets : ticketList) {
-                System.out.println(z + ".");
-                System.out.println(tickets);
-                z++;
-            }
-
-            System.out.println("================================");
-            System.out.println("        Food And Beverage");
-            System.out.println("================================");
-            int y = 1;
-            for (FoodAndBeverage fnbs : fnbList) {
-                System.out.println(y + ".");
-                System.out.println(fnbs.displayToCust());
-                System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
-                System.out.println("Total Amount      >> " + fnbs.calculatePrice());
-                System.out.println();
-                y++;
-            }
-
-            System.out.println("Confirm your purchase tickets and orders? (Y - YES, other - NO)");
-            yesno1 = scanner.next().charAt(0);
-
-        } while (yesno1 != 'y' || yesno1 != 'Y');
-
-        // =================================================================================
-        // ADD INTO PURCHASE ARRAYLIST
-        // =================================================================================
-        Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
-        userPurchase.purchaseTicket(tickets);
-
-        FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
-        userPurchase.purchaseFnb(fnbs);
-
-        // =================================================================================
-        // PROCEED TO PAYMENT
-        // =================================================================================
-        System.out.println("================================");
-        System.out.println("           Payment Type");
-        System.out.println("================================");
-        System.out.println("1. Online Banking");
-        System.out.println("2. E-wallet");
-        System.out.println("3. Debit / Credit Card");
-        do {
-
-            do {
-                try {
-                    System.out.print("Choose your payment type : ");
-                    paymentTypeOpt = scanner.nextInt();
-
-                    continueInputPT = false;
-                } catch (InputMismatchException ex) {
-                    System.out.println("Incorrect Input. Please try agin. ");
-                    scanner.nextLine();
-                }
-            } while (continueInputPT);
-
-        } while (paymentTypeOpt != 1 && paymentTypeOpt != 1 && paymentTypeOpt != 1);
-
-        switch (paymentTypeOpt) {
+        switch (userOpt1) {
             case 1:
-                pType = addOnlinebanking(scanner);
+                ticketList = buyTicket(ticketList);
                 break;
             case 2:
-                pType = addEwallet(scanner);
-                break;
-            case 3:
-                pType = addCard(scanner);
+                fnbList = buyFnb(fnbList);
                 break;
             default:
-                System.out.println("Invalid Input");
+                System.out.println("Invalid Input. ");
                 break;
         }
 
-        userPurchase.setPaymentType(pType);
+        System.out.println("================================");
+        System.out.println("            Tickets");
+        System.out.println("================================");
+        int z = 1;
+        for (Ticket tickets : ticketList) {
+            System.out.println(z + ".");
+            System.out.println(tickets);
+            z++;
+        }
 
-        System.out.println("Purchase successsfully. ");
+        System.out.println("================================");
+        System.out.println("        Food And Beverage");
+        System.out.println("================================");
+        int y = 1;
+        for (FoodAndBeverage fnbs : fnbList) {
+            System.out.println(y + ".");
+            System.out.println(fnbs.displayToCust());
+            System.out.println("Purchase Quantity >> " + fnbs.getPurchaseQty());
+            System.out.println("Total Amount      >> " + fnbs.calculatePrice());
+            System.out.println();
+            y++;
+        }
+
+        System.out.println("Confirm your purchase? (Y - YES, other - NO) > ");
+        yesno1 = scanner.next().charAt(0);
+        yesno1 = Character.toUpperCase(yesno1);
+
+        if (yesno1 == 'Y') {
+
+            // Confirm purchase
+            // =================================================================================
+            // ADD INTO PURCHASE ARRAYLIST
+            // =================================================================================
+            Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
+            userPurchase.purchaseTicket(tickets);
+
+            FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
+            userPurchase.purchaseFnb(fnbs);
+
+            // =================================================================================
+            // PROCEED TO PAYMENT
+            // =================================================================================
+            System.out.println("================================");
+            System.out.println("           Payment Type");
+            System.out.println("================================");
+            System.out.println("1. Online Banking");
+            System.out.println("2. E-wallet");
+            System.out.println("3. Debit / Credit Card");
+            do {
+
+                do {
+                    try {
+                        System.out.print("Choose your payment type : ");
+                        paymentTypeOpt = scanner.nextInt();
+
+                        continueInputPT = false;
+                    } catch (InputMismatchException ex) {
+                        System.out.println("Incorrect Input. Please try agin. ");
+                        scanner.nextLine();
+                    }
+                } while (continueInputPT);
+
+            } while (paymentTypeOpt != 1 && paymentTypeOpt != 1 && paymentTypeOpt != 1);
+
+            switch (paymentTypeOpt) {
+                case 1:
+                    pType = addOnlinebanking(scanner);
+                    break;
+                case 2:
+                    pType = addEwallet(scanner);
+                    break;
+                case 3:
+                    pType = addCard(scanner);
+                    break;
+                default:
+                    System.out.println("Invalid Input");
+                    break;
+            }
+
+            userPurchase.setPaymentType(pType);
+
+            System.out.println("Purchase successsfully. ");
+
+        } else {
+            return;
+        }
+
     }
 
     public static OnlineBanking addOnlinebanking(Scanner scanner) {
@@ -1504,76 +1490,89 @@ public class DriverJQ {
 
     }
 
-    public static void editAccount() {
-        Customer cust = new Customer();
+    public static void editAccount(Login login) {
         Scanner scanner = new Scanner(System.in);
         int editOpt = 0;
         boolean continueInput = true;
 
+        Customer cust = new Customer();
+        boolean validAcc = false;
+
         String regex = "^[a-zA-Z0-9 ]+$"; // regex with space
-        String regex2 = "^[a-zA-Z0-9]+$"; // regex without space
         String regex3 = "^01[2-9]-\\\\d{7,8})$"; // regex for phone no.
 
         String fullname, email, contactNo;
         char gender;
 
-        System.out.println("1. Full Name");
-        System.out.println("2. Email");
-        System.out.println("3. Contact Number");
-        System.out.println("4. Gender");
-        System.out.println("Other - Exit");
-        do {
-            try {
-                System.out.print("Enter your option : ");
-                editOpt = scanner.nextInt();
-
-                continueInput = false;
-            } catch (InputMismatchException ex) {
-                System.out.println("Incorrect Input. Please try agin. ");
-                scanner.nextLine();
+        Customer.readCustInfo();
+        ArrayList<Customer> customers = Customer.custDetails;
+        for (int i = 0; i < customers.size(); i++) {
+            if (login.getUsername().equals(customers.get(i).getUsername())
+                    && login.getPassword().equals(customers.get(i).getPassword())) {
+                cust = customers.get(i);
+                validAcc = true;
             }
-        } while (continueInput);
-
-        if (editOpt == 1) {
-
-            do {
-                System.out.println("Enter  your full name (no special characters) >");
-                fullname = scanner.nextLine();
-            } while (!fullname.matches(regex));
-
-            cust.setFullname(fullname);
-
-        } else if (editOpt == 2) {
-
-            do {
-                System.out.printf("Enter your email (no spaces) > ");
-                email = scanner.next();
-            } while (!email.contains(" "));
-
-            cust.setEmail(email);
-
-        } else if (editOpt == 3) {
-            do {
-                System.out.println("Enter contact Number (eg. 012-3456789) > ");
-                contactNo = scanner.nextLine();
-            } while (!contactNo.matches(regex3));
-
-            cust.setContactNo(contactNo);
-
-        } else if (editOpt == 4) {
-
-            do {
-                System.out.println("Enter gender (F/M only) : ");
-                gender = scanner.next().charAt(0);
-                gender = Character.toUpperCase(gender);
-            } while (gender != 'f' && gender != 'M');
-
-            cust.setGender(gender);
-
-        } else {
-            System.out.println("Exit Editing");
         }
 
+        if (validAcc) {
+            System.out.println("1. Full Name");
+            System.out.println("2. Email");
+            System.out.println("3. Contact Number");
+            System.out.println("4. Gender");
+            System.out.println("Other - Exit");
+            do {
+                try {
+                    System.out.print("Enter your option : ");
+                    editOpt = scanner.nextInt();
+
+                    continueInput = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInput);
+
+            if (editOpt == 1) {
+
+                do {
+                    System.out.println("Enter  your full name (no special characters) >");
+                    fullname = scanner.nextLine();
+                } while (!fullname.matches(regex));
+
+                cust.setFullname(fullname);
+
+            } else if (editOpt == 2) {
+
+                do {
+                    System.out.printf("Enter your email (no spaces) > ");
+                    email = scanner.next();
+                } while (!email.contains(" "));
+
+                cust.setEmail(email);
+
+            } else if (editOpt == 3) {
+                do {
+                    System.out.println("Enter contact Number (eg. 012-3456789) > ");
+                    contactNo = scanner.nextLine();
+                } while (!contactNo.matches(regex3));
+
+                cust.setContactNo(contactNo);
+
+            } else if (editOpt == 4) {
+
+                do {
+                    System.out.println("Enter gender (F/M only) : ");
+                    gender = scanner.next().charAt(0);
+                    gender = Character.toUpperCase(gender);
+                } while (gender != 'f' && gender != 'M');
+
+                cust.setGender(gender);
+
+            } else {
+                System.out.println("Exit Editing");
+            }
+
+        }
     }
 
 }

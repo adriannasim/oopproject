@@ -6,6 +6,10 @@ public class Ticket{
     private Schedule ticketSchedule;
     private LocalDate ticketDate;
 
+    public Ticket(){
+
+    }
+
     public Ticket(Schedule ticketSchedule, LocalDate ticketDate){
         ticketIdNo = (int) (10000 + (Math.random() * (20000 - 10000 + 1)));
         String tempTicketId = "T" + ticketIdNo;
