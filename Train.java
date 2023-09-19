@@ -135,10 +135,7 @@ public class Train implements Serializable{
                 userInput = scanner.nextLine();
 
                 if (userInput.equals("1")) {
-                    for (int i = 0; i < trainList.size(); i++) {
-                        System.out.println(trainList.get(i).toString());
-                        System.out.println();
-                    }
+                    viewTrain();
                 } else if (userInput.equals("2")) {
                     updateTrainInfo(scanner);
                 } else if (userInput.equals("3")) {
@@ -152,6 +149,14 @@ public class Train implements Serializable{
                 }     
             }while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("4") && !userInput.equals("#"));
         }
+    }
+
+    public void viewTrain() throws Exception{
+        ArrayList<Train> trainList = getTrainList();
+        for (int i=0; i< trainList.size(); i++){
+            System.out.println(trainList.get(i).toString() + "\n");
+        }
+
     }
 
     public void addTrain(Scanner scanner) throws FileNotFoundException {
@@ -179,7 +184,7 @@ public class Train implements Serializable{
             trainList.add(new Train(trainName, trainModel));
             added = writeIntoFile("trainFile.txt", trainList);
             if (added == true){
-                System.out.println("\nTrain has added.\n");
+                System.out.println("\nTRAIN HAS ADDED\n");
             }else{
                 System.out.println("\nFAILED TO ADD THE TRAIN.\n");
             }
@@ -257,7 +262,7 @@ public class Train implements Serializable{
                                     updated = writeIntoFile("trainfile.txt", trainList);
                                     updated2 = Schedule.writeIntoFile("scheduleFile.txt", scheduleList);
                                     if (updated && updated2){
-                                        System.out.println("\nTrain information has updated.\n");
+                                        System.out.println("\nTRAIN INFORMATION HAS UPDATED.\n");
                                     }else{
                                         System.out.println("\nFAILED TO UPDATE THE TRAIN INFORMATION.\n");
                                     }
@@ -268,7 +273,7 @@ public class Train implements Serializable{
                                 cont = false;
                                 return; 
                             }else {
-                                System.out.println("Invalid option. Please enter (1/#).");
+                                System.out.println("INVALID OPTION. PLEASE ENTER (1/#).");
                             }            
                         } while (!userInput.equals("1") && !userInput.equals("#"));
                 
@@ -339,6 +344,7 @@ public class Train implements Serializable{
                     }
                     if(hasSchedule){
                         System.out.println("\nPLEASE THINK CAREFULLY AS IT WILL REMOVE THE SCHEDULE BELOW AS WELL.\n");
+                        System.out.println();
                         for (int j=0; j<scheduleList.size(); j++){
                             if (scheduleList.get(j).getOperatedTrain().getTrainNo()==trainList.get(index).getTrainNo()){
                                 System.out.println(scheduleList.get(j).toString());
@@ -363,7 +369,7 @@ public class Train implements Serializable{
                         deleted2 = Schedule.writeIntoFile("scheduleFile.txt", scheduleList);
 
                         if (deleted && deleted2) {
-                            System.out.println("\nTrain information has removed.\n");
+                            System.out.println("\nTRAIN INFORMATION HAS REMOVED.\n");
                         }else{
                             System.out.println("\nFAILED TO REMOVE THE TRAIN INFORMATION.\n");
                         }

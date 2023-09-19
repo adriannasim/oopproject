@@ -93,6 +93,7 @@ public class BackendStaff extends Staff {
         boolean loop = true;
         Train train = new Train();
         Schedule schedule = new Schedule();
+        TrainStation station = new TrainStation();
 
         do {
             System.out.println("==================================================");
@@ -109,14 +110,13 @@ public class BackendStaff extends Staff {
 
             //accept user input
             if (input.hasNextInt()) {
-                int choice = input.nextInt();
+                int choice = BackendStaff.validateIntegerInput(input, "\nINVALID OPTION. PLEASE ENTER (1/2/3/4/#).\n");
 
                 //choose user's input choice
                 switch (choice) {
                 //Train Modification Menu
                 case 1:
-                    train.trainModification(input);
-                    
+                    train.trainModification(input);      
                     break;
                 //Schedule Modification
                 case 2:
@@ -124,25 +124,25 @@ public class BackendStaff extends Staff {
                     break;
                 //Train Station Information Modification
                 case 3:
-
+                    station.stationModification(input);
                     break;
                 //FnB Modification
                 case 4: 
-
+                    foodAndBeverageModification(input);
                     break;
                 //Reports
                 case 5:
                     DriverTw.viewReport();
                     break;
                 default:
-                    System.out.printf("Invalid input, please enter your choice again.\n");
+                System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4/#).\n");
                 }
             } else {
                 if (input.next().equals("#")) {
                     System.out.printf("Logged out.\n\n");
                     return;
                 } else {
-                    System.out.printf("Invalid input, please enter your choice again.\n");
+                    System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4/#).\n");
                     //clear buffer
                     input.next();
                 }
@@ -247,7 +247,7 @@ public class BackendStaff extends Staff {
         String userInput = "";
         boolean cont = true;
         Snacks snacks = new Snacks();
-        ArrayList<Snacks> snacksList = snacks.getSnacksList();
+        Drinks drinks = new Drinks();
     
         while (cont) {
             System.out.println("==================================================");
@@ -265,7 +265,7 @@ public class BackendStaff extends Staff {
                 if (userInput.equals("1")) {
                     snacks.snacksModification(scanner);
                 } else if (userInput.equals("2")) {
-                    drinksModification(scanner);
+                    drinks.drinksModification(scanner);
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
