@@ -69,7 +69,7 @@ public class Login {
     }
 
     //DRIVER login
-    public void driverLogin(int choice) {
+    public void driverLogin(int choice) throws Exception{
 
         //variables declaration
         String inUsername, inPassword;

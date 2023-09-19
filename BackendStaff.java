@@ -92,9 +92,7 @@ public class BackendStaff extends Staff {
         Scanner input = new Scanner(System.in); //scanner
         boolean loop = true;
         Train train = new Train();
-        ArrayList<Train> trainList = train.getTrainList();
         Schedule schedule = new Schedule();
-        ArrayList<Schedule> scheduleList = schedule.getScheduleList();
 
         do {
             System.out.println("==================================================");
@@ -248,6 +246,8 @@ public class BackendStaff extends Staff {
     public void foodAndBeverageModification(Scanner scanner) throws Exception {
         String userInput = "";
         boolean cont = true;
+        Snacks snacks = new Snacks();
+        ArrayList<Snacks> snacksList = snacks.getSnacksList();
     
         while (cont) {
             System.out.println("==================================================");
@@ -263,9 +263,9 @@ public class BackendStaff extends Staff {
                 userInput = scanner.nextLine();
                
                 if (userInput.equals("1")) {
-                    snacksModification(snacksList, scanner);
+                    snacks.snacksModification(scanner);
                 } else if (userInput.equals("2")) {
-                    drinksModification(drinksList, scanner);
+                    drinksModification(scanner);
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
