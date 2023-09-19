@@ -143,8 +143,14 @@ public class Schedule implements Serializable{
                 "\nArrival location      : " + arriveLocation.getLocationName() + 
                 "\nTicket Price          : RM" + ticketPrice;
     }
+    
+    public String displayViewSchedule(){
+        return String.format("Departure Location %10s Arrival Location %10s Departure Time %10s Arrival Time %10s Ticket Price\n%20s %20s %10s %10s %.2lf",departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, ticketPrice);
+    }
 
-
+    public String displayViewScheduleStaff(){
+        return String.format("Schedule ID %10s Departure Location %10s Arrival Location %10s Departure Time %10s Arrival Time %10s Train No. %10s Train Name %10s Ticket Price\n%10s %20s %20s %10s %10s %10s %10s %.2lf",scheduleId, departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime,trainOperated.getTrainNo(),trainOperated.getTrainName(), ticketPrice);
+    }
     
     // GET SCHEDULE LIST
     public ArrayList<Schedule> getScheduleList() throws Exception{
@@ -958,13 +964,6 @@ public class Schedule implements Serializable{
             } 
         } while (!found);
     
-    }
-   
-    
-
-
-    public String displayViewTicket(){
-        return "Departure Location %10s Arrival Location %10s Departure Time %10s Arrival Time %10s Ticket Price";
     }
 
 }

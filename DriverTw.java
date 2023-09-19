@@ -7,25 +7,26 @@ public class DriverTw {
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
         boolean cont = true;
-        ArrayList<Schedule> scheduleList = new ArrayList<>();
-        ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
+        // ArrayList<Schedule> scheduleList = new ArrayList<>();
+        // ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
     //========================================Read from File=========================================================//
-        Train train = new Train();
-        TrainStation station = new TrainStation();
+        // Train train = new Train();
+        // TrainStation station = new TrainStation();
         Schedule schedule = new Schedule();
-        Snacks snacks = new Snacks();
-        Drinks drinks = new Drinks();
+        // Snacks snacks = new Snacks();
+        // Drinks drinks = new Drinks();
 
         ArrayList<Train> trainList = new ArrayList<Train>();
         ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
-        ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
-        ArrayList<Drinks> drinksList = new ArrayList<Drinks>();
+        ArrayList<Schedule> scheduleList = schedule.getScheduleList(); 
+        // ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
+        // ArrayList<Drinks> drinksList = new ArrayList<Drinks>();
 
-        DriverJh.readFromFile("trainFile.txt", trainList, train);
-        DriverJh.readFromFile("stationFile.txt", stationList, station);
-        DriverJh.readFromFile("scheduleFile.txt", scheduleList, schedule);
-        DriverJh.readFromFile("snacksFile.txt", snacksList, snacks);
-        DriverJh.readFromFile("drinksFile.txt", drinksList, drinks);
+        // DriverJh.readFromFile("trainFile.txt", trainList, train);
+        // DriverJh.readFromFile("stationFile.txt", stationList, station);
+        // DriverJh.readFromFile("scheduleFile.txt", scheduleList, schedule);
+        // DriverJh.readFromFile("snacksFile.txt", snacksList, snacks);
+        // DriverJh.readFromFile("drinksFile.txt", drinksList, drinks);
 
     //========================================Read from File=========================================================//
 
@@ -52,7 +53,7 @@ public class DriverTw {
                 }
                 
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("x"));
-
+            scanner.close();
         } while (cont);
 
         // Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
@@ -91,6 +92,7 @@ public class DriverTw {
                     System.out.println("Invalid option. Please enter (1/2/x).");
                 }
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("x")); 
+            scanner.close();
         }while(cont == true);
     }
 
@@ -112,10 +114,21 @@ public class DriverTw {
         System.out.println("                Train Schedules");
         System.out.println("==================================================\n");
         for (int i = 0; i < scheduleList.size(); i++) {
-            System.out.println("Schedule No. " + (i+1) + "\n\n" + scheduleList.get(i).displayViewTicket());
+            System.out.println("Schedule No. " + (i+1) + "\n\n" + scheduleList.get(i).displayViewSchedule());
             System.out.println();
         }
     }
+
+    public static void viewScheduleStaff(ArrayList<Train> trainList, ArrayList<TrainStation> stationList, ArrayList<Schedule> scheduleList){
+        System.out.println("==================================================");
+        System.out.println("                Train Schedules");
+        System.out.println("==================================================\n");
+        for (int i = 0; i < scheduleList.size(); i++) {
+            System.out.println("Schedule No. " + (i+1) + "\n\n" + scheduleList.get(i).displayViewScheduleStaff());
+            System.out.println();
+        }
+    }
+    
 
 
     //====================================================================================================================//
@@ -147,7 +160,7 @@ public class DriverTw {
                     System.out.println("Invalid option. Please enter (1/2/x).");
                 }
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("x"));
-
+            scanner.close();
         } while (cont);
     }
 

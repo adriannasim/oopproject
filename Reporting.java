@@ -16,9 +16,6 @@ public class Reporting {
 
     public double calculateTicketSales(Ticket[] ticketSold){
         double totalTicketSales = 0;
-        for (int i = 0; i < ticketSold.length; i++) {
-            totalTicketSales += ticketSold[i].getTicketPrice();
-        }
         return totalTicketSales;
     }
     }
