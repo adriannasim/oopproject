@@ -246,9 +246,12 @@ public class DriverJh {
         System.out.println("              Update Train Information");
         System.out.println("==================================================");
         do{
-            System.out.print("Enter train no to search the train > "); 
+            System.out.print("Enter train no to search the train (Press # to exit) > ");
             trainNo = validateIntegerInput(scanner, "Enter train no to search the train (Press # to exit) > ");
 
+            if (trainNo==-1)
+                break;
+    
             for (int i = 0; i < trainList.size(); i++) {
                 if (trainNo==trainList.get(i).getTrainNo()) {
                     found = true;
@@ -792,6 +795,9 @@ public class DriverJh {
         Schedule obj = new Schedule();
         boolean added = false;
         boolean correctTime = false;
+        boolean incompatible;
+        boolean noPlatform;
+        int usePlatformCount;
 
         if (stationList.isEmpty() && trainList.isEmpty()){
             System.out.println("\nNO TRAIN AND STATIONS AVAILABLE.\n");
@@ -852,12 +858,34 @@ public class DriverJh {
         arriveLocation = stationList.get(userInput2 - 1);
         
         do{
-            System.out.print("Enter a departure time (HH:MM) > ");
+        	noPlatform = false;
+        	usePlatformCount = 1;
+            System.out.print("Enter a departure time (HH:MM) (Press # to exit) > ");
             userInput = scanner.nextLine(); 
+            if (userInput.equals("#")){
+            	return;
+            }
             if (isValidTimeFormat(userInput)) {
                 departTime = parseTime(userInput);
                 if (departTime != null) {
                     correctTime = true;
+                    for (int j = 0; j < scheduleList.size(); j++) {
+                		if (scheduleList.get(j).getDepartLocation().getLocationName().equals(departLocation.getLocationName())) {
+                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                        		usePlatformCount++;
+                    		}
+                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                       			 usePlatformCount++;
+                    		}
+               	 	}
+               	 	
+            	}
+            	if (usePlatformCount > departLocation.getNumOfPlatform()){
+        			noPlatform = true;
+        			System.out.println("\nTHE DEPARTURE STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
+        		}
+			
+        		
                 } else {
                     correctTime = false;
                     System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
@@ -865,16 +893,34 @@ public class DriverJh {
             } else {
                 correctTime = false;
                 System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
-            }
-        }while(correctTime==false);
+            }    
+            
+        }while(correctTime==false || noPlatform == true);
         
         do{
+        	noPlatform = false;
+        	usePlatformCount = 1;
             System.out.print("Enter an arrival time (HH:MM) > ");
             userInput = scanner.nextLine(); 
             if (isValidTimeFormat(userInput)) {
                 arriveTime = parseTime(userInput);
                 if (arriveTime != null) {
                     correctTime = true;
+                    for (int j = 0; j < scheduleList.size(); j++) {
+                		if (scheduleList.get(j).getArriveLocation().getLocationName().equals(arriveLocation.getLocationName())) {
+                    		if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                        		usePlatformCount++;
+                    		}
+                    		if (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                       			 usePlatformCount++;
+                    		}
+               	 	}
+               	 	
+            	}
+            	if (usePlatformCount > arriveLocation.getNumOfPlatform()){
+        			noPlatform = true;
+        			System.out.println("\nTHE ARRIVAL STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
+        		}
                 } else {
                     correctTime = false;
                     System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
@@ -883,22 +929,59 @@ public class DriverJh {
                 correctTime = false;
                 System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
-        }while(correctTime==false);
+            int compareDepartTime = arriveTime.compareTo(departTime);
+            if(compareDepartTime>=0){
+            	correctTime = true;
+            }else{
+            	correctTime = false;
+            	System.out.println("\nINVALID TIME. ARRIVAL TIME CANNOT BE EARLIER THAN DEPARTURE TIME.\n");
+            }
+        }while(correctTime==false || noPlatform == true);
  
         System.out.println("Select a train for this schedule : ");
-        for (int i = 0; i < trainList.size(); i++) {
-                System.out.println((i+1) + ". " + trainList.get(i).getTrainNo());
+        ArrayList<Train> availableTrains = new ArrayList<>(trainList);
+       
+        for (int i = 0; i < availableTrains.size(); i++) {
+                System.out.println((i+1) + ". " + availableTrains.get(i).getTrainNo());
         }
         do{
-            System.out.print("Enter the train number stated above > ");
-            userInput2 = validateIntegerInput(scanner, "Enter the train number stated above > ");
-            if(userInput2>trainList.size()){
+        	incompatible = false;
+            System.out.print("Enter the train number stated above (Press # to exit) > ");
+            
+            userInput2 = validateIntegerInput(scanner, "Enter the train number stated above (Press # to exit) > ");
+            if (userInput2==-1)
+                return;
+            if(userInput2>availableTrains.size()){
                 System.out.println("\nINVALID OPTION. PLEASE ENTER  THE NUMBER AS STATED ABOVE.\n");
             }else{
-                trainOperated = trainList.get(userInput2-1);
+                trainOperated = availableTrains.get(userInput2-1);
             }
             
-        }while(userInput2>trainList.size());
+            for (int j=0; j<scheduleList.size(); j++){
+            	if(scheduleList.get(j).getOperatedTrain().getTrainNo()==trainOperated.getTrainNo()){
+                 		if ((departTime.compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                    		departTime.compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
+                         	incompatible = true;
+                         	break;
+                 		}
+                 		if ((arriveTime.plusMinutes(15).compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                    	(arriveTime.compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
+                        	incompatible = true;
+                        	break;
+                		}
+                 
+            	}
+        	}
+        	if(incompatible == true){
+        		System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
+        	} 	
+        
+            
+            
+        	
+        	
+            
+        }while(userInput2>trainList.size()||incompatible == true);
 
         System.out.print("Enter the ticket price (RM) > ");
         ticketPrice = validateDoubleInput(scanner, "Enter the ticket price (RM) > ");
@@ -1013,16 +1096,35 @@ public class DriverJh {
         boolean updated = false;
         boolean correctTime = false;
         Schedule obj = new Schedule();
+        boolean noPlatform;
+        int usePlatformCount;
         
         System.out.println("Current departure time: " + scheduleList.get(index).getDepartTime());
                
         do{
+        	noPlatform = false;
+        	usePlatformCount = 1;
             System.out.print("Enter a new departure time (HH:MM) > ");
             userInput = scanner.nextLine(); 
             if (isValidTimeFormat(userInput)) {
                 departTime = parseTime(userInput);
                 if (departTime != null) {
                     correctTime = true;
+                    for (int j = 0; j < scheduleList.size(); j++) {
+                		if (scheduleList.get(j).getDepartLocation().getLocationName().equals(scheduleList.get(index).getDepartLocation().getLocationName())) {
+                    		if (departTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                        		usePlatformCount++;
+                    		}
+                    		if (departTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                       			 usePlatformCount++;
+                    		}
+               	 	}
+               	 	
+            	}
+            	if (usePlatformCount > scheduleList.get(index).getDepartLocation().getNumOfPlatform()){
+        			noPlatform = true;
+        			System.out.println("\nTHE DEPARTURE STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
+        		}
                 } else {
                     correctTime = false;
                     System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
@@ -1031,7 +1133,7 @@ public class DriverJh {
                 correctTime = false;
                 System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
-        }while(correctTime==false);
+        }while(correctTime==false || noPlatform == true);
 
         System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
         confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
@@ -1058,16 +1160,35 @@ public class DriverJh {
         boolean updated = false;
         boolean correctTime = false;
         Schedule obj = new Schedule();
+        boolean noPlatform;
+        int usePlatformCount;
 
         System.out.println("Current arrival time: " + scheduleList.get(index).getArriveTime());
                
         do{
+        	noPlatform = false;
+        	usePlatformCount = 1;
             System.out.print("Enter a new arrival time (HH:MM) > ");
             userInput = scanner.nextLine(); 
             if (isValidTimeFormat(userInput)) {
                 arriveTime = parseTime(userInput);
                 if (arriveTime != null) {
                     correctTime = true;
+                    for (int j = 0; j < scheduleList.size(); j++) {
+                		if (scheduleList.get(j).getArriveLocation().getLocationName().equals(scheduleList.get(index).getArriveLocation().getLocationName())) {
+                    		if (arriveTime.compareTo(scheduleList.get(j).getDepartTime()) == 0)  {
+                        		usePlatformCount++;
+                    		}
+                    		if (arriveTime.compareTo(scheduleList.get(j).getArriveTime()) == 0) {
+                       			 usePlatformCount++;
+                    		}
+               	 	}
+               	 	
+            	}
+            	if (usePlatformCount > scheduleList.get(index).getArriveLocation().getNumOfPlatform()){
+        			noPlatform = true;
+        			System.out.println("\nTHE ARRIVAL STATION'S PLATFORMS IS FULLY OCCUPIED.\n");
+        		}
                 } else {
                     correctTime = false;
                     System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
@@ -1076,7 +1197,7 @@ public class DriverJh {
                 correctTime = false;
                 System.out.println("\nINVALID TIME FORMAT. PLEASE ENTER IN FORMAT (HH:MM).\n");
             }
-        }while(correctTime==false);
+        }while(correctTime==false || noPlatform == true);
 
         System.out.print("Do you confirm? (Y-Yes/ N-No) > ");
         confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
@@ -1103,6 +1224,7 @@ public class DriverJh {
         String confirm;
         boolean updated = false;
         Schedule obj = new Schedule();
+        boolean incompatible = false;
         
         ArrayList<Train> availableTrains = new ArrayList<>(trainList);
         int currentTrainNo = scheduleList.get(index).getOperatedTrain().getTrainNo();
@@ -1128,6 +1250,24 @@ public class DriverJh {
                 confirm = validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
                 if(confirm.equalsIgnoreCase("Y")){
                     trainOperated = availableTrains.get(userInput - 1);
+                    for (int j=0; j<scheduleList.size(); j++){
+            		if(scheduleList.get(j).getOperatedTrain().getTrainNo()==trainOperated.getTrainNo()){
+                 			if ((scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                    		scheduleList.get(index).getDepartTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0) {
+                         		incompatible = true;
+                         		break;
+                 			}
+                 			if ((scheduleList.get(index).getArriveTime().plusMinutes(15).compareTo(scheduleList.get(j).getDepartTime()) >= 0) &&
+                    			(scheduleList.get(index).getArriveTime().compareTo(scheduleList.get(j).getArriveTime()) <= 0)) {
+                        		incompatible = true;
+                        		break;
+                			}
+                 
+            		}
+        		}
+        		if(incompatible == true){
+        			System.out.println("\nTRAIN INVOLVES IN OTHER SCHEDULE DURING THE TIME FRAME SELECTED.\n ");
+        		} 	
                     scheduleList.get(index).editTrainOperated(trainOperated);
                     updated = writeIntoFile("scheduleFile.txt", scheduleList, obj);
 
@@ -1395,6 +1535,9 @@ public class DriverJh {
         do {
             System.out.print("Enter the snacks id to search the snacks (Press # to exit) > ");
             foodId = scanner.nextLine();
+            
+            if (foodId.equals("#"))
+                break;
 
             for (int i = 0; i < snacksList.size(); i++) {
                 if (foodId.equals(snacksList.get(i).getFoodId())) {
@@ -1709,6 +1852,9 @@ public class DriverJh {
             System.out.print("Enter the snacks id to search the snacks (Press # to exit) > ");
             foodId = scanner.nextLine();
 
+		if (foodId.equals("#"))
+                break;
+                
             for (int i = 0; i < drinksList.size(); i++) {
                 if (foodId.equals(drinksList.get(i).getFoodId())) {
                     found = true;
