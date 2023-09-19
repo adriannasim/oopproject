@@ -248,10 +248,8 @@ public class BackendStaff extends Staff {
         boolean cont = true;
         Snacks snacks = new Snacks();
         Drinks drinks = new Drinks();
-<<<<<<< HEAD
+        
         ArrayList<Snacks> snacksList = snacks.getSnacksList();
-=======
->>>>>>> 092b3d63d51866971a74e46e67dcd851d1d3eb41
     
         while (cont) {
             System.out.println("==================================================");

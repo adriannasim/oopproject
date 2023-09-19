@@ -34,7 +34,7 @@ public class CounterStaff extends Staff{
         if (input.hasNextInt()) {
             int choice = input.nextInt();
             //make purchase
-            DriverJQ.makePurchase(choice);
+            Purchase.makePurchase(choice);
             //choose user's input choice
         } else {
             if (input.next().equals("#")) {
