@@ -247,6 +247,7 @@ public class BackendStaff extends Staff {
         String userInput = "";
         boolean cont = true;
         Snacks snacks = new Snacks();
+        Drinks drinks = new Drinks();
         ArrayList<Snacks> snacksList = snacks.getSnacksList();
     
         while (cont) {
@@ -265,7 +266,7 @@ public class BackendStaff extends Staff {
                 if (userInput.equals("1")) {
                     snacks.snacksModification(scanner);
                 } else if (userInput.equals("2")) {
-                    drinksModification(scanner);
+                    drinks.drinksModification(scanner);
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {

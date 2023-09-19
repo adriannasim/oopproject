@@ -1,28 +1,30 @@
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public abstract class FoodAndBeverage{
+public abstract class FoodAndBeverage {
     protected String foodId;
     protected String foodName;
     protected double foodPrice;
     protected int purchaseQty;
     protected int stockQty;
 
-    //-----------------------------------CONSTRUCTOR---------------------------------------- 
+    // -----------------------------------CONSTRUCTOR----------------------------------------
     // NO-ARG CONSTRUCTOR
-    FoodAndBeverage(){
+    FoodAndBeverage() {
         foodId = "Undefined";
         foodName = "Undefined";
     }
 
     // PARAMETERIZED CONSTRUCTOR
-    FoodAndBeverage(String foodName, double foodPrice, int stockQty){
+    FoodAndBeverage(String foodName, double foodPrice, int stockQty) {
         foodId = String.valueOf((int) (100000 + (Math.random() * (200000 - 100000 + 1))));
         this.foodName = foodName;
         this.foodPrice = foodPrice;
-        this.stockQty = stockQty; 
+        this.stockQty = stockQty;
         purchaseQty = 0;
     }
 
-    FoodAndBeverage(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty){
+    FoodAndBeverage(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.foodPrice = foodPrice;
@@ -30,91 +32,111 @@ public abstract class FoodAndBeverage{
         this.stockQty = stockQty;
 
     }
-    //------------------------------------METHOD-----------------------------------------
+
+    FoodAndBeverage(String foodId, String foodName, double foodPrice, int purchaseQty) {
+        this.foodId = foodId;
+        this.foodName = foodName;
+        this.foodPrice = foodPrice;
+        this.purchaseQty = purchaseQty;
+
+    }
+
+    // ------------------------------------METHOD-----------------------------------------
     // READ METHOD
-    public String getFoodId(){
+    public String getFoodId() {
         return foodId;
     }
 
-    public String getFoodName(){
+    public String getFoodName() {
         return foodName;
     }
 
-    public double getFoodPrice(){
+    public double getFoodPrice() {
         return foodPrice;
     }
 
-    public int getStockQty(){
+    public int getStockQty() {
         return stockQty;
     }
 
-    public int getPurchaseQty(){
+    public int getPurchaseQty() {
         return purchaseQty;
     }
 
     // UPDATE METHOD
-    public void editFoodName(String foodName){
-        this.foodName =  foodName;
+    public void editFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
-    public void editFoodPrice(double foodPrice){
+    public void editFoodPrice(double foodPrice) {
         this.foodPrice = foodPrice;
     }
 
-    public boolean editStockQty(String sign, int stockQty){
-        if (sign.equals("+")){
-            this.stockQty+=stockQty;
+    public boolean editStockQty(String sign, int stockQty) {
+        if (sign.equals("+")) {
+            this.stockQty += stockQty;
             return true;
-        }else{
-            if(stockQty>this.stockQty){
+        } else {
+            if (stockQty > this.stockQty) {
                 System.out.println("Error: This quantity is larger than the stock qty.");
                 return false;
-            }else{
-                this.stockQty-=stockQty;
+            } else {
+                this.stockQty -= stockQty;
                 return true;
             }
         }
     }
 
-    public void setPurchaseQty(int purchaseQty){
+    public void setPurchaseQty(int purchaseQty) {
         this.purchaseQty = purchaseQty;
     }
 
     // DISPLAY METHOD
-    public String toString(){
-        return "Food id: " + foodId + "\nFood name: " + foodName + "\nFood price: " + foodPrice + "\nStock qty: " + stockQty;
+    public String toString() {
+        return "Food id: " + foodId + "\nFood name: " + foodName + "\nFood price: " + foodPrice + "\nStock qty: "
+                + stockQty;
     }
 
-    public String displayToCust(){
+    public String displayToCust() {
         return "Food id       : " + foodId +
-               "\nFood Name     : " + foodPrice +
-               "\nFood Price    : " + foodPrice;
+                "\nFood Name     : " + foodName +
+                "\nFood Price    : " + foodPrice;
     }
 
     // CALCULATION METHOD
     public abstract double calculatePrice();
 
-    public boolean checkStockQty(int purchaseQty){
-        if (purchaseQty > stockQty){
+    public boolean checkStockQty(int purchaseQty) {
+        if (purchaseQty > stockQty) {
             return false;
         }
 
         return true;
     }
 
-    public void calculateStockQty(int purchaseQty){
+    public void calculateStockQty(int purchaseQty) {
         stockQty -= purchaseQty;
     }
 
-    public void addPurchaseQty(int purchaseQty){
+    public void addPurchaseQty(int purchaseQty) {
         this.purchaseQty += purchaseQty;
     }
 
-    public void addStockQty(int purchaseQty){
+    public void addStockQty(int purchaseQty) {
         stockQty += purchaseQty;
     }
 
-   
-    
-    public abstract void writePurchaseFnB(FoodAndBeverage fnbList , Login login);
+    public abstract void writePurchaseFnB(FoodAndBeverage fnbList, String username);
+
+    public abstract ArrayList<FoodAndBeverage> addFnb(ArrayList<Drinks> drinksList, ArrayList<Snacks> snacksList, ArrayList<FoodAndBeverage> fnbList,
+            Scanner scanner) throws Exception;
+
+    public abstract ArrayList<FoodAndBeverage> editFnb(ArrayList<Drinks> drinksList, ArrayList<FoodAndBeverage> fnbList,
+            Scanner scanner) throws Exception;
+
+    public abstract ArrayList<FoodAndBeverage> dltFnb(ArrayList<FoodAndBeverage> fnbList, Scanner scanner)
+            throws Exception;
+
+    public abstract ArrayList<FoodAndBeverage> buyFnb(ArrayList<FoodAndBeverage> fnbList, Scanner scanner)
+            throws Exception;
 }

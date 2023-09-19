@@ -4,57 +4,64 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Customer extends User {
-    //variables declaration
+    // variables declaration
     private String contactNo;
     private char gender;
 
-    //arrayList for customer info
+    // arrayList for customer info
     protected static ArrayList<Customer> custDetails = new ArrayList<>();
 
-    //constructors
+    // constructors
     Customer() {
         super();
         this.contactNo = "";
         this.gender = ' ';
     }
+
     Customer(String username, String password, String fullname, String email, String contactNo, char gender) {
         super(username, password, fullname, email);
         this.contactNo = contactNo;
         this.gender = gender;
 
-        //writing details to arrayList
+        // writing details to arrayList
         custDetails.add(this);
     }
 
-    //setters
+    // setters
     public void setContactNo(String contactNo) {
         this.contactNo = contactNo;
     }
+
     public void setGender(char gender) {
         this.gender = gender;
     }
 
-    //getters
+    // getters
     public String getContactNo(String username) {
         return contactNo;
     }
+
     public char getGender(String username) {
         return gender;
     }
 
-    //toString
+    // toString
     // public String toString() {
-    //     return super.toString() + String.format("Contact: %s\nGender: %c", contactNo, gender);
+    // return super.toString() + String.format("Contact: %s\nGender: %c", contactNo,
+    // gender);
     // }
 
-    //writing all info into file
+    // writing all info into file
     public static void writeCustInfo() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("custFile.txt", true))) {
             for (Customer cust : custDetails) {
-                writer.write(cust.getUsername() + "||" + cust.getPassword() + "||" + cust.getFullname(cust.getUsername()) + "||" + cust.getEmail(cust.getUsername()) + "||" + cust.contactNo + "||" + cust.gender);
+                writer.write(cust.getUsername() + "||" + cust.getPassword() + "||"
+                        + cust.getFullname(cust.getUsername()) + "||" + cust.getEmail(cust.getUsername()) + "||"
+                        + cust.contactNo + "||" + cust.gender);
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -62,12 +69,12 @@ public class Customer extends User {
         }
     }
 
-    //read file
+    // read file
     public static void readCustInfo() {
         try (BufferedReader reader = new BufferedReader(new FileReader("custFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {
-                //delete whitespaces
+                // delete whitespaces
                 info = info.trim();
 
                 String[] parts = info.split("\\|\\|");
@@ -78,8 +85,8 @@ public class Customer extends User {
                     String email = parts[3];
                     String contactNo = parts[4];
                     char gender = parts[5].charAt(0);
-                    
-                    //add details from file to arraylist
+
+                    // add details from file to arraylist
                     Customer cust = new Customer(username, password, fullname, email, contactNo, gender);
                 }
             }
@@ -88,9 +95,9 @@ public class Customer extends User {
         }
     }
 
-    //customer menu
-    public void custMenu(Login login){
-        Scanner input = new Scanner(System.in); //scanner
+    // customer menu
+    public void custMenu(Login login) throws Exception {
+        Scanner input = new Scanner(System.in); // scanner
 
         System.out.println("==================================================");
         System.out.println("                  Customer Menu");
@@ -103,43 +110,42 @@ public class Customer extends User {
         System.out.println("==================================================");
         System.out.print("Enter your option > ");
 
-        //accept user input
+        // accept user input
         if (input.hasNextInt()) {
             int choice = input.nextInt();
             switch (choice) {
                 case 1:
                 case 2:
-                    //make purchase
-                    DriverJQ.makePurchase(choice, login);
+                    // make purchase
+                    Purchase.makePurchase(choice, login);
                     break;
                 case 3:
-                    DriverJQ.editAccount(login);
+                    editAccount(login);
             }
-            
-            
-            //choose user's input choice
+
+            // choose user's input choice
         } else {
             if (input.next().equals("#")) {
                 System.out.printf("Logged out.\n\n");
                 return;
             } else {
                 System.out.printf("Invalid input, please enter your choice again.\n");
-                //clear buffer
+                // clear buffer
                 input.next();
             }
         }
     }
 
-    //DRIVER customer
+    // DRIVER customer
     public void driverCustomer() {
-        //create account
-        Scanner input = new Scanner(System.in); //scanner
-        String regex = "^[a-zA-Z0-9 ]+$";  //regex with space
-        String regex2 = "^[a-zA-Z0-9]+$";  //regex without space
-        String regex3 = "^01[2-9]-\\d{7,8}$";  //regex for phone no.
-        boolean check = true;  //loop
+        // create account
+        Scanner input = new Scanner(System.in); // scanner
+        String regex = "^[a-zA-Z0-9 ]+$"; // regex with space
+        String regex2 = "^[a-zA-Z0-9]+$"; // regex without space
+        String regex3 = "^01[2-9]-\\d{7,8}$"; // regex for phone no.
+        boolean check = true; // loop
 
-        //variables declaration
+        // variables declaration
         String inUsername, inPassword, inFullname, inEmail, inContact, inGender;
 
         System.out.println("==================================================");
@@ -147,13 +153,13 @@ public class Customer extends User {
         System.out.println("==================================================");
         System.out.printf("Enter 'X' to exit at any point\n\n");
 
-        //username
+        // username
         do {
             System.out.printf("Please enter your username (no spaces/special characters) > ");
             inUsername = input.nextLine();
-            //check if username exist in custFile.txt
+            // check if username exist in custFile.txt
             readCustInfo();
-            for (int i=0; i < custDetails.size(); i++) {
+            for (int i = 0; i < custDetails.size(); i++) {
                 if (inUsername.equals(custDetails.get(i).getUsername())) {
                     System.out.printf("This username is already in used. Please login using your existing username.\n");
                     return;
@@ -167,7 +173,7 @@ public class Customer extends User {
                 check = false;
             }
         } while (check);
-        //password
+        // password
         check = true;
         do {
             System.out.printf("Please enter your password (no spaces) > ");
@@ -180,7 +186,7 @@ public class Customer extends User {
                 check = false;
             }
         } while (check);
-        //fullname
+        // fullname
         check = true;
         do {
             System.out.printf("Please enter your full name (no special characters) > ");
@@ -193,7 +199,7 @@ public class Customer extends User {
                 check = false;
             }
         } while (check);
-        //email
+        // email
         check = true;
         do {
             System.out.printf("Please enter your email (no spaces) > ");
@@ -206,7 +212,7 @@ public class Customer extends User {
                 check = false;
             }
         } while (check);
-        //contactNo
+        // contactNo
         check = true;
         do {
             System.out.printf("Please enter your contact no. (eg. 012-3456789) > ");
@@ -219,7 +225,7 @@ public class Customer extends User {
                 check = false;
             }
         } while (check);
-        //gender
+        // gender
         check = true;
         do {
             System.out.printf("Please enter your gender (F=Female, M=Male) > ");
@@ -237,5 +243,90 @@ public class Customer extends User {
         Customer cust = new Customer(inUsername, inPassword, inFullname, inEmail, inContact, inGender.charAt(0));
         writeCustInfo();
         System.out.println("Registration successful. Please login now.");
+    }
+
+    public void editAccount(Login login) {
+        Scanner scanner = new Scanner(System.in);
+        int editOpt = 0;
+        boolean continueInput = true;
+
+        Customer cust = new Customer();
+        boolean validAcc = false;
+
+        String regex = "^[a-zA-Z0-9 ]+$"; // regex with space
+        String regex3 = "^01[2-9]-\\\\d{7,8})$"; // regex for phone no.
+
+        String fullname, email, contactNo;
+        char gender;
+
+        Customer.readCustInfo();
+        ArrayList<Customer> customers = Customer.custDetails;
+        for (int i = 0; i < customers.size(); i++) {
+            if (login.getUsername().equals(customers.get(i).getUsername())
+                    && login.getPassword().equals(customers.get(i).getPassword())) {
+                cust = customers.get(i);
+                validAcc = true;
+            }
+        }
+
+        if (validAcc) {
+            System.out.println("1. Full Name");
+            System.out.println("2. Email");
+            System.out.println("3. Contact Number");
+            System.out.println("4. Gender");
+            System.out.println("Other - Exit");
+            do {
+                try {
+                    System.out.print("Enter your option : ");
+                    editOpt = scanner.nextInt();
+
+                    continueInput = false;
+                } catch (InputMismatchException ex) {
+                    System.out.println("Incorrect Input. Please try agin. ");
+                    scanner.nextLine();
+                }
+            } while (continueInput);
+
+            if (editOpt == 1) {
+
+                do {
+                    System.out.println("Enter  your full name (no special characters) >");
+                    fullname = scanner.nextLine();
+                } while (!fullname.matches(regex));
+
+                cust.setFullname(fullname);
+
+            } else if (editOpt == 2) {
+
+                do {
+                    System.out.printf("Enter your email (no spaces) > ");
+                    email = scanner.next();
+                } while (!email.contains(" "));
+
+                cust.setEmail(email);
+
+            } else if (editOpt == 3) {
+                do {
+                    System.out.println("Enter contact Number (eg. 012-3456789) > ");
+                    contactNo = scanner.nextLine();
+                } while (!contactNo.matches(regex3));
+
+                cust.setContactNo(contactNo);
+
+            } else if (editOpt == 4) {
+
+                do {
+                    System.out.println("Enter gender (F/M only) : ");
+                    gender = scanner.next().charAt(0);
+                    gender = Character.toUpperCase(gender);
+                } while (gender != 'f' && gender != 'M');
+
+                cust.setGender(gender);
+
+            } else {
+                System.out.println("Exit Editing");
+            }
+
+        }
     }
 }

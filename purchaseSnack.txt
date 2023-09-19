@@ -1,0 +1,2 @@
+username||192205||class Snacks||Oreo Cookies||2.5||4||10.0||false
+username||192205||class Snacks||Oreo Cookies||2.5||2||5.0||false
