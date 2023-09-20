@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -71,11 +72,13 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     // WRITE PURCHASE INTO FILE
     public void writePurchaseFnB(FoodAndBeverage fnb, String username) {
+        LocalDate today = LocalDate.now();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseSnack.txt", true))) {
             writer.write(username + "||" +
                     fnb.getFoodId() + "||" + fnb.getClass() + "||"
                     + fnb.getFoodName() + "||" + fnb.getFoodPrice() + "||"
-                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice());
+                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice() + "||"
+                    + today.getDayOfMonth() + "||" + today.getMonthValue() + "||" + today.getYear());
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -186,8 +189,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
-    // ----------------------------------------------VIEW
-    // SNACKS----------------------------------------------
+    // ----------------------------------------------VIEW SNACKS----------------------------------------------
     public void viewSnacks() throws Exception {
         ArrayList<Snacks> snacksList = getSnacksList();
 
@@ -202,8 +204,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
-    // ----------------------------------------------ADD
-    // SNACKS----------------------------------------------
+    // ----------------------------------------------ADD SNACKS----------------------------------------------
     public void addSnacks(Scanner scanner) throws Exception {
         String foodName;
         double foodPrice;
@@ -255,8 +256,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------UPDATE
-    // SNACKS----------------------------------------------
+    // ----------------------------------------------UPDATE SNACKS----------------------------------------------
     public void updateSnacks(Scanner scanner) throws Exception {
         String foodId;
         String foodName;
@@ -444,8 +444,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------DELETE
-    // SNACKS----------------------------------------------
+    // ----------------------------------------------DELETE SNACKS----------------------------------------------
     public void deleteSnacks(Scanner scanner) throws Exception {
         boolean found = false;
         String userInput;

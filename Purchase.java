@@ -65,8 +65,10 @@ public class Purchase {
 	// Read from file
 	public static ArrayList<String> snackCust = new ArrayList<String>();
 	public static ArrayList<Double> snackTotalPrice = new ArrayList<Double>();
+	public static ArrayList<LocalDate> snackDates = new ArrayList<LocalDate>();
 	public static ArrayList<String> drinkCust = new ArrayList<String>();
 	public static ArrayList<Double> drinkTotalPrice = new ArrayList<Double>();
+	public static ArrayList<LocalDate> drinkDates = new ArrayList<LocalDate>();
 	public static ArrayList<String> ticketCust = new ArrayList<String>();
 
 	
@@ -77,6 +79,7 @@ public class Purchase {
 		ArrayList<TrainStation> stationList = station.getStationList();
 		TrainStation departStation = new TrainStation();
 		TrainStation arriveStation = new TrainStation();
+
 
 		if (file.exists()) {
 			try (Scanner inputFile = new Scanner(file)) {
@@ -124,7 +127,7 @@ public class Purchase {
 			try (Scanner inputFile = new Scanner(file)) {
 				while (inputFile.hasNext()) {
 					String[] parts = inputFile.nextLine().split("\\|\\|");
-					if (parts.length == 7) {
+					if (parts.length == 10) {
 						String username = parts[0];
 						String foodid = parts[1];
 						String className = parts[2];
@@ -132,8 +135,12 @@ public class Purchase {
 						double foodprice = Double.parseDouble(parts[4]);
 						int purchaseQty = Integer.parseInt(parts[5]);
 						double totalprice = Double.parseDouble(parts[6]);
+						int day = Integer.parseInt(parts[7]);
+						int month = Integer.parseInt(parts[8]);
+						int year = Integer.parseInt(parts[9]);
 
 						// Create a Snacks object and add it to the list
+						snackDates.add(LocalDate.of(year, month, day));
 						snacksList.add(new Snacks(foodid, foodname, foodprice, purchaseQty));
 						snackCust.add(username);
 						snackTotalPrice.add(totalprice);
@@ -155,7 +162,7 @@ public class Purchase {
 			try (Scanner inputFile = new Scanner(file)) {
 				while (inputFile.hasNext()) {
 					String[] parts = inputFile.nextLine().split("\\|\\|");
-					if (parts.length == 7) {
+					if (parts.length == 10) {
 						String username = parts[0];
 						String foodid = parts[1];
 						String className = parts[2];
@@ -163,8 +170,12 @@ public class Purchase {
 						double foodprice = Double.parseDouble(parts[4]);
 						int purchaseQty = Integer.parseInt(parts[5]);
 						double totalprice = Double.parseDouble(parts[6]);
+						int day = Integer.parseInt(parts[7]);
+						int month = Integer.parseInt(parts[8]);
+						int year = Integer.parseInt(parts[9]);
 
 						// Create a Snacks object and add it to the list
+						drinkDates.add(LocalDate.of(year, month, day));
 						drinksList.add(new Drinks(foodid, foodname, foodprice, purchaseQty));
 						drinkCust.add(username);
 						drinkTotalPrice.add(totalprice);
