@@ -195,10 +195,10 @@ public class DriverTw {
 
         FoodAndBeverage[] fnbs = purchaseFnb.toArray(new FoodAndBeverage[purchaseFnb.size()]);
         
-        System.out.println("==========================================================================");
-        System.out.println("                    Food and Beverage Sales Report");
-        System.out.println("==========================================================================");
-        System.out.println("\nNo. \t Food ID \t Description \t  Quantity Purchased \t Price(RM)\n");
+        System.out.println("==================================================================================");
+        System.out.println("                        Food and Beverage Sales Report");
+        System.out.println("==================================================================================");
+        System.out.println("\nNo. \t Food ID \t Description \t  Quantity Purchased \t Price(RM) \t SubTotal(RM)\n");
         
         int i = 0;
             for (Snacks snack : purchaseSnack) {
@@ -213,7 +213,7 @@ public class DriverTw {
                 System.out.println();
             }
             
-        System.out.println("Total Sales Amount (RM) : " + report.calculateFnbSales(fnbs)); //call calc function
+        System.out.printf("Total Sales Amount (RM) : %.2f\n\n",report.calculateFnbSales(fnbs)); 
     }
 
     //========================================== Ticket Sales Report =====================================================//
@@ -233,6 +233,6 @@ public class DriverTw {
             System.out.println();
         }
         System.out.println("Number of Tickets Sold  : "+ i); 
-        System.out.println("\nTotal Sales Amount (RM) : " + report.calculateTicketSales(ticketLists)); //call calc function
+        System.out.printf("\nTotal Sales Amount (RM) : %.2f\n\n",report.calculateTicketSales(ticketLists)); 
     }
 }
