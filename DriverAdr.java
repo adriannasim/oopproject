@@ -11,8 +11,6 @@ public class DriverAdr {
         ArrayList<Customer> custDetails = Customer.custDetails;
         ArrayList<Staff> staffDetails = Staff.staffDetails;
 
-
-
         //objects/instances declaration
         Scanner input = new Scanner(System.in); //scanner
         Main menu = new Main(); //menu

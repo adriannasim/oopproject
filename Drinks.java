@@ -2,14 +2,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.Writer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Drinks extends FoodAndBeverage implements Serializable {
+public class Drinks extends FoodAndBeverage{
     private String temperature;
     private String size;
     private boolean ice;

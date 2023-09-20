@@ -60,7 +60,7 @@ public class Staff extends User implements ReadAndWrite {
     }
 
     //write file
-    public static void writeFile() {
+    public void writeFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("staffFile.txt", true))) {
             for (Staff staff : staffDetails) {
                 writer.write(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.staffId + "||" + staff.staffType);
@@ -72,7 +72,7 @@ public class Staff extends User implements ReadAndWrite {
     }
 
     //read file
-    public static void readFile() {
+    public void readFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("staffFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {
