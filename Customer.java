@@ -121,10 +121,10 @@ public class Customer extends User {
                     editAccount(login);
                     break;
                 case 4:
-                    //DriverTw.viewFnBHistory(login);
+                    DriverTw.viewFnBHistory(login);
                     break;
                 case 5:
-                    //DriverTw.viewTicketHistory(login);
+                    DriverTw.viewTicketHistory(login);
                     break;
                 default:
                     //clear screen
