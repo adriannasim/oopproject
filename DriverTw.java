@@ -9,26 +9,11 @@ public class DriverTw {
         boolean cont = true;
         // ArrayList<Schedule> scheduleList = new ArrayList<>();
         // ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
-    //========================================Read from File=========================================================//
-        // Train train = new Train();
-        // TrainStation station = new TrainStation();
-        Schedule schedule = new Schedule();
-        // Snacks snacks = new Snacks();
-        // Drinks drinks = new Drinks();
-        
-        ArrayList<Train> trainList = new ArrayList<Train>();
-        ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
 
-        // ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
-        // ArrayList<Drinks> drinksList = new ArrayList<Drinks>();
+     //   Schedule schedule = new Schedule();
 
-        // DriverJh.readFromFile("trainFile.txt", trainList, train);
-        // DriverJh.readFromFile("stationFile.txt", stationList, station);
-        // DriverJh.readFromFile("scheduleFile.txt", scheduleList, schedule);
-        // DriverJh.readFromFile("snacksFile.txt", snacksList, snacks);
-        // DriverJh.readFromFile("drinksFile.txt", drinksList, drinks);
 
-    //========================================Read from File=========================================================//
+
 
         do {
             System.out.println("1. View Purchases");
@@ -56,12 +41,6 @@ public class DriverTw {
             
         } while (cont);
         scanner.close();
-
-        // Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
-        // userPurchase.purchaseTicket(tickets);
-
-        // FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
-        // userPurchase.purchaseFnb(fnbs);
 
     }
 
@@ -95,6 +74,7 @@ public class DriverTw {
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("x")); 
         }while(cont == true);
     }
+    
 
     public static void viewFnbHistory() throws Exception{
         
@@ -147,7 +127,7 @@ public class DriverTw {
     //                                             View Schedules                                                         //
     //====================================================================================================================//
     public static void viewSchedule() throws Exception{
-        ArrayList<Schedule> scheduleList = Schedule.readFromFile("scheduleFile.dat");
+        ArrayList<Schedule> scheduleList = Schedule.readFile("scheduleFile.txt");
         System.out.println("==================================================");
         System.out.println("                Train Schedules");
         System.out.println("==================================================\n");
@@ -161,7 +141,8 @@ public class DriverTw {
         
     }
 
-    public static void viewScheduleStaff(ArrayList<Train> trainList, ArrayList<TrainStation> stationList, ArrayList<Schedule> scheduleList){
+    public static void viewScheduleStaff() throws Exception{
+        ArrayList<Schedule> scheduleList = Schedule.readFile("scheduleFile.txt");
         System.out.println("==================================================");
         System.out.println("                Train Schedules");
         System.out.println("==================================================\n");
@@ -178,7 +159,7 @@ public class DriverTw {
     //====================================================================================================================//
     //                                              View Reports                                                          //
     //====================================================================================================================//
-    public static void viewReport() {
+    public static void viewReport() throws Exception {
         Scanner scanner = new Scanner(System.in);
         boolean cont = true;
         String userInput;
@@ -208,25 +189,46 @@ public class DriverTw {
     }
 
     //=========================================== F&B Sales Report =======================================================//
-    public static void fnbSalesReport() {
-        System.out.println("==================================================");
-        System.out.println("                F&B Sales Report");
-        System.out.println("==================================================");
-        System.out.println("Date : "); // loop based on date
-        System.out.println("Food ID \t Description \t Quantity Purchased");
-        // print array
+    public static void fnbSalesReport() throws Exception{
+        ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
+        ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
+        System.out.println("==========================================================================");
+        System.out.println("                    Food and Beverage Sales Report");
+        System.out.println("==========================================================================");
+        System.out.println("\nNo. \t Food ID \t Description \t  Quantity Purchased \t Price(RM)\n");
+        
+        int i = 0;
+            for (Snacks snack : purchaseSnack) {
+                System.out.printf("%-8d %s", (i + 1), snack.displaySalesReport());
+                i++;
+                System.out.println();
+            } 
+            
+            for (Drinks drink : purchaseDrink) {
+                System.out.printf("%-8d %s", (i + 1), drink.displaySalesReport());
+                i++;
+                System.out.println();
+            }
+            
         System.out.println("Total Sales Amount (RM) : "); //call calc function
     }
 
     //========================================== Ticket Sales Report =====================================================//
-    public static void ticketSalesReport() {
-        System.out.println("==================================================");
-        System.out.println("            Train Ticket Sales Report");
-        System.out.println("==================================================");
-        System.out.println("Date : "); // loop based on date
-        System.out.println("Departure - Arrival \t Quantity Purchased");
-        System.out.println("Number of Tickets Sold  : "); 
-        System.out.println("Total Sales Amount (RM) : "); //call calc function
-    }
+    public static void ticketSalesReport() throws Exception{
+        ArrayList<Ticket> ticketList = Purchase.readFromTicketFile("purchaseTicket.txt");
+        System.out.println("=======================================================================================================");
+        System.out.println("                                    Train Ticket Sales Report");
+        System.out.println("=======================================================================================================");
+        System.out.println("\n   Departure - Arrival \t\t Time(Departure - Arrival) \t Ticket Price(RM) \t Date Purchased\n");
 
+        int i = 0;
+        for (Ticket ticket : ticketList) {
+            System.out.printf("%s", ticket.displaySalesReport());
+            i++;
+            System.out.println();
+        }
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+        System.out.println("Number of Tickets Sold  : "+ i); 
+        System.out.println("\nTotal Sales Amount (RM) : " + Reporting.calculateTicketSales(ticketList)); //call calc function
+    }
 }

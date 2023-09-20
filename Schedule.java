@@ -151,11 +151,11 @@ public class Schedule implements Serializable{
     }
 
     public String displayInReport(){
-        return  String.format("%19s - %-4s %24s - %-18s %6.2f\n", arriveTime, departTime, departLocation.getLocationName(), arriveLocation.getLocationName(), ticketPrice);
+        return String.format("%19s - %-4s %24s - %-18s %6.2f\n", arriveTime, departTime, departLocation.getLocationName(), arriveLocation.getLocationName(), ticketPrice);
     }
     
     public String displayToReport(){
-        return String.format("Departure Location \t Arrival Location \t Departure Time \t Arrival Time \t Ticket Price\n%20s %20s %10s %10s %.2lf",departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, ticketPrice);
+        return String.format("%-12s - %-20s %8s - %-16s %10.2f", departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, ticketPrice);    
     }
 
     public String displayToReportStaff(){

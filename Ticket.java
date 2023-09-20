@@ -54,6 +54,11 @@ public class Ticket {
     public String displayToReport(){
         return String.format("%-10s\t%8s %s\n", ticketDate, ticketId, ticketSchedule.displayInReport());
     }
+
+    public String displaySalesReport(){
+        return String.format("%s %26s\n", ticketSchedule.displayToReport(), ticketDate);
+    }
+
     public void writePurchaseTicket(Ticket[] ticketList, String username) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseTicket.txt", true))) {
             for (Ticket ticket : ticketList) {
@@ -743,6 +748,10 @@ public class Ticket {
         }
 
         return ticketList;
+    }
+
+    public double getTicketPrice() {
+        return 0;
     }
 
 }
