@@ -6,7 +6,10 @@ import java.time.LocalDate;
 
 public class DriverJQ {
     public static void main(String[] args) throws Exception{
-        Purchase.makePurchase(2, new Login("username", "password"));
+        viewReportDDrink();
+        viewReport();
+        viewReportTicket();
+        //Purchase.makePurchase(2, new Login("username", "password"));
     }
 
     public static void viewReport() throws Exception {
@@ -38,7 +41,7 @@ public class DriverJQ {
         int i = 0;
         for (Drinks drink : purchaseDrink) {
             System.out.printf("%d. ", i + 1);
-            System.out.println(drink);
+            System.out.println(drink.displayToCust());
             System.out.println(drinkDates.get(i));
             System.out.println(drinkCust.get(i));
             System.out.println(drinkTotalPrice.get(i));

@@ -134,8 +134,6 @@ public abstract class FoodAndBeverage {
         stockQty += purchaseQty;
     }
 
-    public abstract void writePurchaseFnB(FoodAndBeverage fnbList, String username);
-
     public abstract ArrayList<FoodAndBeverage> addFnb(ArrayList<Drinks> drinksList, ArrayList<Snacks> snacksList, ArrayList<FoodAndBeverage> fnbList,
             Scanner scanner) throws Exception;
 

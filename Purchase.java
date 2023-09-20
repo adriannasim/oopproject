@@ -127,7 +127,7 @@ public class Purchase {
 			try (Scanner inputFile = new Scanner(file)) {
 				while (inputFile.hasNext()) {
 					String[] parts = inputFile.nextLine().split("\\|\\|");
-					if (parts.length == 10) {
+					if (parts.length == 11) {
 						String username = parts[0];
 						String foodid = parts[1];
 						String className = parts[2];
@@ -135,9 +135,10 @@ public class Purchase {
 						double foodprice = Double.parseDouble(parts[4]);
 						int purchaseQty = Integer.parseInt(parts[5]);
 						double totalprice = Double.parseDouble(parts[6]);
-						int day = Integer.parseInt(parts[7]);
-						int month = Integer.parseInt(parts[8]);
-						int year = Integer.parseInt(parts[9]);
+						boolean partypack = Boolean.parseBoolean(parts[7]);
+						int day = Integer.parseInt(parts[8]);
+						int month = Integer.parseInt(parts[9]);
+						int year = Integer.parseInt(parts[10]);
 
 						// Create a Snacks object and add it to the list
 						snackDates.add(LocalDate.of(year, month, day));
@@ -162,7 +163,7 @@ public class Purchase {
 			try (Scanner inputFile = new Scanner(file)) {
 				while (inputFile.hasNext()) {
 					String[] parts = inputFile.nextLine().split("\\|\\|");
-					if (parts.length == 10) {
+					if (parts.length == 13) {
 						String username = parts[0];
 						String foodid = parts[1];
 						String className = parts[2];
@@ -170,13 +171,16 @@ public class Purchase {
 						double foodprice = Double.parseDouble(parts[4]);
 						int purchaseQty = Integer.parseInt(parts[5]);
 						double totalprice = Double.parseDouble(parts[6]);
-						int day = Integer.parseInt(parts[7]);
-						int month = Integer.parseInt(parts[8]);
-						int year = Integer.parseInt(parts[9]);
+						String size = parts[7];
+						String temperature = parts[8];
+						boolean ice = Boolean.parseBoolean(parts[9]);
+						int day = Integer.parseInt(parts[10]);
+						int month = Integer.parseInt(parts[11]);
+						int year = Integer.parseInt(parts[12]);
 
 						// Create a Snacks object and add it to the list
 						drinkDates.add(LocalDate.of(year, month, day));
-						drinksList.add(new Drinks(foodid, foodname, foodprice, purchaseQty));
+						drinksList.add(new Drinks(foodid, foodname, foodprice, purchaseQty, temperature, size, ice));
 						drinkCust.add(username);
 						drinkTotalPrice.add(totalprice);
 					} else {
@@ -320,9 +324,9 @@ public class Purchase {
 
 			for (FoodAndBeverage foodAndBeverage : fnbs) {
 				if (foodAndBeverage instanceof Snacks) {
-					snack.writePurchaseFnB(foodAndBeverage, "staff");
+					snack.writePurchaseFnB((Snacks)foodAndBeverage, "staff");
 				} else if (foodAndBeverage instanceof Drinks) {
-					drink.writePurchaseFnB(foodAndBeverage, "staff");
+					drink.writePurchaseFnB((Drinks)foodAndBeverage, "staff");
 				}
 			}
 
@@ -400,7 +404,7 @@ public class Purchase {
 			Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
 			userPurchase.purchaseTicket(tickets);
 
-			FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
+			FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[fnbList.size()]);
 			userPurchase.purchaseFnb(fnbs);
 
 			// =================================================================================
@@ -461,9 +465,9 @@ public class Purchase {
 			if (fnbList.size() != 0){
 				for (FoodAndBeverage foodAndBeverage : fnbList) {
 				if (foodAndBeverage instanceof Snacks) {
-					snack.writePurchaseFnB(foodAndBeverage, login.getUsername());
+					snack.writePurchaseFnB((Snacks)foodAndBeverage, login.getUsername());
 				} else if (foodAndBeverage instanceof Drinks) {
-					drink.writePurchaseFnB(foodAndBeverage, login.getUsername());
+					drink.writePurchaseFnB((Drinks)foodAndBeverage, login.getUsername());
 				}
 			}
 			}

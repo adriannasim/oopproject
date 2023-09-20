@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Drinks extends FoodAndBeverage{
+public class Drinks extends FoodAndBeverage {
     private String temperature;
     private String size;
     private boolean ice;
@@ -38,8 +38,12 @@ public class Drinks extends FoodAndBeverage{
         this.ice = ice;
     }
 
-    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty) {
+    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty, String temperature,
+            String size, boolean ice) {
         super(foodId, foodName, foodPrice, purchaseQty);
+        this.temperature = temperature;
+        this.size = size;
+        this.ice = ice;
     }
     // ------------------------------------METHOD-----------------------------------------
 
@@ -78,18 +82,17 @@ public class Drinks extends FoodAndBeverage{
                 "\nSize          : " + size;
     }
 
-    public String displayToReport(){
+    public String displayToReport() {
         return super.displayToReport();
     }
 
-    public String displaySalesReport(){
+    public String displaySalesReport() {
         return super.displaySalesReport();
     }
 
-    public String toString(){
+    public String toString() {
         return super.toString();
     }
-    
 
     // CALCULATION METHOD
     public double calculatePrice() {
@@ -173,20 +176,20 @@ public class Drinks extends FoodAndBeverage{
     }
 
     // WRITE INTO FILE
-    public void writePurchaseFnB(FoodAndBeverage fnb, String username) {
+    public void writePurchaseFnB(Drinks fnb, String username) {
         LocalDate today = LocalDate.now();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseDrink.txt", true))) {
             writer.write(username + "||" +
                     fnb.getFoodId() + "||" + fnb.getClass() + "||"
                     + fnb.getFoodName() + "||" + fnb.getFoodPrice() + "||"
-                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice() + "||"
+                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice() + "||" + fnb.getSize() + "||"
+                    + fnb.getTemperature() + "||" + fnb.getIce() + "||"
                     + today.getDayOfMonth() + "||" + today.getMonthValue() + "||" + today.getYear());
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     // DRINKS MODIFICATION (DRIVER)
     public void drinksModification(Scanner scanner) throws Exception {
@@ -230,16 +233,15 @@ public class Drinks extends FoodAndBeverage{
         }
     }
 
-    public void viewDrinks() throws Exception{
+    public void viewDrinks() throws Exception {
         ArrayList<Drinks> drinksList = getDrinksList();
-       
+
         if (drinksList.isEmpty()) {
             System.out.println("\nNO DRINKS IN THE RECORD.\n");
         } else {
             System.out.println("\nDRINKS LIST:\n");
             System.out.printf("%-20s\t%-50s\t%-30.2f\t%10d", "Food ID", "Food Name", "Food Price", "Stock Qty");
             System.out.println("===========================================================================");
-
 
             for (Drinks drink : drinksList) {
                 System.out.println(drink.toString() + "\n");
