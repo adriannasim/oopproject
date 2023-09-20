@@ -62,7 +62,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
     }
 
     public String displayToReport(){
-        return super.displayToCust();
+        return String.format("Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM)\n\n%-24s %-15s %6.2f %16.2f", foodName, purchaseQty, foodPrice, calculatePrice());
     }
 
     // CALCULATION METHOD

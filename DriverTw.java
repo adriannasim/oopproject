@@ -89,7 +89,7 @@ public class DriverTw {
                 if (userInput.equals("1")) {
                     viewFnbHistory();
                 } else if (userInput.equals("2")) {
-                    
+                    viewTicketHistory();
                 } else if (userInput.equals("x")) {
                     cont = false;
                 } else {
@@ -103,35 +103,37 @@ public class DriverTw {
     public static void viewFnbHistory() throws Exception{
         
         ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
-        ArrayList<String> snackCust = Purchase.snackCust;
-        ArrayList<Double> snackTotalPrice = Purchase.snackTotalPrice;
+        // ArrayList<String> snackCust = Purchase.snackCust;
+        // ArrayList<Double> snackTotalPrice = Purchase.snackTotalPrice;
         
         ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
-        ArrayList<String> drinkCust = Purchase.drinkCust;
-        ArrayList<Double> drinkTotalPrice = Purchase.drinkTotalPrice;
+        // ArrayList<String> drinkCust = Purchase.drinkCust;
+        // ArrayList<Double> drinkTotalPrice = Purchase.drinkTotalPrice;
+
+        System.out.println("======================================================================");
+        System.out.println("                        F&B Purchase History");
+        System.out.println("======================================================================\n");
 
         int i = 0;
             for (Snacks snack : purchaseSnack) {
-                System.out.printf("%d. ", i + 1);
+                System.out.printf("No. %d\n\n", (i + 1));
                 System.out.println(snack.displayToReport());
-                System.out.println(snackCust.get(i));
-                System.out.println(snackTotalPrice.get(i));
-                System.out.println("------------------------------------------------");
+                i++;
+                System.out.println("\n----------------------------------------------------------------------\n");
             }
         
 
         int j = 0;
             for (Drinks drink : purchaseDrink) {
-                System.out.printf("%d. ", j + 1);
+                System.out.printf("No. %d\n\n", (j + 1));
                 System.out.println(drink.displayToReport());
-                System.out.println(drinkCust.get(j));
-                System.out.println(drinkTotalPrice.get(j));
-                System.out.println("------------------------------------------------");
+                j++;
+                System.out.println("\n----------------------------------------------------------------------\n");
             }
         
     }
 
-    public void viewTicketHistory(){
+    public static void viewTicketHistory() throws Exception{
         // ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
         // ArrayList<String> ticketCust = Purchase.ticketList;
 
