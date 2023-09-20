@@ -27,22 +27,22 @@ public class Reporting {
         return calculateFnbSales(fnb);
     }
 
-    public double calculateTicketSales(){
-        double totalTicketSales = 0;
-        for(Ticket ticket : ticketSold){
-        totalTicketSales += ticket.getTicketSchedule().getTicketPrice();
-        }
-        return totalTicketSales;
-    }
-
-    // public double calculateTicketSales(Ticket[] ticketSold) throws Exception{
-    //     ArrayList<Ticket> ticketList = Purchase.readFromTicketFile("purchaseTicket.txt");
-    //     double totalTicketSales = 0;
-    //     for(Ticket ticket : ticketList){
-    //         totalTicketSales += ticket.getTicketSchedule().getTicketPrice();
-    //     }
-    //     return totalTicketSales;
+    // public double calculateTicketSales(){
+    //    double totalTicketSales = 0;
+    //    for(Ticket ticket : ticketSold){
+    //    totalTicketSales += ticket.getTicketSchedule().getTicketPrice();
+    //    }
+    //    return totalTicketSales;
     // }
+
+     public double calculateTicketSales(Ticket[] ticketSold) throws Exception{
+         ArrayList<Ticket> ticketList = Purchase.readFromTicketFile("purchaseTicket.txt");
+         double totalTicketSales = 0;
+         for(Ticket ticket : ticketList){
+             totalTicketSales += ticket.getTicketSchedule().getTicketPrice();
+         }
+         return totalTicketSales;
+     }
 
     public static String calculateTicketSales(ArrayList<Ticket> ticketList) {
         return null;
