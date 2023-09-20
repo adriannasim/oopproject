@@ -2,3 +2,4 @@ username||137425||class Drinks||Orange Juice||6.0||2||12.0||Small||Cold||true||2
 username||141234||class Drinks||Coke||3.0||1||4.2||Medium||Hot||false||20||9||2023
 username||141234||class Drinks||Coke||3.0||2||6.0||Small||Cold||true||20||9||2023
 username||137425||class Drinks||Orange Juice||6.0||2||14.4||Medium||Hot||false||20||9||2023
+username||141234||class Drinks||Coke||3.0||1||4.2||Medium||Cold||true||20||9||2023
