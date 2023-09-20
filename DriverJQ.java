@@ -9,7 +9,7 @@ public class DriverJQ {
         viewReportDDrink();
         viewReport();
         viewReportTicket();
-        Purchase.makePurchase(2, new Login("username", "password"));
+        Purchase.makePurchase(1, new Login("username", "password"));
     }
 
     public static void viewReport() throws Exception {
