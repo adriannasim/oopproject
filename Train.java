@@ -61,11 +61,11 @@ public class Train implements Serializable{
 
     // TOSTRING
     public String toString(){
-           return "Train No: " + trainNo + "\nTrain Name: " + trainName + "\nTrain Model: " + trainModel + "\n";
+        return String.format("%-30s\t%-30s\t%10d", trainNo, trainName, trainModel);
     }
 
     // READ FROM FILE
-    public static ArrayList<Train> readFromFile(String filename) throws FileNotFoundException {
+    public static ArrayList<Train> readFile(String filename) throws FileNotFoundException {
         File file = new File(filename);
         ArrayList<Train> trainList = new ArrayList<Train>();
 
@@ -85,12 +85,12 @@ public class Train implements Serializable{
 
     // GET TRAIN LIST
     public ArrayList<Train> getTrainList() throws FileNotFoundException{
-        ArrayList<Train> trainList = readFromFile("trainFile.txt");
+        ArrayList<Train> trainList = readFile("trainFile.txt");
         return trainList;
     }
 
     // WRITE INTO FILE
-    public static boolean writeIntoFile(String filename, ArrayList<Train> trainList)  throws FileNotFoundException {
+    public static boolean writeFile(String filename, ArrayList<Train> trainList)  throws FileNotFoundException {
         boolean write = false;
 
         try {
@@ -149,8 +149,12 @@ public class Train implements Serializable{
     // ----------------------------------------------VIEW TRAINS----------------------------------------------
     public void viewTrain() throws Exception{
         ArrayList<Train> trainList = getTrainList();
+        
         if (trainList.size()==0){
             System.out.println("\nNO TRAINS IN THE RECORD.\n");
+        }else{
+            System.out.printf("%-30s\t%-30s\t%10d\n", "Train No", "Train Name", "Train Model");
+            System.out.println("===========================================================================");
         }
         for (int i=0; i< trainList.size(); i++){
             System.out.println(trainList.get(i).toString() + "\n");
@@ -181,7 +185,7 @@ public class Train implements Serializable{
 
         if(userInput.equalsIgnoreCase("Y")){
             trainList.add(new Train(trainName, trainModel));
-            added = writeIntoFile("trainFile.txt", trainList);
+            added = writeFile("trainFile.txt", trainList);
             if (added == true){
                 System.out.println("\nTRAIN HAS ADDED\n");
             }else{
@@ -194,7 +198,7 @@ public class Train implements Serializable{
     }
 
     // ----------------------------------------------UPDATE TRAIN----------------------------------------------
-    public static void updateTrainInfo(Scanner scanner) throws Exception {
+    public void updateTrainInfo(Scanner scanner) throws Exception {
         String userInput;
         String userInput2;
         String trainName;
@@ -255,7 +259,7 @@ public class Train implements Serializable{
                                         }
                                     }
                                     trainList.get(index).changeTrainName(trainName);
-                                    updated = writeIntoFile("trainfile.txt", trainList);
+                                    updated = writeFile("trainfile.txt", trainList);
                                     if (!scheduleList.isEmpty()){
                                         Schedule.writeFile(scheduleList);
                                     }
@@ -296,7 +300,7 @@ public class Train implements Serializable{
     }
 
     // ----------------------------------------------DELETE TRAIN----------------------------------------------
-    public static void deleteTrain(Scanner scanner) throws Exception {
+    public void deleteTrain(Scanner scanner) throws Exception {
         int trainNo;
         boolean found = false;
         boolean deleted = false;
@@ -369,7 +373,7 @@ public class Train implements Serializable{
                             }
                         }
                         trainList.remove(index);
-                        deleted = writeIntoFile("trainFile.txt", trainList);
+                        deleted = writeFile("trainFile.txt", trainList);
                         deleted2 = Schedule.writeFile(scheduleList);
 
                         if (deleted && deleted2) {

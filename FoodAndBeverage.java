@@ -94,8 +94,7 @@ public abstract class FoodAndBeverage {
 
     // DISPLAY METHOD
     public String toString() {
-        return "Food id: " + foodId + "\nFood name: " + foodName + "\nFood price: " + foodPrice + "\nStock qty: "
-                + stockQty;
+        return String.format("%-20s\t%-50s\t%-30.2f\t%10d", foodId, foodName, foodPrice, stockQty);
     }
 
     public String displayToCust() {
