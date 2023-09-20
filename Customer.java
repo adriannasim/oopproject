@@ -173,7 +173,7 @@ public class Customer extends User {
             for (int i = 0; i < custDetails.size(); i++) {
                 if (inUsername.equals(custDetails.get(i).getUsername())) {
                     //clear screen
-                    for (int j = 0; i < 100; i++) {
+                    for (int i = 0; i < 100; i++) {
                         System.out.println();
                     }
                     System.out.printf("This username is already in used. Please login using your existing username.\n");
@@ -181,12 +181,12 @@ public class Customer extends User {
                 }
             }
             if (!inUsername.matches(regex2)) {
+                System.out.printf("No spaces/special characters allowed. Please try again.\n");
+            } else if (inUsername.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("No spaces/special characters allowed. Please try again.\n");
-            } else if (inUsername.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
@@ -198,12 +198,12 @@ public class Customer extends User {
             System.out.printf("\nPlease enter your password (no spaces) > ");
             inPassword = input.nextLine();
             if (inPassword.contains(" ")) {
+                System.out.printf("No spaces allowed. Please try again.\n");
+            } else if (inPassword.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("No spaces allowed. Please try again.\n");
-            } else if (inPassword.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
@@ -215,12 +215,12 @@ public class Customer extends User {
             System.out.printf("\nPlease enter your full name (no special characters) > ");
             inFullname = input.nextLine();
             if (!inFullname.matches(regex)) {
+                System.out.printf("No special characters allowed. Please try again.\n");
+            } else if (inFullname.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("No special characters allowed. Please try again.\n");
-            } else if (inFullname.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
@@ -232,12 +232,12 @@ public class Customer extends User {
             System.out.printf("\nPlease enter your email (no spaces) > ");
             inEmail = input.nextLine();
             if (inEmail.contains(" ")) {
+                System.out.printf("No spaces allowed. Please try again.\n");
+            } else if (inEmail.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("No spaces allowed. Please try again.\n");
-            } else if (inEmail.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
@@ -249,12 +249,12 @@ public class Customer extends User {
             System.out.printf("\nPlease enter your contact no. (eg. 012-3456789) > ");
             inContact = input.nextLine();
             if (!inContact.matches(regex3)) {
+                System.out.printf("Please follow the format and try again (eg. 012-3456789). \n");
+            } else if (inContact.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("Please follow the format and try again (eg. 012-3456789). \n");
-            } else if (inContact.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
@@ -269,12 +269,12 @@ public class Customer extends User {
                 inGender = inGender.toUpperCase();
                 check = false;
             } else if (inGender.equalsIgnoreCase("X")) {
-                return;
-            } else {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
+                return;
+            } else {
                 System.out.printf("Please enter F/M only.\n");
             }
         } while (check);
