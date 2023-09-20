@@ -26,9 +26,6 @@ public class Customer extends User implements ReadAndWrite {
         super(username, password, fullname, email);
         this.contactNo = contactNo;
         this.gender = gender;
-
-        // writing details to arrayList
-        custDetails.add(this);
     }
 
     // setters
@@ -81,7 +78,7 @@ public class Customer extends User implements ReadAndWrite {
                     char gender = parts[5].charAt(0);
 
                     // add details from file to arraylist
-                    Customer cust = new Customer(username, password, fullname, email, contactNo, gender);
+                    custDetails.add(new Customer(username, password, fullname, email, contactNo, gender));
                 }
             }
         } catch (IOException e) {
