@@ -17,6 +17,11 @@ public abstract class PaymentType {
         this.paymentStatus = paymentStatus;
     }
 
+    public void setPaymentId(String paymentId){
+        this.paymentId = paymentId;
+    }
+
+
     public String getPaymentId(){
         return paymentId;
     }
