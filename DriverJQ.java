@@ -7,7 +7,8 @@ public class DriverJQ {
     public static void main(String[] args) throws Exception {
         viewReport();
         viewReportDDrink();
-
+        viewReportTicket();
+        
         // Purchase.makePurchase(1, new Login("username", "password"));
     }
 
@@ -40,6 +41,21 @@ public class DriverJQ {
             System.out.println(drink.displayToReport());
             System.out.println(drinkCust.get(i));
             System.out.println(drinkTotalPrice.get(i));
+            i++;
+            System.out.println("------------------------------------------------");
+
+        }
+    }
+
+    public static void viewReportTicket() throws Exception {
+        ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
+        ArrayList<String> ticketCust = Purchase.ticketCust;
+
+        int i = 0;
+        for (Ticket ticket : purchaseTicket) {
+            System.out.printf("%d. ", i + 1);
+            System.out.println(ticket);
+            System.out.println(ticketCust.get(i));
             i++;
             System.out.println("------------------------------------------------");
 

@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -66,30 +67,44 @@ public class Purchase {
 	public static ArrayList<Double> snackTotalPrice = new ArrayList<Double>();
 	public static ArrayList<String> drinkCust = new ArrayList<String>();
 	public static ArrayList<Double> drinkTotalPrice = new ArrayList<Double>();
+	public static ArrayList<String> ticketCust = new ArrayList<String>();
 
 	
-	public static ArrayList<Snacks> readFromTicketFile(String filename) throws Exception {
+	public static ArrayList<Ticket> readFromTicketFile(String filename) throws Exception {
 		File file = new File(filename);
 		ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
+		TrainStation station = new TrainStation();
+		ArrayList<TrainStation> stationList = station.getStationList();
+		TrainStation departStation = new TrainStation();
+		TrainStation arriveStation = new TrainStation();
 
 		if (file.exists()) {
 			try (Scanner inputFile = new Scanner(file)) {
 				while (inputFile.hasNext()) {
 					String[] parts = inputFile.nextLine().split("\\|\\|");
-					if (parts.length == 8) {
+					if (parts.length == 7) {
 						String username = parts[0];
-						String foodid = parts[1];
-						String className = parts[2];
-						String foodname = parts[3];
-						double foodprice = Double.parseDouble(parts[4]);
-						int purchaseQty = Integer.parseInt(parts[5]);
-						double totalprice = Double.parseDouble(parts[6]);
-						boolean partyPack = Boolean.parseBoolean(parts[7]);
+						String departL = parts[1];
+						String arriveL = parts[2];
+						double ticketPrice = Double.parseDouble(parts[3]);
+						int day = Integer.parseInt(parts[4]);
+						int month = Integer.parseInt(parts[5]);
+						int year = Integer.parseInt(parts[6]);
+
+						for (int i=0; i < stationList.size(); i++){
+							if(departL.equalsIgnoreCase(stationList.get(i).getLocationName())){
+								departStation = stationList.get(i);
+							}
+							if(arriveL.equalsIgnoreCase(stationList.get(i).getLocationName())){
+								arriveStation = stationList.get(i);
+							}
+						}
 
 						// Create a Snacks object and add it to the list
-						ticketList.add(new Ticket(foodid, foodname, foodprice, purchaseQty, partyPack));
-						snackCust.add(username);
-						snackTotalPrice.add(totalprice);
+						Schedule ticketSchedule = new Schedule(departStation, arriveStation, ticketPrice);
+						LocalDate ticketDate = LocalDate.of(year, month, day);
+						ticketList.add(new Ticket(ticketSchedule, ticketDate));
+						ticketCust.add(username);
 					} else {
 						// Handle lines with incorrect data format, e.g., log an error
 						System.err.println("Invalid data format: " + Arrays.toString(parts));
