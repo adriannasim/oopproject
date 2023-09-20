@@ -61,6 +61,10 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 "\nParty Pack    : " + partyPackStatus;
     }
 
+    public String displayToReport(){
+        return super.displayToCust();
+    }
+
     // CALCULATION METHOD
     public double calculatePrice() {
         return foodPrice * purchaseQty;

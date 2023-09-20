@@ -16,9 +16,12 @@ public class DriverTw {
         // Snacks snacks = new Snacks();
         // Drinks drinks = new Drinks();
 
+        
+       ArrayList<Schedule> scheduleList = Schedule.readFromFile("ScheduleFile.dat");
+        
         ArrayList<Train> trainList = new ArrayList<Train>();
         ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
-        ArrayList<Schedule> scheduleList = schedule.getScheduleList(); 
+
         // ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
         // ArrayList<Drinks> drinksList = new ArrayList<Drinks>();
 
@@ -53,8 +56,9 @@ public class DriverTw {
                 }
                 
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("x"));
-            scanner.close();
+            
         } while (cont);
+        scanner.close();
 
         // Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
         // userPurchase.purchaseTicket(tickets);
@@ -92,16 +96,54 @@ public class DriverTw {
                     System.out.println("Invalid option. Please enter (1/2/x).");
                 }
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("x")); 
-            scanner.close();
         }while(cont == true);
+        scanner.close();
     }
 
-    public static void viewFnbHistory(){
+    public static void viewFnbHistory() throws Exception{
+        ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
+        ArrayList<String> snackCust = Purchase.snackCust;
+        ArrayList<Double> snackTotalPrice = Purchase.snackTotalPrice;
+        
+        ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
+        ArrayList<String> drinkCust = Purchase.drinkCust;
+        ArrayList<Double> drinkTotalPrice = Purchase.drinkTotalPrice;
 
+        int i = 0;
+            for (Snacks snack : purchaseSnack) {
+                System.out.printf("%d. ", i + 1);
+                System.out.println(snack.displayToReport());
+                System.out.println(snackCust.get(i));
+                System.out.println(snackTotalPrice.get(i));
+                System.out.println("------------------------------------------------");
+            }
+        
+
+        int j = 0;
+            for (Drinks drink : purchaseDrink) {
+                System.out.printf("%d. ", j + 1);
+                System.out.println(drink.displayToReport());
+                System.out.println(drinkCust.get(j));
+                System.out.println(drinkTotalPrice.get(j));
+                System.out.println("------------------------------------------------");
+            }
+        
     }
 
-    public static void viewTicketHistory(){
+    public void viewTicketHistory(){
+        // ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
+        // ArrayList<String> ticketCust = Purchase.ticketList;
 
+        // int z = 1;
+        // for (Ticket tickets : purchaseTicket) {
+        //     System.out.println();
+        //     System.out.println(z + ".");
+        //     System.out.println(ticketCust);
+        //     z++;
+        //     System.out.println();
+        //     System.out.println("---------------------------------------------------------");
+        //     System.out.println();
+        // }
     }
 
 
