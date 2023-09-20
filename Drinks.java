@@ -83,7 +83,7 @@ public class Drinks extends FoodAndBeverage {
     }
 
     public String displayToReport() {
-        return String.format("%-24s %-15d %s %-10s %6.2f %17.2f %20s\n", foodName, purchaseQty,temperature, size, foodPrice, calculatePrice(), LocalDate.now());
+        return String.format("%-24s %-15d %-4s %-10s %6.2f %17.2f %20s\n", foodName, purchaseQty,temperature, size, foodPrice, calculatePrice(), LocalDate.now());
     }
 
     public String displaySalesReport() {

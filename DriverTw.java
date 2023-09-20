@@ -7,13 +7,6 @@ public class DriverTw {
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
         boolean cont = true;
-        // ArrayList<Schedule> scheduleList = new ArrayList<>();
-        // ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
-
-     //   Schedule schedule = new Schedule();
-
-
-
 
         do {
             System.out.println("1. View Purchases");
@@ -103,7 +96,6 @@ public class DriverTw {
                 i++;
                 System.out.println();
             }
-        
     }
 
     public static void viewTicketHistory() throws Exception{
@@ -227,7 +219,6 @@ public class DriverTw {
             i++;
             System.out.println();
         }
-        System.out.println("--------------------------------------------------------------------------------------------------------");
         System.out.println("Number of Tickets Sold  : "+ i); 
         System.out.println("\nTotal Sales Amount (RM) : " + Reporting.calculateTicketSales(ticketList)); //call calc function
     }
