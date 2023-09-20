@@ -141,8 +141,6 @@ public class Customer extends User {
                 return;
             } else {
                 System.out.printf("Invalid input, please enter your choice again.\n");
-                // clear buffer
-                input.next();
             }
         }
     }
@@ -173,7 +171,7 @@ public class Customer extends User {
             for (int i = 0; i < custDetails.size(); i++) {
                 if (inUsername.equals(custDetails.get(i).getUsername())) {
                     //clear screen
-                    for (int i = 0; i < 100; i++) {
+                    for (int j = 0; i < 100; i++) {
                         System.out.println();
                     }
                     System.out.printf("This username is already in used. Please login using your existing username.\n");

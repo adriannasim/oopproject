@@ -247,8 +247,6 @@ public class Login{
                             System.out.println();
                         }
                         System.out.printf("Invalid input, please enter your choice again.\n");
-                        //clear buffer
-                        input.next();
                     }
                 }
             } while (loop); 

@@ -140,8 +140,6 @@ public class Main {
                         System.out.println();
                     }
                     System.out.printf("Invalid input, please enter your choice again.\n\n");
-                    //clear buffer
-                    input.next();
                 }
             }
         } while (loop);
