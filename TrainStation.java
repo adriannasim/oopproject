@@ -2,7 +2,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,7 +9,7 @@ import java.util.Iterator;
 
 
 
-public class TrainStation implements Serializable{
+public class TrainStation{
       private String locationId;
       private String locationName;
       private int numOfPlatform;
@@ -360,7 +359,6 @@ public class TrainStation implements Serializable{
 public void deleteStation(Scanner scanner) throws Exception {
    boolean found = false;
    boolean deleted = false;
-   boolean deleted2 = false;
    String userInput;
    int index = 0;
    Schedule obj = new Schedule();
@@ -428,7 +426,7 @@ public void deleteStation(Scanner scanner) throws Exception {
                    stationList.remove(index); 
                    deleted = writeFile("stationFile.txt", stationList);
                    if (hasSchedule){
-                        deleted2 = Schedule.writeFile(scheduleList);
+                        Schedule.writeFile(scheduleList);
                    }
                    
                        

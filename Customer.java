@@ -64,7 +64,7 @@ public class Customer extends User implements ReadAndWrite {
     }
 
     // read file
-    public static void readFile() {
+    public void readFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("custFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {
@@ -253,7 +253,8 @@ public class Customer extends User implements ReadAndWrite {
         String fullname, email, contactNo;
         char gender;
 
-        Customer.readFile();
+        Customer customer = new Customer();
+        customer.readFile();
         ArrayList<Customer> customers = Customer.custDetails;
         for (int i = 0; i < customers.size(); i++) {
             if (login.getUsername().equals(customers.get(i).getUsername())

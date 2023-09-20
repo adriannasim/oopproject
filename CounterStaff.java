@@ -18,7 +18,7 @@ public class CounterStaff extends Staff {
     }
 
     //counter menu
-    public void counterMenu() {
+    public void counterMenu() throws Exception{
         Scanner input = new Scanner(System.in); //scanner
 
         System.out.println("==================================================");
