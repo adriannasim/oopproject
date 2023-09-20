@@ -3,13 +3,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Iterator;
 
-public class Train implements Serializable{
+public class Train{
     private int trainNo;
     private String trainName;
     private String trainModel;

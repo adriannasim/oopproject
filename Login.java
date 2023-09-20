@@ -36,7 +36,8 @@ public class Login{
     //staff
     public boolean checkStaffLogin(Login login) {
         //read from staff file
-        Staff.readFile();
+        Staff staff = new Staff();
+        staff.readFile();
         //access array in staff class
         ArrayList<Staff> staffDetails = Staff.staffDetails;
 
@@ -53,7 +54,8 @@ public class Login{
     //customer
     public boolean checkCustLogin(Login login) {
         //read from cust file
-        Customer.readFile();
+        Customer cust = new Customer();
+        cust.readFile();
         //access array in customer class
         ArrayList<Customer> custDetails = Customer.custDetails;
 

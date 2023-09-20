@@ -1,20 +1,13 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Schedule implements Serializable{
+public class Schedule{
     private String scheduleId;
     private TrainStation departLocation;
     private TrainStation arriveLocation;
