@@ -1,7 +1,11 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,6 +22,7 @@ public class Schedule implements Serializable{
     private LocalTime arriveTime;
     private Train trainOperated;
     private double ticketPrice;
+   
 
     //-----------------------------------CONSTRUCTOR---------------------------------------- 
     // NO-ARG CONSTRUCTOR
@@ -34,6 +39,16 @@ public class Schedule implements Serializable{
     // PARAMETERIZED CONSTRUCTOR
     public Schedule(TrainStation departLocation, TrainStation arriveLocation, LocalTime departTime, LocalTime arriveTime, Train trainOperated, double ticketPrice){
         scheduleId = departLocation.getLocationName().substring(0,3) + "-" + arriveLocation.getLocationName().substring(0,3) + String.valueOf((int) (100000 + (Math.random() * (200000 - 100000 + 1))));
+        this.departLocation = departLocation;
+        this.arriveLocation = arriveLocation;
+        this.departTime = departTime;
+        this.arriveTime = arriveTime;
+        this.trainOperated = trainOperated;
+        this.ticketPrice = ticketPrice;
+    }
+
+    public Schedule(String scheduleId, TrainStation departLocation, TrainStation arriveLocation, LocalTime departTime, LocalTime arriveTime, Train trainOperated, double ticketPrice){
+        this.scheduleId = scheduleId;
         this.departLocation = departLocation;
         this.arriveLocation = arriveLocation;
         this.departTime = departTime;
@@ -159,71 +174,66 @@ public class Schedule implements Serializable{
         return String.format("Departure Location \t Arrival Location \t Departure Time \t Arrival Time \t Ticket Price\n%10s %20s %20s %10s %10s %.2lf",scheduleId, departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, ticketPrice);
     }
     
-    // GET SCHEDULE LIST
-    public ArrayList<Schedule> getScheduleList() throws Exception{
-        ArrayList<Schedule> scheduleList = readFromFile("scheduleFile.dat");
-        return scheduleList;
-    }
     
-    // WRITE INTO FILE
-    public static boolean writeIntoFile(String filename, ArrayList<Schedule> scheduleList) {
-        boolean write = false;
-        File file = new File(filename);
-        ObjectOutputStream oos = null;
-    
-        try {
-            oos = new ObjectOutputStream(new FileOutputStream(file, false));
-            for (int i = 0; i < scheduleList.size(); i++) {
-                oos.writeObject(scheduleList.get(i));
+    public static boolean writeFile(ArrayList<Schedule> scheduleList) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("scheduleFile.txt", true))) {
+            for (Schedule schedule : scheduleList) {
+                writer.write(schedule.getScheduleId() + "||" + schedule.getDepartLocation().getLocationId() + "||" 
+                        + schedule.getDepartLocation().getLocationName() + "||" + schedule.getDepartLocation().getNumOfPlatform() + "||"
+                        + schedule.getArriveLocation().getLocationId() + "||" + schedule.getArriveLocation().getLocationName() + "||"
+                        + schedule.getArriveLocation().getNumOfPlatform() + "||" + schedule.getDepartTime() + "||"
+                        + schedule.getArriveTime() + "||" + schedule.getOperatedTrain().getTrainNo() + "||"
+                        + schedule.getOperatedTrain().getTrainName() + "||" + schedule.getOperatedTrain().getTrainModel() + "||"
+                        + schedule.getTicketPrice() );
+                writer.newLine();
             }
-            write = true; // Set write to true if writing is successful
-        } catch (IOException e) { // Handle any IOException that might occur during writing 
-            //e.printStackTrace();
-        } finally {
-            try {
-                if (oos != null) {
-                    oos.close();
-                }
-            } catch (IOException e) {
-                //e.printStackTrace();
-            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
-        return write;
     }
 
-    // READ FROM FILE
-    public static ArrayList<Schedule> readFromFile(String filename) throws Exception {
-        File file = new File(filename);
-        ObjectInputStream input = null;
-        ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+    public ArrayList<Schedule> getScheduleList(){
+        ArrayList<Schedule> scheduleList = readFile("scheduleFile.txt");
+        return scheduleList;
+    }
+
+    // read file
+    public static ArrayList<Schedule> readFile(String filename) {
+        ArrayList<Schedule> scheduleList = new ArrayList<>();
     
-        try {
-            input = new ObjectInputStream(new FileInputStream(file));
-            while (true) {
-                try {
-                    Schedule obj = (Schedule) input.readObject();
-                    scheduleList.add(obj);
-                } catch (EOFException eofe) {
-                    // This exception is expected when the end of the file is reached.
-                    break;
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                } catch (ClassNotFoundException cnfe) {
-                    cnfe.printStackTrace();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String scheduleDetails;
+            
+            while ((scheduleDetails = reader.readLine()) != null) {
+                scheduleDetails = scheduleDetails.trim();
+                String[] parts = scheduleDetails.split("\\|\\|");
+    
+                if (parts.length == 13) {
+                    String scheduleId = parts[0];
+                    String locationId1 = parts[1];
+                    String locationName1 = parts[2];
+                    int cNumOfPlatform1 = Integer.parseInt(parts[3]);
+                    String locationId2 = parts[4];
+                    String locationName2 = parts[5];
+                    int cNumOfPlatform2 = Integer.parseInt(parts[6]);
+                    LocalTime cDepartTime = LocalTime.parse(parts[7]);
+                    LocalTime cArriveTime = LocalTime.parse(parts[8]);
+                    int cTrainNo = Integer.parseInt(parts[9]);
+                    String trainName = parts[10];
+                    String trainModel = parts[11];
+                    double cTicketPrice = Double.parseDouble(parts[12]);
+    
+                    TrainStation departLocation = new TrainStation(locationId1, locationName1, cNumOfPlatform1);
+                    TrainStation arriveLocation = new TrainStation(locationId2, locationName2, cNumOfPlatform2);
+                    Train trainOperated = new Train(cTrainNo, trainName, trainModel);
+                    Schedule schedule = new Schedule(scheduleId, departLocation, arriveLocation, cDepartTime, cArriveTime, trainOperated, cTicketPrice);
+                    scheduleList.add(schedule);
                 }
             }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (input != null) {
-                    input.close();
-                }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
         }
     
         return scheduleList;
@@ -465,7 +475,7 @@ public class Schedule implements Serializable{
             if(userInput.equalsIgnoreCase("Y")){
                 Schedule s = new Schedule(departLocation, arriveLocation, departTime, arriveTime, trainOperated, ticketPrice);
                 scheduleList.add(s);
-                added = writeIntoFile("scheduleFile.dat", scheduleList);
+                added = writeFile(scheduleList);
 
                 if (added){
                     System.out.println("\nSCHEDULE HAS ADDED.\n");
@@ -627,7 +637,7 @@ public class Schedule implements Serializable{
 
         if(confirm.equalsIgnoreCase("Y")){
             scheduleList.get(index).editDepartTime(departTime);
-            updated = writeIntoFile("scheduleFile.dat", scheduleList);
+            updated = writeFile(scheduleList);
             if(updated){
                 System.out.println("SCHEDULE DEPARTURE TIME HAS UPDATED.");
             }else{
@@ -742,7 +752,7 @@ public class Schedule implements Serializable{
 
         if(confirm.equalsIgnoreCase("Y")){
             scheduleList.get(index).editArriveTime(arriveTime);
-            updated = writeIntoFile("scheduleFile.dat", scheduleList);
+            updated = writeFile(scheduleList);
             if(updated){
                 System.out.println("\nSCHEDULE ARRIVAL TIME HAS UPDATED.\n");
             }else{
@@ -797,7 +807,7 @@ public class Schedule implements Serializable{
                     confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/ N-No) > ");
                     if(confirm.equalsIgnoreCase("Y")){
                         scheduleList.get(index).editTrainOperated(trainOperated);
-                    	updated = writeIntoFile("scheduleFile.dat", scheduleList);
+                    	updated = writeFile(scheduleList);
 
                     	if(updated){
                         	System.out.println("\nTRAIN OPERATED FOR THE SCHEDULE HAS UPDATED\n");
@@ -862,7 +872,7 @@ public class Schedule implements Serializable{
 
         if(confirm.equalsIgnoreCase("Y")){
             scheduleList.get(index).editTicketPrice(ticketPrice);
-            updated = writeIntoFile("scheduleFile.dat", scheduleList);
+            updated = writeFile(scheduleList);
 
             if(updated){
                 System.out.println("\nTICKET PRICE FOR THE SCHEDULE HAS UPDATED.\n");
@@ -915,7 +925,7 @@ public class Schedule implements Serializable{
 
                     if(userInput2.equalsIgnoreCase("Y")){
                         scheduleList.remove(index); // Remove the train from the list
-                        deleted = writeIntoFile("scheduleFile.dat",scheduleList);
+                        deleted = writeFile(scheduleList);
 
                         if (deleted) {
                              System.out.println("\nSCHEDULE HAS REMOVED.\n");

@@ -289,7 +289,7 @@ public class TrainStation implements Serializable{
                                }
                                stationList.get(index).changeLocationName(locationName);
                                updated = writeIntoFile("stationFile.txt", stationList);
-                               updated2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
+                               updated2 = Schedule.writeFile(scheduleList);
                                if(updated && updated2){
                                    System.out.println("\nTHE STATION HAS UPDATED.\n");
                                }else{
@@ -314,8 +314,10 @@ public class TrainStation implements Serializable{
                                }
                                stationList.get(index).changeNumOfPlatform(numOfPlatform);
                                updated = writeIntoFile("stationfile.txt", stationList);
-                               updated2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
-                               if(updated && updated2){
+                               if (!scheduleList.isEmpty()){
+                                    updated2 = Schedule.writeFile(scheduleList);
+                               }
+                               if(updated){
                                    System.out.println("\nTHE STATION HAS UPDATED.\n");
                                }else{
                                    System.out.println("\nFAILED TO UPDATE THE TRAIN STATION INFORMATION.\n");
@@ -406,7 +408,6 @@ public void deleteStation(Scanner scanner) throws Exception {
                        }
                    }
                }
-           
                System.out.print("Do you confirm to delete the station (Y-Yes/N-No)? ");
                userInput = BackendStaff.validateYNInput(scanner,"Do you confirm to delete the station (Y-Yes/N-No) ?");
                if(userInput.equalsIgnoreCase("Y")){
@@ -416,14 +417,18 @@ public void deleteStation(Scanner scanner) throws Exception {
                     if (schedule.getDepartLocation().getLocationName().equals(stationList.get(index).getLocationName()) ||
                         schedule.getArriveLocation().getLocationName().equals(stationList.get(index).getLocationName())) {
                         iterator.remove();
+
                     }
                 }
                 
                    stationList.remove(index); 
                    deleted = writeIntoFile("stationFile.txt", stationList);
-                   deleted2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
+                   if (hasSchedule){
+                        deleted2 = Schedule.writeFile(scheduleList);
+                   }
+                   
                        
-                   if (deleted && deleted2){
+                   if (deleted){
                        System.out.println("\nSTATION HAS REMOVED.\n");
                    }else{
                        System.out.println("\nFAILED TO DELETE THE TRAIN STATION.\n");
