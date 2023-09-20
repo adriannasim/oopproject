@@ -78,7 +78,7 @@ public class DebitCreditCard extends PaymentType {
         // Enter cardNo
         do {
             try {
-                System.out.print("Enter phone number > ");
+                System.out.print("Enter card number > ");
                 cardNo = scanner.nextInt();
 
                 continueInputNo = false;
@@ -86,11 +86,11 @@ public class DebitCreditCard extends PaymentType {
                 System.out.println("Incorrect Input. Please try agin. ");
                 scanner.nextLine();
             }
-        } while (!continueInputNo);
+        } while (continueInputNo);
 
         // Enter expiry date
         do {
-            System.out.println("Enter expiry date ");
+            System.out.println("\nEnter expiry date ");
             System.out.println();
             System.out.println("---------------------------------------------------------");
             System.out.println();
@@ -137,7 +137,7 @@ public class DebitCreditCard extends PaymentType {
             expiryDate = LocalDate.of(year, month, day);
 
             if (expiryDate.isBefore(today)) {
-                System.out.println("Invalid Date. Please enter again.");
+                System.out.println("Invalid Date. Please enter again.\n");
                 validDate = false;
             } else {
                 validDate = true;
@@ -145,8 +145,9 @@ public class DebitCreditCard extends PaymentType {
 
         } while (!validDate);
 
+        scanner.nextLine();
         System.out.print("Enter card holder name > ");
-        cardHolder = scanner.nextLine();
+        cardHolder = scanner.nextLine().trim();
 
         // Enter ccv
         do {
@@ -159,7 +160,7 @@ public class DebitCreditCard extends PaymentType {
                 System.out.println("Incorrect Input. Please try agin. ");
                 scanner.nextLine();
             }
-        } while (!continueInputCCV);
+        } while (continueInputCCV);
 
         card = new DebitCreditCard(cardNo, expiryDate, cardHolder, ccv);
 

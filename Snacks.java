@@ -33,9 +33,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         this.partyPack = partyPack;
     }
 
-    Snacks(String foodId, String foodName, double foodPrice, int purchaseQty, boolean partyPack) {
+    Snacks(String foodId, String foodName, double foodPrice, int purchaseQty) {
         super(foodId, foodName, foodPrice, purchaseQty);
-        this.partyPack = partyPack;
     }
 
     // ------------------------------------METHOD-----------------------------------------
@@ -61,8 +60,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 "\nParty Pack    : " + partyPackStatus;
     }
 
-    public String displayToReport(){
-        return String.format("Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM)\n\n%-24s %-15s %6.2f %16.2f", foodName, purchaseQty, foodPrice, calculatePrice());
+    public String displayToReport() {
+        return String.format("Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM)\n\n%-24s %-15s %6.2f %16.2f",
+                foodName, purchaseQty, foodPrice, calculatePrice());
     }
 
     // CALCULATION METHOD
@@ -75,8 +75,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseSnack.txt", true))) {
             writer.write(username + "||" +
                     fnb.getFoodId() + "||" + fnb.getClass() + "||"
-                    + fnb.getFoodName() + "||" + fnb.calculatePrice() + "||"
-                    + fnb.getPurchaseQty() + "||" + fnb.getFoodPrice() + "||" + partyPack);
+                    + fnb.getFoodName() + "||" + fnb.getFoodPrice() + "||"
+                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice());
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,12 +91,15 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         if (file.exists()) {
             try (Scanner inputFile = new Scanner(file)) {
                 while (inputFile.hasNext()) {
-                    String foodId = inputFile.nextLine();
-                    String foodName = inputFile.nextLine();
-                    double foodPrice = Double.parseDouble(inputFile.nextLine());
-                    int purchaseQty = Integer.parseInt(inputFile.nextLine());
-                    int stockQty = Integer.parseInt(inputFile.nextLine());
-                    boolean partyPack = Boolean.parseBoolean(inputFile.nextLine());
+                    String foodId = inputFile.nextLine().trim(); // Read and trim the data
+                    if (foodId.isEmpty()) {
+                        continue; // Skip empty lines
+                    }
+                    String foodName = inputFile.nextLine().trim();
+                    double foodPrice = Double.parseDouble(inputFile.nextLine().trim());
+                    int purchaseQty = Integer.parseInt(inputFile.nextLine().trim());
+                    int stockQty = Integer.parseInt(inputFile.nextLine().trim());
+                    boolean partyPack = Boolean.parseBoolean(inputFile.nextLine().trim());
                     snacksList.add(new Snacks(foodId, foodName, foodPrice, purchaseQty, stockQty, partyPack));
                 }
             }
@@ -124,12 +127,12 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             }
         } catch (IOException e) {
             System.err.println("\nERROR WRITING TO THE FILE.\n");
-        }finally {
+        } finally {
             if (fwrite != null) {
                 try {
                     fwrite.close();
                 } catch (IOException e) {
-                    
+
                 }
             }
         }
@@ -165,9 +168,6 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 userInput = scanner.nextLine();
 
                 if (userInput.equals("1")) {
-                    for (int i = 0; i < snacksList.size(); i++) {
-                        System.out.println(snacksList.get(i).toString());
-                    }
                     viewSnacks();
 
                 } else if (userInput.equals("2")) {
@@ -187,19 +187,24 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
-    // ----------------------------------------------VIEW SNACKS----------------------------------------------
+    // ----------------------------------------------VIEW
+    // SNACKS----------------------------------------------
     public void viewSnacks() throws Exception {
         ArrayList<Snacks> snacksList = getSnacksList();
-        if (snacksList.size() == 0) {
-            System.out.println("\nNO SNACKS IN THE RECORD.\n");
-        }
-        for (int i = 0; i < snacksList.size(); i++) {
-            System.out.println(snacksList.get(i).toString() + "\n");
-        }
 
+        if (snacksList.isEmpty()) {
+            System.out.println("\nNO SNACKS IN THE RECORD.\n");
+        } else {
+            System.out.println("\nSNACKS LIST:\n");
+
+            for (Snacks snack : snacksList) {
+                System.out.println(snack.toString() + "\n");
+            }
+        }
     }
 
-    // ----------------------------------------------ADD SNACKS----------------------------------------------
+    // ----------------------------------------------ADD
+    // SNACKS----------------------------------------------
     public void addSnacks(Scanner scanner) throws Exception {
         String foodName;
         double foodPrice;
@@ -251,7 +256,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------UPDATE SNACKS----------------------------------------------
+    // ----------------------------------------------UPDATE
+    // SNACKS----------------------------------------------
     public void updateSnacks(Scanner scanner) throws Exception {
         String foodId;
         String foodName;
@@ -287,125 +293,141 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 }
             }
             if (found == true) {
+                System.out.println("Do you want to update the snacks information as shown below?");
+                System.out.println();
+                System.out.println(snacksList.get(index).toString());
+                System.out.println();
+                System.out.print("Enter your option (Y-Yes/N-No) > ");
+                userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
                 do {
-                    System.out.println("==================================================");
-                    System.out.println("The field that can be updated :");
-                    System.out.println("1. Snacks name ");
-                    System.out.println("2. Food price");
-                    System.out.println("3. Stock qty");
-                    System.out.println("4. Make it a party pack or vice versa");
-                    System.out.println("* Press # to exit");
-                    System.out.println("==================================================");
+                    if (userInput.equalsIgnoreCase("Y")) {
+                        System.out.println("==================================================");
+                        System.out.println("The field that can be updated :");
+                        System.out.println("1. Snacks name ");
+                        System.out.println("2. Food price");
+                        System.out.println("3. Stock qty");
+                        System.out.println("4. Make it a party pack or vice versa");
+                        System.out.println("* Press # to exit");
+                        System.out.println("==================================================");
 
-                    do {
-                        System.out.print("Enter option in number stated above > ");
-                        userInput = scanner.nextLine();
+                        do {
+                            System.out.print("Enter option in number stated above > ");
+                            userInput = scanner.nextLine();
 
-                        if (userInput.equals("1")) {
-                            System.out.print("New snacks name > ");
-                            foodName = scanner.nextLine();
-                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                            confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                            if (confirm.equalsIgnoreCase("Y")) {
-                                snacksList.get(index).editFoodName(foodName);
-                                updated = writeIntoFile("snacksFile.txt", snacksList);
-                                if(updated){
-                                    System.out.println("\nSNACKS NAME HAS UPDATED\n");
-                                }else{
-                                    System.out.println("\nFAILED TO UPDATE FOOD MENU.\n");
-                                }
-                            } else {
-                                System.out.println("\nMODIFICATION CANCELLED.\n");
-                            }
-
-                        } else if (userInput.equals("2")) {
-                            System.out.print("New price > ");
-                            foodPrice = BackendStaff.validateDoubleInput(scanner, "New price > ");
-                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                            confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                            if (confirm.equalsIgnoreCase("Y")) {
-                                snacksList.get(index).editFoodPrice(foodPrice);
-                                updated = writeIntoFile("snacksFile.txt", snacksList);
-                                if(updated){
-                                    System.out.println("\nSNACKS PRICE HAS UPDATED.\n");
-                                }else{
-                                    System.out.println("\nFAILED TO UPDATE SNACKS PRICE\n");
-                                }
-                            } else {
-                                System.out.println("\nMODIFICATION CANCELLED.\n");
-                            }
-
-                        } else if (userInput.equals("3")) {
-                            do {
-                                System.out.print(
-                                        "Add or Subtract stocky qty (eg. enter +100 to add 100; enter -100 to subtract 100) > ");
-                                userInput2 = scanner.nextLine();
-                                if (userInput2.startsWith("+") || userInput2.startsWith("-")) {
-                                    sign = userInput2.substring(0, 1);
-                                    numericPart = userInput2.substring(1);
-                                    try {
-                                        stockQty = Integer.parseInt(numericPart);
-                                        invalidFormat = false;
-                                    } catch (NumberFormatException e) {
-                                        System.out.println("\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
-                                        invalidFormat = true;
+                            if (userInput.equals("1")) {
+                                System.out.print("New snacks name > ");
+                                foodName = scanner.nextLine();
+                                System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                                confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                                if (confirm.equalsIgnoreCase("Y")) {
+                                    snacksList.get(index).editFoodName(foodName);
+                                    updated = writeIntoFile("snacksFile.txt", snacksList);
+                                    if (updated) {
+                                        System.out.println("\nSNACKS NAME HAS UPDATED\n");
+                                    } else {
+                                        System.out.println("\nFAILED TO UPDATE FOOD MENU.\n");
                                     }
                                 } else {
-                                    sign = "+";
-                                    numericPart = userInput2;
-                                    try {
-                                        stockQty = Integer.parseInt(numericPart);
-                                        invalidFormat = false;
-                                    } catch (NumberFormatException e) {
-                                        System.out.println("\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
-                                        invalidFormat = true;
+                                    System.out.println("\nMODIFICATION CANCELLED.\n");
+                                }
+
+                            } else if (userInput.equals("2")) {
+                                System.out.print("New price > ");
+                                foodPrice = BackendStaff.validateDoubleInput(scanner, "New price > ");
+                                System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                                confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                                if (confirm.equalsIgnoreCase("Y")) {
+                                    snacksList.get(index).editFoodPrice(foodPrice);
+                                    updated = writeIntoFile("snacksFile.txt", snacksList);
+                                    if (updated) {
+                                        System.out.println("\nSNACKS PRICE HAS UPDATED.\n");
+                                    } else {
+                                        System.out.println("\nFAILED TO UPDATE SNACKS PRICE\n");
                                     }
-                                }
-                            } while (invalidFormat == true);
-
-                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                            confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-                            if (confirm.equalsIgnoreCase("Y")) {
-                                boolean success = snacksList.get(index).editStockQty(sign, stockQty);
-                                updated = writeIntoFile("snacksFile.txt", snacksList);
-                                if(updated && success){
-                                    System.out.println("\nSNACKS STOCK QTY HAS UPDATED\n");
-                                }else{
-                                    System.out.println("\nFAILED TO UPDATE SNACKS STOCK QTY.\n");
-                                }
-                            } else {
-                                System.out.println("\nMODIFICATION CANCELLED.\n");
-                            }
-
-                        } else if (userInput.equals("4")) {
-                            System.out.print("A party pack? (Y-Yes/N-No) > ");
-                            userInput2 = BackendStaff.validateYNInput(scanner, "A party pack? (Y-Yes/N-No) > ");
-                            System.out.print("Do you confirm? (Y-Yes/N-No) > ");
-                            confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
-
-                            if (confirm.equalsIgnoreCase("Y")) {
-                                if (userInput2.equalsIgnoreCase("Y")) {
-                                    snacksList.get(index).setPartyPack(true);
                                 } else {
-                                    snacksList.get(index).setPartyPack(false);
+                                    System.out.println("\nMODIFICATION CANCELLED.\n");
                                 }
-                                updated = writeIntoFile("snacksFile.txt", snacksList);
-                                if(updated){
-                                    System.out.println("\nPARTY PACK SETTING HAS UPDATED.\n");
-                                }else{
-                                    System.out.println("\nFAILED TO UPDATE PARTY PACK SETTING.\n");
-                                }
-                            } else {
-                                System.out.println("\nMODIFICATION CANCELLED.\n");
-                            }
-                        } else if (userInput.equals("#")) {
-                            break;
 
-                        } else {
-                            System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4).\n");
-                        }
-                    } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3")
-                            && !userInput.equals("4") && !userInput.equals("#"));
+                            } else if (userInput.equals("3")) {
+                                do {
+                                    System.out.print(
+                                            "Add or Subtract stocky qty (eg. enter +100 to add 100; enter -100 to subtract 100) > ");
+                                    userInput2 = scanner.nextLine();
+                                    if (userInput2.startsWith("+") || userInput2.startsWith("-")) {
+                                        sign = userInput2.substring(0, 1);
+                                        numericPart = userInput2.substring(1);
+                                        try {
+                                            stockQty = Integer.parseInt(numericPart);
+                                            invalidFormat = false;
+                                        } catch (NumberFormatException e) {
+                                            System.out.println(
+                                                    "\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
+                                            invalidFormat = true;
+                                        }
+                                    } else {
+                                        sign = "+";
+                                        numericPart = userInput2;
+                                        try {
+                                            stockQty = Integer.parseInt(numericPart);
+                                            invalidFormat = false;
+                                        } catch (NumberFormatException e) {
+                                            System.out.println(
+                                                    "\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
+                                            invalidFormat = true;
+                                        }
+                                    }
+                                } while (invalidFormat == true);
+
+                                System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                                confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+                                if (confirm.equalsIgnoreCase("Y")) {
+                                    boolean success = snacksList.get(index).editStockQty(sign, stockQty);
+                                    updated = writeIntoFile("snacksFile.txt", snacksList);
+                                    if (updated && success) {
+                                        System.out.println("\nSNACKS STOCK QTY HAS UPDATED\n");
+                                    } else {
+                                        System.out.println("\nFAILED TO UPDATE SNACKS STOCK QTY.\n");
+                                    }
+                                } else {
+                                    System.out.println("\nMODIFICATION CANCELLED.\n");
+                                }
+
+                            } else if (userInput.equals("4")) {
+                                System.out.print("A party pack? (Y-Yes/N-No) > ");
+                                userInput2 = BackendStaff.validateYNInput(scanner, "A party pack? (Y-Yes/N-No) > ");
+                                System.out.print("Do you confirm? (Y-Yes/N-No) > ");
+                                confirm = BackendStaff.validateYNInput(scanner, "Do you confirm? (Y-Yes/N-No) > ");
+
+                                if (confirm.equalsIgnoreCase("Y")) {
+                                    if (userInput2.equalsIgnoreCase("Y")) {
+                                        snacksList.get(index).setPartyPack(true);
+                                    } else {
+                                        snacksList.get(index).setPartyPack(false);
+                                    }
+                                    updated = writeIntoFile("snacksFile.txt", snacksList);
+                                    if (updated) {
+                                        System.out.println("\nPARTY PACK SETTING HAS UPDATED.\n");
+                                    } else {
+                                        System.out.println("\nFAILED TO UPDATE PARTY PACK SETTING.\n");
+                                    }
+                                } else {
+                                    System.out.println("\nMODIFICATION CANCELLED.\n");
+                                }
+                            } else if (userInput.equals("#")) {
+                                break;
+
+                            } else {
+                                System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4).\n");
+                            }
+                        } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3")
+                                && !userInput.equals("4") && !userInput.equals("#"));
+
+                    } else {
+                        found = false;
+                        cont = false;
+                        break;
+                    }
+
                     System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
                     userInput = BackendStaff.validateYNInput(scanner,
                             "Do you want to continue make changes? (Y-Yes/N-No) > ");
@@ -423,7 +445,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------DELETE SNACKS----------------------------------------------
+    // ----------------------------------------------DELETE
+    // SNACKS----------------------------------------------
     public void deleteSnacks(Scanner scanner) throws Exception {
         boolean found = false;
         String userInput;
@@ -465,9 +488,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                         deleted = writeIntoFile("snacksFile.txt", snacksList);
 
                         if (deleted) {
-                             System.out.println("\nSNACKS HAS REMOVED.\n");
-                        }else{
-                             System.out.println("\nFAILED TO REMOVE THE SNACKS.\n");
+                            System.out.println("\nSNACKS HAS REMOVED.\n");
+                        } else {
+                            System.out.println("\nFAILED TO REMOVE THE SNACKS.\n");
 
                         }
 
@@ -916,57 +939,52 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             if (editOpt == 1) {
 
                 // Edit Qty
-                if (fnbList.get(fnbIndex).getStockQty() != 0) {
+
+                do {
 
                     do {
+                        try {
+                            System.out.print("Enter quantity > ");
+                            editQty = scanner.nextInt();
 
-                        do {
-                            try {
-                                System.out.print("Enter quantity > ");
-                                editQty = scanner.nextInt();
+                            continueInputEQ = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect Input. Please try agin. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputEQ);
 
-                                continueInputEQ = false;
-                            } catch (InputMismatchException ex) {
-                                System.out.println("Incorrect Input. Please try agin. ");
-                                scanner.nextLine();
-                            }
-                        } while (continueInputEQ);
+                    if (fnbList.get(fnbIndex).checkStockQty(editQty)) {
 
-                        if (fnbList.get(fnbIndex).checkStockQty(editQty)) {
+                        if (editQty > fnbList.get(fnbIndex).getPurchaseQty()) {
 
-                            if (editQty > fnbList.get(fnbIndex).getPurchaseQty()) {
+                            // Example: Get four items, and add one more item, become five items
+                            int tempQty1 = fnbList.get(fnbIndex).getPurchaseQty();
+                            fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                            fnbList.get(fnbIndex).calculateStockQty(editQty - tempQty1);
+                            System.out.println("Edit successfully. ");
 
-                                // Example: Get four items, and add one more item, become five items
-                                int tempQty1 = fnbList.get(fnbIndex).getPurchaseQty();
-                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
-                                fnbList.get(fnbIndex).calculateStockQty(editQty - tempQty1);
-                                System.out.println("Edit successfully. ");
+                        } else if (editQty < fnbList.get(fnbIndex).getPurchaseQty()) {
 
-                            } else if (editQty < fnbList.get(fnbIndex).getPurchaseQty()) {
-
-                                // Example: Get four items, and put back one item, left three items
-                                int tempQty2 = fnbList.get(fnbIndex).getPurchaseQty();
-                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
-                                fnbList.get(fnbIndex).addStockQty(tempQty2 - editQty);
-                                System.out.println("Edit successfully. ");
-
-                            } else {
-
-                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
-                                System.out.println("Edit successfully. ");
-
-                            }
+                            // Example: Get four items, and put back one item, left three items
+                            int tempQty2 = fnbList.get(fnbIndex).getPurchaseQty();
+                            fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                            fnbList.get(fnbIndex).addStockQty(tempQty2 - editQty);
+                            System.out.println("Edit successfully. ");
 
                         } else {
-                            System.out.println("Sorry, we have only " + fnbList.get(fnbIndex).getStockQty() + " "
-                                    + fnbList.get(fnbIndex).getFoodName());
+
+                            fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                            System.out.println("Edit successfully. ");
+
                         }
 
-                    } while (!fnbList.get(fnbIndex).checkStockQty(editQty));
+                    } else {
+                        System.out.println("Sorry, we have only " + fnbList.get(fnbIndex).getStockQty() + " "
+                                + fnbList.get(fnbIndex).getFoodName());
+                    }
 
-                } else {
-                    System.out.println("Sorry, we have out of stocks.");
-                }
+                } while (!fnbList.get(fnbIndex).checkStockQty(editQty));
 
             } else if (editOpt == 2) {
 

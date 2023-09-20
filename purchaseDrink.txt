@@ -1,1 +1,2 @@
-username||137425||class Drinks||orange juice||20.8||4||4.0
+username||109777||class Drinks||Coco drink||4.0||1||4.0
+username||137425||class Drinks||Orange Juice||6.0||1||6.0

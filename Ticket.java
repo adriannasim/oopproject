@@ -81,11 +81,13 @@ public class Ticket {
         int userOpt1 = 0;
 
         boolean continueInput = true;
+        
 
         // ------------------------------------------ScanScheduleFromFile----------------------------------------------
+        
         Schedule schedule = new Schedule();
         ArrayList<Schedule> scheduleList = schedule.getScheduleList();
-        // ArrayList<Schedule> scheduleList = Schedule.getScheduleList();
+        // ArrayList<Schedule> scheduleList = new ArrayList<>();
         // ------------------------------------------------------------------------------------------------------------
 
         // ------------------------------------------ScanStationFromFile----------------------------------------------
