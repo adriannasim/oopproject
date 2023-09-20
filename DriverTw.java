@@ -144,6 +144,23 @@ public class DriverTw {
             System.out.println();
         }
     }
+
+    public void custSchedules() throws Exception{
+        Schedule sch = new Schedule();
+        ArrayList<Schedule> scheduleList = sch.getScheduleList();
+        if (scheduleList.size()==0){
+            System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
+        }else{
+            System.out.println("==================================================================================================");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n",  "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+            System.out.println("==================================================================================================");
+        }
+        for (int i=0; i< scheduleList.size(); i++){
+            System.out.println(scheduleList.get(i).custSchedule());
+        }
+        System.out.println("==================================================================================================");
+
+    }
     
 
 
