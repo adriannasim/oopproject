@@ -213,9 +213,7 @@ public class Drinks extends FoodAndBeverage {
                 userInput = scanner.nextLine();
 
                 if (userInput.equals("1")) {
-                    for (int i = 0; i < drinksList.size(); i++) {
-                        System.out.println(drinksList.get(i).toString());
-                    }
+                    viewDrinks();
                 } else if (userInput.equals("2")) {
                     updateDrinks(scanner);
                 } else if (userInput.equals("3")) {
@@ -235,17 +233,21 @@ public class Drinks extends FoodAndBeverage {
 
     public void viewDrinks() throws Exception {
         ArrayList<Drinks> drinksList = getDrinksList();
+        int count = 0;
 
         if (drinksList.isEmpty()) {
             System.out.println("\nNO DRINKS IN THE RECORD.\n");
         } else {
-            System.out.println("\nDRINKS LIST:\n");
-            System.out.printf("%-10s\t%-10s\t%-10s\t%10s", "Food ID", "Food Name", "Food Price", "Stock Qty");
-            System.out.println("===========================================================================");
+            System.out.println("=======================================================================");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%10s\n", "Food ID", "Food Name", "Food Price", "Stock Qty");
+            System.out.println("=======================================================================");
 
             for (Drinks drink : drinksList) {
-                System.out.println(drink.toString() + "\n");
+                System.out.println(drink.toString());
+                count++;
             }
+             System.out.println("=======================================================================");
+            System.out.println(count + " drink(s) found.");
         }
     }
 
@@ -331,7 +333,11 @@ public class Drinks extends FoodAndBeverage {
             if (found == true) {
                 System.out.println("Do you want to update the drinks information as shown below?");
                 System.out.println();
+                System.out.println("=======================================================================");
+                System.out.printf("%-10s\t%-10s\t%-10s\t%10s\n", "Food ID", "Food Name", "Food Price", "Stock Qty");
+                System.out.println("=======================================================================");
                 System.out.println(drinksList.get(index).toString());
+                System.out.println("=======================================================================");
                 System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
@@ -486,7 +492,11 @@ public class Drinks extends FoodAndBeverage {
             if (found == true) {
                 System.out.println("Do you want to delete the drinks information as shown below? ");
                 System.out.println();
+                System.out.println("=======================================================================");
+                System.out.printf("%-10s\t%-10s\t%-10s\t%10s\n", "Food ID", "Food Name", "Food Price", "Stock Qty");
+                System.out.println("=======================================================================");
                 System.out.println(drinksList.get(index).toString());
+                System.out.println("=======================================================================");
                 System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No)> ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");

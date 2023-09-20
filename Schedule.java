@@ -270,15 +270,20 @@ public class Schedule{
 
     public void viewSchedule() throws Exception{
         ArrayList<Schedule> scheduleList = getScheduleList();
+        int count = 0;
         if (scheduleList.size()==0){
             System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
         }else{
-            System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price");
-            System.out.println("=============================================================================================");
+            System.out.println("=================================================================================================================");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+            System.out.println("=================================================================================================================");
         }
         for (int i=0; i< scheduleList.size(); i++){
-            System.out.println(scheduleList.get(i).toString() + "\n");
+            System.out.println(scheduleList.get(i).toString());
+            count++;
         }
+        System.out.println("=================================================================================================================");
+        System.out.println(count + " schedule(s) found.");
 
     }
 
@@ -510,7 +515,7 @@ public class Schedule{
                 break;
 
             for (int i = 0; i < scheduleList.size(); i++) {
-                if (scheduleId.equals(scheduleList.get(i).getScheduleId())) {
+                if (scheduleId.equalsIgnoreCase(scheduleList.get(i).getScheduleId())) {
                     found = true;
                     index = i;
                 }
@@ -518,7 +523,11 @@ public class Schedule{
             if(found==true){
                 System.out.println("Do you want to update the schedule information as shown below? ");
                 System.out.println();
+                System.out.println("=================================================================================================================");
+                System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+                System.out.println("=================================================================================================================");
                 System.out.println(scheduleList.get(index).toString());
+                System.out.println("=================================================================================================================");
                 System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No)> ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");
@@ -906,8 +915,12 @@ public class Schedule{
             if (found==true){
                 System.out.println("Do you want to delete the schedule information as shown below? ");
                 System.out.println();
+                System.out.println("=================================================================================================================");
+                System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+                System.out.println("=================================================================================================================");
                 System.out.println(scheduleList.get(index).toString());
-                 System.out.println();
+                System.out.println("=================================================================================================================");
+                System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No)> ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");
     
