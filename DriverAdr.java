@@ -24,7 +24,7 @@ public class DriverAdr {
         // System.out.println(admin2.toString());
 
         //call method to write details into file
-        readWriteStaff.writeFile();
+        // Staff.writeStaffInfo();
         // Customer.writeCustInfo();
 
         // Staff admin3 = new Staff("hoho", "5555", "huh Sim", "huhu@gmail.com", 'C');

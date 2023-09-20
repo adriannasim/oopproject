@@ -26,6 +26,9 @@ public class Customer extends User implements ReadAndWrite {
         super(username, password, fullname, email);
         this.contactNo = contactNo;
         this.gender = gender;
+
+        //add into arraylist
+        custDetails.add(this);
     }
 
     // setters
@@ -77,8 +80,8 @@ public class Customer extends User implements ReadAndWrite {
                     String contactNo = parts[4];
                     char gender = parts[5].charAt(0);
 
-                    // add details from file to arraylist
-                    custDetails.add(new Customer(username, password, fullname, email, contactNo, gender));
+                    // add details from file to constructor
+                    new Customer(username, password, fullname, email, contactNo, gender);
                 }
             }
         } catch (IOException e) {
@@ -97,7 +100,7 @@ public class Customer extends User implements ReadAndWrite {
         System.out.printf("2. Buy Food and Beverages\n");
         System.out.printf("3. Edit Profile\n");
         System.out.printf("4. View FnB Purchase History\n");
-        System.out.printf("5. View Ticket Purchase History\n");
+        System.out.printf("5. View Ticket Purchase\n");
 
         System.out.println("\n* Press # to log out");
         System.out.println("==================================================");
