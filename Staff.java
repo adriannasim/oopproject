@@ -61,9 +61,10 @@ public class Staff extends User {
 
     //write file
     public void writeFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("staffFile.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("staffFile.txt"))) {
             for (Staff staff : staffDetails) {
-                writer.write(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.staffId + "||" + staff.staffType);
+                writer.write(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) 
+                    + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.staffId + "||" + staff.staffType);
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -73,6 +74,7 @@ public class Staff extends User {
 
     //read file
     public void readFile() {
+        staffDetails.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader("staffFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {
@@ -89,7 +91,7 @@ public class Staff extends User {
                     char staffType = parts[5].charAt(0);
                     
                     //add details from file to arraylist
-                    new Staff(username, password, fullname, email, staffId, staffType);
+                    Staff staff = new Staff(username, password, fullname, email, staffId, staffType);
                 }
             }
         } catch (IOException e) {
@@ -132,18 +134,25 @@ public class Staff extends User {
                     case 3:
                         return;
                     default:
+                    //clear screen
+                    for (int i = 0; i < 100; i++) {
+                        System.out.println();
+                    }
                     System.out.printf("Invalid input, please enter your choice again.\n"); 
                 }   
             } else {
                 if (input.next().equals("#")) {
                     return;
                 } else {
+                    //clear screen
+                    for (int i = 0; i < 100; i++) {
+                        System.out.println();
+                    }
                     System.out.printf("Invalid input, please enter your choice again.\n");
                     //clear buffer
                     input.next();
                 }
             }
         } while (loop);
-        input.close();
     }
 }

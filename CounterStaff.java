@@ -41,6 +41,10 @@ public class CounterStaff extends Staff {
                 System.out.printf("Logged out.\n\n");
                 return;
             } else {
+                //clear screen
+                for (int i = 0; i < 100; i++) {
+                    System.out.println();
+                }
                 System.out.printf("Invalid input, please enter your choice again.\n");
                 //clear buffer
                 input.next();
@@ -75,17 +79,25 @@ public class CounterStaff extends Staff {
 
         //username
         do {
-            System.out.printf("Please enter your username (no spaces/special characters) > ");
+            System.out.printf("\nPlease enter your username (no spaces/special characters) > ");
             inUsername = input.nextLine();
             //check if username exist in custFile.txt
             readFile();
             for (int i = 0; i < staffDetails.size(); i++) {
                 if (inUsername.equals(staffDetails.get(i).getUsername())) {
+                    //clear screen
+                    for (int j = 0; i < 100; i++) {
+                        System.out.println();
+                    }
                     System.out.printf("This username is already in used. Please login using your existing username.\n");
                     return;
                 }
             }
             if (!inUsername.matches(regex2)) {
+                //clear screen
+                for (int i = 0; i < 100; i++) {
+                    System.out.println();
+                }
                 System.out.printf("No spaces/special characters allowed. Please try again.\n");
             } else if (inUsername.equalsIgnoreCase("X")) {
                 return;
@@ -96,9 +108,13 @@ public class CounterStaff extends Staff {
         //password
         check = true;
         do {
-            System.out.printf("Please enter your password (no spaces) > ");
+            System.out.printf("\nPlease enter your password (no spaces) > ");
             inPassword = input.nextLine();
             if (inPassword.contains(" ")) {
+                //clear screen
+                for (int i = 0; i < 100; i++) {
+                    System.out.println();
+                }
                 System.out.printf("No spaces allowed. Please try again.\n");
             } else if (inPassword.equalsIgnoreCase("X")) {
                 return;
@@ -109,9 +125,13 @@ public class CounterStaff extends Staff {
         //fullname
         check = true;
         do {
-            System.out.printf("Please enter your full name (no special characters) > ");
+            System.out.printf("\nPlease enter your full name (no special characters) > ");
             inFullname = input.nextLine();
             if (!inFullname.matches(regex)) {
+                //clear screen
+                for (int i = 0; i < 100; i++) {
+                    System.out.println();
+                }
                 System.out.printf("No special characters allowed. Please try again.\n");
             } else if (inFullname.equalsIgnoreCase("X")) {
                 return;
@@ -122,9 +142,13 @@ public class CounterStaff extends Staff {
         //email
         check = true;
         do {
-            System.out.printf("Please enter your email (no spaces) > ");
+            System.out.printf("\nPlease enter your email (no spaces) > ");
             inEmail = input.nextLine();
             if (inEmail.contains(" ")) {
+                //clear screen
+                for (int i = 0; i < 100; i++) {
+                    System.out.println();
+                }
                 System.out.printf("No spaces allowed. Please try again.\n");
             } else if (inEmail.equalsIgnoreCase("X")) {
                 return;
@@ -135,7 +159,6 @@ public class CounterStaff extends Staff {
 
         Staff staff = new Staff(inUsername, inPassword, inFullname, inEmail, inStaffId, inStaffType);
         writeFile();
-        System.out.println("Registration successful. Please login now.");
-        input.close();
+        System.out.println("Registration successful. Please login now.\n");
     }
 }

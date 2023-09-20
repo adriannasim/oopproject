@@ -7,7 +7,7 @@ public class DriverAdr {
         //variables declaration
         // Customer cust1 = new Customer("adr", "1628", "Adrianna Sim", "adriannasim@gmail.com", "0164121629", 'F');
         // Staff admin1 = new Staff("bri", "3428", "Brianna Sim", "briannasim@gmail.com", 'B');
-        Staff admin = new Staff("hehe", "9628", "Hehe Sim", "hehe@gmail.com", "B1002", 'B');
+        Staff admin = new Staff("wowo", "5426", "Wowo Lee", "wowo@gmail.com", "B1002", 'B');
         ArrayList<Customer> custDetails =  new ArrayList<Customer>();
         ArrayList<Staff> staffDetails = new ArrayList<Staff>();
         Customer readWriteCust = new Customer();
@@ -24,7 +24,7 @@ public class DriverAdr {
         // System.out.println(admin2.toString());
 
         //call method to write details into file
-        // Staff.writeStaffInfo();
+        readWriteStaff.writeFile();
         // Customer.writeCustInfo();
 
         // Staff admin3 = new Staff("hoho", "5555", "huh Sim", "huhu@gmail.com", 'C');
