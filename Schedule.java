@@ -143,6 +143,13 @@ public class Schedule implements Serializable{
                 "\nArrival location      : " + arriveLocation.getLocationName() + 
                 "\nTicket Price          : RM" + ticketPrice;
     }
+
+    public String displayInReport(){
+        return  "Time (Departure - Arrival)    : " + departTime + " - " + arriveTime +
+                "\nDeparture location            : " + departLocation.getLocationName() + 
+                "\nArrival location              : " + arriveLocation.getLocationName() + 
+                "\nTicket Price                  : RM" + ticketPrice;
+    }
     
     public String displayToReport(){
         return String.format("Departure Location \t Arrival Location \t Departure Time \t Arrival Time \t Ticket Price\n%20s %20s %10s %10s %.2lf",departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, ticketPrice);

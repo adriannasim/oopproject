@@ -102,7 +102,7 @@ public abstract class FoodAndBeverage {
                 "\nFood Name     : " + foodName +
                 "\nFood Price    : " + foodPrice;
     }
-
+    
     // CALCULATION METHOD
     public abstract double calculatePrice();
 
