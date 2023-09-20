@@ -189,8 +189,19 @@ public class DriverTw {
 
     //=========================================== F&B Sales Report =======================================================//
     public static void fnbSalesReport() throws Exception{
+        Reporting report = new Reporting();
         ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
         ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
+        ArrayList<FoodAndBeverage> purchaseFnb = new ArrayList<FoodAndBeverage>();
+
+        for (int i=0;i<purchaseDrink.size();i++){
+            purchaseFnb.add(purchaseDrink.get(i));
+        }
+        for (int i=0;i<purchaseSnack.size();i++){
+            purchaseFnb.add(purchaseSnack.get(i));
+        }
+
+        FoodAndBeverage[] fnbs = purchaseFnb.toArray(new FoodAndBeverage[purchaseFnb.size()]);
         
         System.out.println("==========================================================================");
         System.out.println("                    Food and Beverage Sales Report");
@@ -210,12 +221,14 @@ public class DriverTw {
                 System.out.println();
             }
             
-        System.out.println("Total Sales Amount (RM) : " + Reporting.calculateFnbSales()); //call calc function
+        System.out.println("Total Sales Amount (RM) : " + report.calculateFnbSales(fnbs)); //call calc function
     }
 
     //========================================== Ticket Sales Report =====================================================//
     public static void ticketSalesReport() throws Exception{
+        Reporting report = new Reporting();
         ArrayList<Ticket> ticketList = Purchase.readFromTicketFile("purchaseTicket.txt");
+        Ticket[] ticketLists = ticketList.toArray(new Ticket[ticketList.size()]);
         System.out.println("=======================================================================================================");
         System.out.println("                                    Train Ticket Sales Report");
         System.out.println("=======================================================================================================");
@@ -229,6 +242,6 @@ public class DriverTw {
         }
         System.out.println("--------------------------------------------------------------------------------------------------------");
         System.out.println("Number of Tickets Sold  : "+ i); 
-        System.out.println("\nTotal Sales Amount (RM) : " + Reporting.calculateTicketSales(ticketList)); //call calc function
+        System.out.println("\nTotal Sales Amount (RM) : " + report.calculateTicketSales(ticketLists)); //call calc function
     }
 }
