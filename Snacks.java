@@ -62,7 +62,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
     }
 
     public String displayToReport(){
-        return String.format("%-24s %-15s %6.2f %17.2f\n", foodName, purchaseQty, foodPrice, calculatePrice());
+        return String.format("%-24s %-15s %6.2f %17.2f %20s\n", foodName, purchaseQty, foodPrice, calculatePrice(), LocalDate.now());
     }
 
     // CALCULATION METHOD
@@ -96,7 +96,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                     String foodId = inputFile.nextLine().trim(); // Read and trim the data
                     if (foodId.isEmpty()) {
                         continue; // Skip empty lines
-                    }
+                    } 
                     String foodName = inputFile.nextLine().trim();
                     double foodPrice = Double.parseDouble(inputFile.nextLine().trim());
                     int purchaseQty = Integer.parseInt(inputFile.nextLine().trim());

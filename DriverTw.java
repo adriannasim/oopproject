@@ -106,10 +106,10 @@ public class DriverTw {
         // ArrayList<String> drinkCust = Purchase.drinkCust;
         // ArrayList<Double> drinkTotalPrice = Purchase.drinkTotalPrice;
 
-        System.out.println("=============================================================================");
-        System.out.println("                            F&B Purchase History");
-        System.out.println("=============================================================================\n");
-        System.out.println("No. \t Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM)\n");
+        System.out.println("==============================================================================================");
+        System.out.println("                                    F&B Purchase History");
+        System.out.println("==============================================================================================\n");
+        System.out.println("No. \t Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM) \t   Date Bought\n\n");
 
         int i = 0;
             for (Snacks snack : purchaseSnack) {
@@ -129,16 +129,15 @@ public class DriverTw {
     public static void viewTicketHistory() throws Exception{
         ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
 
-        System.out.println("=============================================");
-        System.out.println("        Train Ticket Purchase History");
-        System.out.println("=============================================\n");
-
+        System.out.println("==================================================================================================================");
+        System.out.println("                                       Train Ticket Purchase History");
+        System.out.println("==================================================================================================================\n");
+        System.out.println("No. \t   Date \t Ticket ID \t Time (Departure - Arrival) \t   Location (From - To) \t Price(RM)\n\n");
         int i = 0;
         for (Ticket ticket : purchaseTicket) {
-            
-            System.out.printf("No. %d\n\n", (i + 1));
-            System.out.println(ticket.displayToReport());
+            System.out.printf("%-7d %s", (i + 1), ticket.displayToReport());
             i++;
+            System.out.println();
         }
     }
 
