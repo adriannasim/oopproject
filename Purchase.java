@@ -475,6 +475,72 @@ public class Purchase {
 		} else {
 			return;
 		}
-
+		// View Purchase History
 	}
+	public static void viewPurchase() throws Exception{
+        Scanner scanner = new Scanner(System.in);
+        boolean cont = true;
+        String userInput;
+
+        do{
+            System.out.println("==================================================");
+            System.out.println("               View Purchase History");
+            System.out.println("==================================================\n");
+            System.out.println("1. View F&B Purchase History");
+            System.out.println("2. View Train Ticket Purchase History");
+            System.out.println("* Press '#' to exit\n");
+            do {
+                System.out.print("Enter your option > ");
+                userInput = scanner.nextLine();
+                if (userInput.equals("1")) {
+                    viewFnbHistory(null);
+                } else if (userInput.equals("2")) {
+                    viewTicketHistory();
+                } else if (userInput.equals("#")) {
+                    cont = false;
+                } else {
+                    System.out.println("Invalid option. Please enter (1/2/#).");
+                }
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#")); 
+        }while(cont == true);
+    }
+    
+
+    public static void viewFnbHistory(Login login) throws Exception{
+        ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
+        ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
+
+        System.out.println("==============================================================================================================");
+        System.out.println("                                      Food & Beverage Purchase History");
+        System.out.println("==============================================================================================================\n");
+        System.out.println("No. \t Food Name \t Purchase Quantity \t Description \t Price(RM) \t Subtotal(RM) \t   Date Bought\n\n");
+
+        int i = 0;
+            for (Snacks snack : purchaseSnack) {
+                System.out.printf("%-7d %s", (i + 1), snack.displayToReport());
+                i++;
+                System.out.println();
+            } 
+            
+            for (Drinks drink : purchaseDrink) {
+                System.out.printf("%-7d %s", (i + 1), drink.displayToReport());
+                i++;
+                System.out.println();
+            }
+    }
+
+    public static void viewTicketHistory() throws Exception{
+        ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
+
+        System.out.println("==================================================================================");
+        System.out.println("                         Train Ticket Purchase History");
+        System.out.println("==================================================================================\n");
+        System.out.println("No. \t   Date \t Ticket ID \t   Location (From - To) \t Price(RM)\n\n");
+        int i = 0;
+        for (Ticket ticket : purchaseTicket) {
+            System.out.printf("%-7d %s", (i + 1), ticket.displayToReport());
+            i++;
+            System.out.println();
+        }
+    }
 }
