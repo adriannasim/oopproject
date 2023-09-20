@@ -3,7 +3,7 @@ import java.util.*;
 import java.time.LocalDate;
 
 
-// Delete entrire driverJQ if donee
+// Delete entire driverJQ if donee
 
 public class DriverJQ {
 

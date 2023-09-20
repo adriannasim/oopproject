@@ -60,8 +60,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 "\nParty Pack    : " + partyPackStatus;
     }
 
-    public String displayToReport(){
-        return String.format("Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM)\n\n%-24s %-15s %6.2f %16.2f", foodName, purchaseQty, foodPrice, calculatePrice());
+    public String displayToReport() {
+        return String.format("Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM)\n\n%-24s %-15s %6.2f %16.2f",
+                foodName, purchaseQty, foodPrice, calculatePrice());
     }
 
     // CALCULATION METHOD
@@ -91,9 +92,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             try (Scanner inputFile = new Scanner(file)) {
                 while (inputFile.hasNext()) {
                     String foodId = inputFile.nextLine().trim(); // Read and trim the data
-                        if (foodId.isEmpty()) {
-                            continue; // Skip empty lines
-                        }
+                    if (foodId.isEmpty()) {
+                        continue; // Skip empty lines
+                    }
                     String foodName = inputFile.nextLine().trim();
                     double foodPrice = Double.parseDouble(inputFile.nextLine().trim());
                     int purchaseQty = Integer.parseInt(inputFile.nextLine().trim());
@@ -126,12 +127,12 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             }
         } catch (IOException e) {
             System.err.println("\nERROR WRITING TO THE FILE.\n");
-        }finally {
+        } finally {
             if (fwrite != null) {
                 try {
                     fwrite.close();
                 } catch (IOException e) {
-                    
+
                 }
             }
         }
@@ -186,22 +187,24 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
-    // ----------------------------------------------VIEW SNACKS----------------------------------------------
+    // ----------------------------------------------VIEW
+    // SNACKS----------------------------------------------
     public void viewSnacks() throws Exception {
         ArrayList<Snacks> snacksList = getSnacksList();
-        
+
         if (snacksList.isEmpty()) {
             System.out.println("\nNO SNACKS IN THE RECORD.\n");
         } else {
             System.out.println("\nSNACKS LIST:\n");
-            
+
             for (Snacks snack : snacksList) {
                 System.out.println(snack.toString() + "\n");
             }
         }
     }
 
-    // ----------------------------------------------ADD SNACKS----------------------------------------------
+    // ----------------------------------------------ADD
+    // SNACKS----------------------------------------------
     public void addSnacks(Scanner scanner) throws Exception {
         String foodName;
         double foodPrice;
@@ -253,7 +256,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------UPDATE SNACKS----------------------------------------------
+    // ----------------------------------------------UPDATE
+    // SNACKS----------------------------------------------
     public void updateSnacks(Scanner scanner) throws Exception {
         String foodId;
         String foodName;
@@ -288,15 +292,15 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                     index = i;
                 }
             }
-            if (found == true) {  
-                    System.out.println("Do you want to update the snacks information as shown below?");
-                    System.out.println();
-                    System.out.println(snacksList.get(index).toString());
-                    System.out.println();
-                    System.out.print("Enter your option (Y-Yes/N-No) > ");
-                    userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
+            if (found == true) {
+                System.out.println("Do you want to update the snacks information as shown below?");
+                System.out.println();
+                System.out.println(snacksList.get(index).toString());
+                System.out.println();
+                System.out.print("Enter your option (Y-Yes/N-No) > ");
+                userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
                 do {
-                    if(userInput.equalsIgnoreCase("Y")){
+                    if (userInput.equalsIgnoreCase("Y")) {
                         System.out.println("==================================================");
                         System.out.println("The field that can be updated :");
                         System.out.println("1. Snacks name ");
@@ -318,9 +322,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                                 if (confirm.equalsIgnoreCase("Y")) {
                                     snacksList.get(index).editFoodName(foodName);
                                     updated = writeIntoFile("snacksFile.txt", snacksList);
-                                    if(updated){
+                                    if (updated) {
                                         System.out.println("\nSNACKS NAME HAS UPDATED\n");
-                                    }else{
+                                    } else {
                                         System.out.println("\nFAILED TO UPDATE FOOD MENU.\n");
                                     }
                                 } else {
@@ -335,9 +339,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                                 if (confirm.equalsIgnoreCase("Y")) {
                                     snacksList.get(index).editFoodPrice(foodPrice);
                                     updated = writeIntoFile("snacksFile.txt", snacksList);
-                                    if(updated){
+                                    if (updated) {
                                         System.out.println("\nSNACKS PRICE HAS UPDATED.\n");
-                                    }else{
+                                    } else {
                                         System.out.println("\nFAILED TO UPDATE SNACKS PRICE\n");
                                     }
                                 } else {
@@ -356,7 +360,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                                             stockQty = Integer.parseInt(numericPart);
                                             invalidFormat = false;
                                         } catch (NumberFormatException e) {
-                                            System.out.println("\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
+                                            System.out.println(
+                                                    "\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
                                             invalidFormat = true;
                                         }
                                     } else {
@@ -366,7 +371,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                                             stockQty = Integer.parseInt(numericPart);
                                             invalidFormat = false;
                                         } catch (NumberFormatException e) {
-                                            System.out.println("\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
+                                            System.out.println(
+                                                    "\nINVALID FORMAT. PLEASE ENETER IN FORMAT (+100/-100).\n");
                                             invalidFormat = true;
                                         }
                                     }
@@ -377,9 +383,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                                 if (confirm.equalsIgnoreCase("Y")) {
                                     boolean success = snacksList.get(index).editStockQty(sign, stockQty);
                                     updated = writeIntoFile("snacksFile.txt", snacksList);
-                                    if(updated && success){
+                                    if (updated && success) {
                                         System.out.println("\nSNACKS STOCK QTY HAS UPDATED\n");
-                                    }else{
+                                    } else {
                                         System.out.println("\nFAILED TO UPDATE SNACKS STOCK QTY.\n");
                                     }
                                 } else {
@@ -399,9 +405,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                                         snacksList.get(index).setPartyPack(false);
                                     }
                                     updated = writeIntoFile("snacksFile.txt", snacksList);
-                                    if(updated){
+                                    if (updated) {
                                         System.out.println("\nPARTY PACK SETTING HAS UPDATED.\n");
-                                    }else{
+                                    } else {
                                         System.out.println("\nFAILED TO UPDATE PARTY PACK SETTING.\n");
                                     }
                                 } else {
@@ -414,14 +420,14 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                                 System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4).\n");
                             }
                         } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3")
-                            && !userInput.equals("4") && !userInput.equals("#"));
+                                && !userInput.equals("4") && !userInput.equals("#"));
 
-                    }else{
+                    } else {
                         found = false;
                         cont = false;
                         break;
                     }
-                    
+
                     System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
                     userInput = BackendStaff.validateYNInput(scanner,
                             "Do you want to continue make changes? (Y-Yes/N-No) > ");
@@ -439,7 +445,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------DELETE SNACKS----------------------------------------------
+    // ----------------------------------------------DELETE
+    // SNACKS----------------------------------------------
     public void deleteSnacks(Scanner scanner) throws Exception {
         boolean found = false;
         String userInput;
@@ -481,9 +488,9 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                         deleted = writeIntoFile("snacksFile.txt", snacksList);
 
                         if (deleted) {
-                             System.out.println("\nSNACKS HAS REMOVED.\n");
-                        }else{
-                             System.out.println("\nFAILED TO REMOVE THE SNACKS.\n");
+                            System.out.println("\nSNACKS HAS REMOVED.\n");
+                        } else {
+                            System.out.println("\nFAILED TO REMOVE THE SNACKS.\n");
 
                         }
 
@@ -932,57 +939,52 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             if (editOpt == 1) {
 
                 // Edit Qty
-                if (fnbList.get(fnbIndex).getStockQty() != 0) {
+
+                do {
 
                     do {
+                        try {
+                            System.out.print("Enter quantity > ");
+                            editQty = scanner.nextInt();
 
-                        do {
-                            try {
-                                System.out.print("Enter quantity > ");
-                                editQty = scanner.nextInt();
+                            continueInputEQ = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect Input. Please try agin. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputEQ);
 
-                                continueInputEQ = false;
-                            } catch (InputMismatchException ex) {
-                                System.out.println("Incorrect Input. Please try agin. ");
-                                scanner.nextLine();
-                            }
-                        } while (continueInputEQ);
+                    if (fnbList.get(fnbIndex).checkStockQty(editQty)) {
 
-                        if (fnbList.get(fnbIndex).checkStockQty(editQty)) {
+                        if (editQty > fnbList.get(fnbIndex).getPurchaseQty()) {
 
-                            if (editQty > fnbList.get(fnbIndex).getPurchaseQty()) {
+                            // Example: Get four items, and add one more item, become five items
+                            int tempQty1 = fnbList.get(fnbIndex).getPurchaseQty();
+                            fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                            fnbList.get(fnbIndex).calculateStockQty(editQty - tempQty1);
+                            System.out.println("Edit successfully. ");
 
-                                // Example: Get four items, and add one more item, become five items
-                                int tempQty1 = fnbList.get(fnbIndex).getPurchaseQty();
-                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
-                                fnbList.get(fnbIndex).calculateStockQty(editQty - tempQty1);
-                                System.out.println("Edit successfully. ");
+                        } else if (editQty < fnbList.get(fnbIndex).getPurchaseQty()) {
 
-                            } else if (editQty < fnbList.get(fnbIndex).getPurchaseQty()) {
-
-                                // Example: Get four items, and put back one item, left three items
-                                int tempQty2 = fnbList.get(fnbIndex).getPurchaseQty();
-                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
-                                fnbList.get(fnbIndex).addStockQty(tempQty2 - editQty);
-                                System.out.println("Edit successfully. ");
-
-                            } else {
-
-                                fnbList.get(fnbIndex).setPurchaseQty(editQty);
-                                System.out.println("Edit successfully. ");
-
-                            }
+                            // Example: Get four items, and put back one item, left three items
+                            int tempQty2 = fnbList.get(fnbIndex).getPurchaseQty();
+                            fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                            fnbList.get(fnbIndex).addStockQty(tempQty2 - editQty);
+                            System.out.println("Edit successfully. ");
 
                         } else {
-                            System.out.println("Sorry, we have only " + fnbList.get(fnbIndex).getStockQty() + " "
-                                    + fnbList.get(fnbIndex).getFoodName());
+
+                            fnbList.get(fnbIndex).setPurchaseQty(editQty);
+                            System.out.println("Edit successfully. ");
+
                         }
 
-                    } while (!fnbList.get(fnbIndex).checkStockQty(editQty));
+                    } else {
+                        System.out.println("Sorry, we have only " + fnbList.get(fnbIndex).getStockQty() + " "
+                                + fnbList.get(fnbIndex).getFoodName());
+                    }
 
-                } else {
-                    System.out.println("Sorry, we have out of stocks.");
-                }
+                } while (!fnbList.get(fnbIndex).checkStockQty(editQty));
 
             } else if (editOpt == 2) {
 
