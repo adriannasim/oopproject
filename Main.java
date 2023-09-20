@@ -7,7 +7,31 @@ public class Main {
         //methods declaration
         Scanner input = new Scanner(System.in); //scanner
         Login login = new Login();
-        
+
+         System.out.printf("\r\n" + //
+                 "··················································\r\n" + //
+                 "··············csCSSSSGGGGGGGGG····················\r\n" + //
+                 "·············cccccccccGGGGGGGGG···················\r\n" + //
+                 "·······u·qqQQQQQQpssGGGGGGGGGG····················\r\n" + //
+                 "·······QQQQQQQQQQb································\r\n" + //
+                 "·······QQQQQQQQQQC································\r\n" + //
+                 "········QQQQQQQQC············sQQQQQQQQQQQQQQQQQQQ·\r\n" + //
+                 "·········SQQQQP···············sQQQQQQQQQQQQQQQGQ··\r\n" + //
+                 "··········QQQQC···············sQQQQQQQQGQQQQQQQQ··\r\n" + //
+                 "··········QQQQC···············sQQQQQC·····QQQQQQ··\r\n" + //
+                 "··········QQQQC··············udQQQQQC·····QQQQQQ··\r\n" + //
+                 "········dQQQQQQQQQQQQQQQQQQQQQQQQQQQC·····QQQQQQ··\r\n" + //
+                 "········QQQQQQQQQQQQQQQQQQQQQQQQQQQQbpppppQQQQQQ··\r\n" + //
+                 "······sQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ··\r\n" + //
+                 "········QQQQQQQQQQQQQQQQQQQQQQPPPPPPPPPPPPPPPPPG··\r\n" + //
+                 "········sQQQQQQbQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQp··\r\n" + //
+                 "·········QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQb··\r\n" + //
+                 "·········QQQQQQQQQQQQQGbbQQQQQQQQQQQQQQQQQQQQQQb··\r\n" + //
+                 "······dppQQQQQQQQQQQQQQQbQQGGQQQQpQQQQQQpQPQQpQb··\r\n" + //
+                 "·····QQQGPQQQQQQQQQQQQPPSQPGGQQGGGQpGQGGGQQGGGQb··\r\n" + //
+                 "···dQQQQCQQQQQQQQQQQQQb··QQ·QCSQ·Qb··QQuQC·Q·QQ···\r\n" + //
+                 "··QQGQQQu·bQQQP··SQQQP····PbQQQpPC····PbQQQQPP····\r\n" + //
+                 "    \r\n");
         System.out.println("==================================================");
         System.out.println("        WELCOME TO TRAIN TICKETING SYSTEM");
         do {
@@ -32,6 +56,10 @@ public class Main {
                     login.driverLogin(choice);
                     break;
                 default:
+                    //clear screen
+                    for (int i = 0; i < 100; i++) {
+                        System.out.println();
+                    }
                     System.out.printf("Invalid input, please enter your choice again.\n");
                 }
             } else {
@@ -46,7 +74,35 @@ public class Main {
                                 //confirm quit
                                 case 'Y':
                                 case 'y':
-                                    System.out.printf("Bye bye!");
+                                    //clear screen
+                                    for (int i = 0; i < 100; i++) {
+                                        System.out.println();
+                                    }
+                                    System.out.printf("\r\n" + //
+                                            "    ·····························dbp··················\r\n" + //
+                                            "    ···················sGs·····s···SQp················\r\n" + //
+                                            "    ···········ss····sQGGGGQ····SQp··SQu··············\r\n" + //
+                                            "    ·········QGGGGQp··QQGGGGGb····SQ··SQb·············\r\n" + //
+                                            "    ·········SQQGGGGQu·SQQGGGGQc···SQc··Qb············\r\n" + //
+                                            "    ···········bQQGGGGQu·SQGGGGGb···sb··cP····sQGGGGQc\r\n" + //
+                                            "    ·······ssss··bQGGGGGQ·cQQGGGGGp··········QGGGGGQp·\r\n" + //
+                                            "    ······QGGGGGQ·CbQGGGGGQ·SQQGGGGQc·······QGGGGGQp··\r\n" + //
+                                            "    ·······QQGGGGGQ·cQQGGGGGb·SQGGGGGQ······QGGGGGQ···\r\n" + //
+                                            "    ·········QQGGGGGQcSQQGGGGGbQQGGGGGGQpuqQGGGGGQP···\r\n" + //
+                                            "    ··········SQQGGGGGQuSQQGGGGSSGGGGGGGGGGGCGGGGQC···\r\n" + //
+                                            "    ············SbQGGGGGQuSQQGCCGGGGGGGGGGGCCGGGGQQ···\r\n" + //
+                                            "    ·······sGGGGQuCbQGGGGGGQGGGGGGGGGGGGGGCCCCGGGGQC··\r\n" + //
+                                            "    ·······sQQGGGGGpCbQQGGGGGGGGGGGGGGGGGGCCCCGGGGQC··\r\n" + //
+                                            "    ····SQ···SQQGGGGGbCSQQGCGGGGGGGGGGGGGGCCCCGGGGQQ··\r\n" + //
+                                            "    ·Qb··SQp···SbQQGGGGGQGGGGGGGGGGGGGGGGGGCGGGGGQQQ··\r\n" + //
+                                            "    ··SQp··SQp····SQQGGGGGGGGGGGGGGGGGGGGGGGGGGQQQQP··\r\n" + //
+                                            "    ····bQp··CPQC···PQQQGGGGCCCCCCCGGGGGGGGGQQQQQQb···\r\n" + //
+                                            "    ······SQbp·········SQQGGGGCCCCCCCGGGGGGQQQQQQP····\r\n" + //
+                                            "    ·········PP··········PQQQGGGGGGGGGGGQQQQQQQPC·····\r\n" + //
+                                            "    ························SQQQQQQQQQQQQQQQQP········\r\n" + //
+                                            "    ··························CPGQQQQQQQQPPC··········\r\n" + //
+                                            "    \r\n");
+                                    System.out.printf("                       Bye bye!");
                                     input.close();
                                     System.exit(0);
                                     break;
@@ -56,14 +112,26 @@ public class Main {
                                     loop2 = false;
                                     break;
                                 default: 
-                                    System.out.printf("Invalid input, please enter your choice again.\n");
+                                    //clear screen
+                                    for (int i = 0; i < 100; i++) {
+                                        System.out.println();
+                                    }
+                                    System.out.printf("Invalid input, please enter your choice again.\n\n");
                             }
                         } else {
-                            System.out.printf("Invalid input, please enter your choice again.\n");
+                            //clear screen
+                            for (int i = 0; i < 100; i++) {
+                                System.out.println();
+                            }
+                            System.out.printf("Invalid input, please enter your choice again.\n\n");
                         }
                     } while (loop2);
                 } else {
-                    System.out.printf("Invalid input, please enter your choice again.\n");
+                    //clear screen
+                    for (int i = 0; i < 100; i++) {
+                        System.out.println();
+                    }
+                    System.out.printf("Invalid input, please enter your choice again.\n\n");
                     //clear buffer
                     input.next();
                 }
