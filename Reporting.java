@@ -19,11 +19,16 @@ public class Reporting {
 
     public double calculateFnbSales(FoodAndBeverage[] fnbSold){
         double totalFnb = 0;
+        /* 
         for (Double snack : snackTotalPrice) {
             totalFnb += snack;
         }
         for (Double drink : drinkTotalPrice) {
             totalFnb += drink;
+        }
+        */
+        for (FoodAndBeverage fnb : fnbSold){
+            totalFnb += fnb.calculatePrice();
         }
         return totalFnb;
     }
@@ -49,12 +54,12 @@ public class Reporting {
          return totalTicketSales;
      }
 
-    public static String calculateTicketSales(ArrayList<Ticket> ticketList) {
-        return null;
-    }
+    //public static String calculateTicketSales(ArrayList<Ticket> ticketList) {
+    //    return null;
+    //}
 
-    public static String calculateFnbSales() {
-        return null;
-    }
+    //public static String calculateFnbSales() {
+    //    return null;
+    //}
 
 }
