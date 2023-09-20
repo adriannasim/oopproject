@@ -1,16 +1,16 @@
 137425
-orange juice
-4.0
+Orange Juice
+6.0
 0
-30
+20
 null
 null
 false
-109777
-Coco drink
-4.0
+141234
+Coke
+3.0
 0
-3
+50
 null
 null
 false
