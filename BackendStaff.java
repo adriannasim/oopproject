@@ -132,7 +132,7 @@ public class BackendStaff extends Staff {
                     break;
                 //Reports
                 case 5:
-                    DriverTw.viewReport();
+                    Reporting.viewReport();
                     break;
                 default:
                 //clear screen

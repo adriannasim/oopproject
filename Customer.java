@@ -121,10 +121,10 @@ public class Customer extends User {
                     editAccount(login);
                     break;
                 case 4:
-                    FoodAndBeverage.viewFnbHistory(login);
+                    Purchase.viewFnbHistory(login);
                     break;
                 case 5:
-                    Schedule.viewScheduleCust(login);
+                    Schedule.viewScheduleCust();
                     break;
                 default:
                     //clear screen

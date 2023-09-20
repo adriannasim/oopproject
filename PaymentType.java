@@ -1,6 +1,6 @@
 import java.time.LocalDateTime;
 
-public abstract class PaymentType {
+public class PaymentType {
     private String paymentId;
     private LocalDateTime paymentDateTime;
     private boolean paymentStatus;
