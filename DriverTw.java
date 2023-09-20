@@ -89,7 +89,7 @@ public class DriverTw {
         System.out.println("==============================================================================================");
         System.out.println("                                    F&B Purchase History");
         System.out.println("==============================================================================================\n");
-        System.out.println("No. \t Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM) \t   Date Bought\n\n");
+        System.out.println("No. \t Food Name \t Purchase Quantity \t Description \t Price(RM) \t Subtotal(RM) \t   Date Bought\n\n");
 
         int i = 0;
             for (Snacks snack : purchaseSnack) {
@@ -133,7 +133,6 @@ public class DriverTw {
         System.out.println("==================================================\n");
 
         int i = 0;
-
         for (Schedule schedule : scheduleList) {
             System.out.printf("%-7d %s", (i + 1), schedule.displayToReport());
             System.out.println();

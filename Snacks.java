@@ -62,7 +62,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
     }
 
     public String displayToReport(){
-        return super.displayToReport();
+        String partyPackStatus = partyPack ? "Party Pack" : "Single Pack";
+        return String.format("%-24s %-15d %10s %10.2f %17.2f %20s\n", foodName, purchaseQty, partyPackStatus, foodPrice, calculatePrice(), LocalDate.now());
     }
 
     public String displaySalesReport(){
