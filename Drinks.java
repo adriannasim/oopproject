@@ -38,11 +38,8 @@ public class Drinks extends FoodAndBeverage implements Serializable {
         this.ice = ice;
     }
 
-    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty, String size, String temperature, boolean ice ) {
+    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty) {
         super(foodId, foodName, foodPrice, purchaseQty);
-        this.temperature = temperature;
-        this.size = size;
-        this.ice = ice;
     }
     // ------------------------------------METHOD-----------------------------------------
 
@@ -81,8 +78,10 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                 "\nSize          : " + size;
     }
 
-    public String displayToReport(){
-        return String.format("Drink Name \t Purchase Quantity \t Price(RM) \t Temperature \t Size \t With Ice\t Subtotal(RM)\n\n%-24s %-15s %10s %10s %10s %6.2f %15.2f", foodName, purchaseQty, temperature, size, ice, foodPrice, calculatePrice());
+    public String displayToReport() {
+        return String.format(
+                "Drink Name \t Purchase Quantity \t Price(RM) \t Temperature \t Size \t With Ice\t Subtotal(RM)\n\n%-24s %-15s %10s %10s %10s %6.2f %15.2f",
+                foodName, purchaseQty, temperature, size, ice, foodPrice, calculatePrice());
     }
 
     // CALCULATION METHOD
@@ -154,27 +153,25 @@ public class Drinks extends FoodAndBeverage implements Serializable {
             }
         } catch (IOException e) {
             System.out.println("\nERROR WRITING TO THE FILE\n");
-        }finally {
+        } finally {
             if (fwrite != null) {
                 try {
                     fwrite.close();
                 } catch (IOException e) {
-                    
+
                 }
             }
         }
         return write;
     }
 
-    // WRITE INTO FILE 
+    // WRITE INTO FILE
     public void writePurchaseFnB(FoodAndBeverage fnb, String username) {
-        fnb = (Drinks)fnb;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseDrink.txt", true))) {
             writer.write(username + "||" +
                     fnb.getFoodId() + "||" + fnb.getClass() + "||"
                     + fnb.getFoodName() + "||" + fnb.getFoodPrice() + "||"
-                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice() + "||" 
-                    + size + "||" + temperature + "||" + ice);
+                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice());
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -186,7 +183,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
         String userInput = "";
         boolean cont = true;
         ArrayList<Drinks> drinksList = getDrinksList();
-    
+
         while (cont) {
             System.out.println("==================================================");
             System.out.println("   Drinks Information Modification");
@@ -203,7 +200,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                 userInput = scanner.nextLine();
 
                 if (userInput.equals("1")) {
-                    for(int i=0; i<drinksList.size(); i++){
+                    for (int i = 0; i < drinksList.size(); i++) {
                         System.out.println(drinksList.get(i).toString());
                     }
                 } else if (userInput.equals("2")) {
@@ -222,8 +219,9 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                     && !userInput.equals("4") && !userInput.equals("#"));
         }
     }
-    
-    //-----------------------------------------ADD DRINKS INFORMATION-------------------------------------------- 
+
+    // -----------------------------------------ADD DRINKS
+    // INFORMATION--------------------------------------------
 
     public void addDrinks(Scanner scanner) throws Exception {
         String foodName;
@@ -264,7 +262,8 @@ public class Drinks extends FoodAndBeverage implements Serializable {
         }
     }
 
-    // ----------------------------------------------UPDATE DRINKS----------------------------------------------
+    // ----------------------------------------------UPDATE
+    // DRINKS----------------------------------------------
 
     public void updateDrinks(Scanner scanner) throws Exception {
         String foodId;
@@ -322,9 +321,9 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                             if (confirm.equalsIgnoreCase("Y")) {
                                 drinksList.get(index).editFoodName(foodName);
                                 updated = writeIntoFile("drinksFile.txt", drinksList);
-                                if(updated){
+                                if (updated) {
                                     System.out.println("\nDRINKS NAME HAS UPDATED.\n");
-                                }else{
+                                } else {
                                     System.out.println("\nFAILED TO UPDATE DRINKS NAME.\n");
                                 }
                             } else {
@@ -339,9 +338,9 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                             if (confirm.equalsIgnoreCase("Y")) {
                                 drinksList.get(index).editFoodPrice(foodPrice);
                                 updated = writeIntoFile("drinksFile.txt", drinksList);
-                                if(updated){
+                                if (updated) {
                                     System.out.println("\nDRINKS PRICE HAS UPDATED.\n");
-                                }else{
+                                } else {
                                     System.out.println("\nFAILED TO UPDATE DRINKS PRICE.\n");
                                 }
                             } else {
@@ -380,9 +379,9 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                             if (confirm.equalsIgnoreCase("Y")) {
                                 boolean success = drinksList.get(index).editStockQty(sign, stockQty);
                                 updated = writeIntoFile("drinksFile.txt", drinksList);
-                                if(updated && success){
+                                if (updated && success) {
                                     System.out.println("\nFood stock qty has updated.\n");
-                                }else{
+                                } else {
                                     System.out.println("\nFAILED TO UPDATE DRINKS STOCK QTY.\n");
                                 }
                             } else {
@@ -413,7 +412,8 @@ public class Drinks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------DELETE DRINKS----------------------------------------------
+    // ----------------------------------------------DELETE
+    // DRINKS----------------------------------------------
 
     public void deleteDrinks(Scanner scanner) throws Exception {
         boolean found = false;
@@ -454,8 +454,8 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                         deleted = writeIntoFile("drinksFile.txt", drinksList);
 
                         if (deleted) {
-                             System.out.println("\nDRINKS HAS REMOVED.\n");
-                        }else{
+                            System.out.println("\nDRINKS HAS REMOVED.\n");
+                        } else {
                             System.out.println("\nFAILED TO REMOVE THE DRINKS.\n");
                         }
 
@@ -817,6 +817,9 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                 } else {
                     drink.setIce(false);
                 }
+            } else if (temperature == 2) {
+                drink.setTemperature("Hot");
+                drink.setIce(false);
             }
 
             fnbList.add(drink);

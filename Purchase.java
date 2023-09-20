@@ -124,7 +124,7 @@ public class Purchase {
 			try (Scanner inputFile = new Scanner(file)) {
 				while (inputFile.hasNext()) {
 					String[] parts = inputFile.nextLine().split("\\|\\|");
-					if (parts.length == 8) {
+					if (parts.length == 7) {
 						String username = parts[0];
 						String foodid = parts[1];
 						String className = parts[2];
@@ -132,10 +132,9 @@ public class Purchase {
 						double foodprice = Double.parseDouble(parts[4]);
 						int purchaseQty = Integer.parseInt(parts[5]);
 						double totalprice = Double.parseDouble(parts[6]);
-						boolean partyPack = Boolean.parseBoolean(parts[7]);
 
 						// Create a Snacks object and add it to the list
-						snacksList.add(new Snacks(foodid, foodname, foodprice, purchaseQty, partyPack));
+						snacksList.add(new Snacks(foodid, foodname, foodprice, purchaseQty));
 						snackCust.add(username);
 						snackTotalPrice.add(totalprice);
 					} else {
@@ -156,7 +155,7 @@ public class Purchase {
 			try (Scanner inputFile = new Scanner(file)) {
 				while (inputFile.hasNext()) {
 					String[] parts = inputFile.nextLine().split("\\|\\|");
-					if (parts.length == 10) {
+					if (parts.length == 7) {
 						String username = parts[0];
 						String foodid = parts[1];
 						String className = parts[2];
@@ -164,12 +163,9 @@ public class Purchase {
 						double foodprice = Double.parseDouble(parts[4]);
 						int purchaseQty = Integer.parseInt(parts[5]);
 						double totalprice = Double.parseDouble(parts[6]);
-						String size = parts[7];
-						String temperature = parts[8];
-						boolean ice = Boolean.parseBoolean(parts[9]);
 
 						// Create a Snacks object and add it to the list
-						drinksList.add(new Drinks(foodid, foodname, foodprice, purchaseQty, size, temperature, ice));
+						drinksList.add(new Drinks(foodid, foodname, foodprice, purchaseQty));
 						drinkCust.add(username);
 						drinkTotalPrice.add(totalprice);
 					} else {
@@ -312,9 +308,9 @@ public class Purchase {
 
 			for (FoodAndBeverage foodAndBeverage : fnbs) {
 				if (foodAndBeverage instanceof Snacks) {
-					snack.writePurchaseFnB((Snacks)foodAndBeverage, staffname);
+					snack.writePurchaseFnB(foodAndBeverage, staffname);
 				} else if (foodAndBeverage instanceof Drinks) {
-					drink.writePurchaseFnB((Drinks)foodAndBeverage, staffname);
+					drink.writePurchaseFnB(foodAndBeverage, staffname);
 				}
 			}
 
@@ -451,7 +447,7 @@ public class Purchase {
 				ticket.writePurchaseTicket(tickets, login.getUsername());
 			} 
 			if (fnbList.size() != 0){
-				for (FoodAndBeverage foodAndBeverage : fnbs) {
+				for (FoodAndBeverage foodAndBeverage : fnbList) {
 				if (foodAndBeverage instanceof Snacks) {
 					snack.writePurchaseFnB(foodAndBeverage, login.getUsername());
 				} else if (foodAndBeverage instanceof Drinks) {

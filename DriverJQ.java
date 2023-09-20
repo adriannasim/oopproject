@@ -2,6 +2,9 @@
 import java.util.*;
 import java.time.LocalDate;
 
+
+// Delete entrire driverJQ if donee
+
 public class DriverJQ {
 
     public static void main(String[] args) throws Exception {
@@ -9,7 +12,7 @@ public class DriverJQ {
         viewReportDDrink();
         viewReportTicket();
 
-        Purchase.makePurchase(2, new Login("username", "password"));
+        //Purchase.makePurchase(2, new Login("username", "password"));
     }
 
     public static void viewReport() throws Exception {

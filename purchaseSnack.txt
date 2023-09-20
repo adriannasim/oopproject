@@ -1,4 +1,2 @@
-username||149178||class Snacks||Sandwiches||3.0||1||3.0||false
-username||136296||class Snacks||French fries||4.0||2||8.0||false
-username||149178||class Snacks||Sandwiches||3.0||1||3.0||false
-username||149178||class Snacks||Sandwiches||3.0||1||3.0||false
+username||149178||class Snacks||Sandwiches||3.0||1||3.0
+username||136296||class Snacks||French fries||4.0||3||12.0
