@@ -6,14 +6,6 @@ import java.time.LocalDate;
 
 public class DriverJQ {
 
-    public static void main(String[] args) throws Exception {
-        viewReport();
-        viewReportDDrink();
-        viewReportTicket();
-
-        Purchase.makePurchase(1, new Login("username", "password"));
-    }
-
     public static void viewReport() throws Exception {
 
         ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
