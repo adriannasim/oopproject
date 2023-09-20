@@ -197,17 +197,21 @@ public class Snacks extends FoodAndBeverage implements Serializable {
     // ----------------------------------------------VIEW SNACKS----------------------------------------------
     public void viewSnacks() throws Exception {
         ArrayList<Snacks> snacksList = getSnacksList();
+        int count = 0;
 
         if (snacksList.isEmpty()) {
             System.out.println("\nNO SNACKS IN THE RECORD.\n");
         } else {
-            System.out.println("\nSNACKS LIST:\n");
-            System.out.printf("%-10s\t%-10s\t%-10s\t%10s\t%-10s", "Food ID", "Food Name", "Food Price", "Stock Qty", "Party Pack?");
+            System.out.println("===========================================================================");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%10s\t%-10s\n", "Food ID", "Food Name", "Food Price", "Stock Qty", "Party Pack?");
             System.out.println("===========================================================================");
 
             for (Snacks snack : snacksList) {
-                System.out.println(snack.toString() + "\n");
+                System.out.println(snack.toString());
+                count++;
             }
+           System.out.println("===========================================================================");
+            System.out.println(count + " snack(s) found.");
         }
     }
 
@@ -301,7 +305,12 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             if (found == true) {
                 System.out.println("Do you want to update the snacks information as shown below?");
                 System.out.println();
+                System.out.println("===========================================================================");
+                System.out.printf("%-10s\t%-10s\t%-10s\t%10s\t%-10s\n", "Food ID", "Food Name", "Food Price", "Stock Qty", "Party Pack?");
+                System.out.println("===========================================================================");
+
                 System.out.println(snacksList.get(index).toString());
+                System.out.println("===========================================================================");
                 System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
@@ -479,7 +488,11 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             if (found == true) {
                 System.out.println("Do you want to delete the snacks information as shown below? ");
                 System.out.println();
+                System.out.println("===========================================================================");
+                System.out.printf("%-10s\t%-10s\t%-10s\t%10s\t%-10s\n", "Food ID", "Food Name", "Food Price", "Stock Qty", "Party Pack?");
+                System.out.println("===========================================================================");
                 System.out.println(snacksList.get(index).toString());
+                System.out.println("===========================================================================");
                 System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No)> ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No)> ");

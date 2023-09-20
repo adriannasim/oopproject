@@ -364,12 +364,16 @@ public class Train{
                     if(hasSchedule){
                         System.out.println("\nPLEASE THINK CAREFULLY AS IT WILL REMOVE THE SCHEDULE BELOW AS WELL.\n");
                         System.out.println();
+                        System.out.println("=================================================================================================================");
+                        System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+                        System.out.println("=================================================================================================================");
                         for (int j=0; j<scheduleList.size(); j++){
                             if (scheduleList.get(j).getOperatedTrain().getTrainNo()==trainList.get(index).getTrainNo()){
                                 System.out.println(scheduleList.get(j).toString());
-                                System.out.println();
                             }   
                         }
+                        System.out.println("=================================================================================================================");
+                        System.out.println();
                     }        
     
                     System.out.print("Do you confirm? (Y-Yes/N-No) > ");

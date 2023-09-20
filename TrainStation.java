@@ -151,16 +151,21 @@ public class TrainStation{
     // ----------------------------------------------VIEW STATION----------------------------------------------
     public void viewStation() throws Exception{
         ArrayList<TrainStation> stationList = getStationList();
+        int count = 0;
        
         if (stationList.size()==0){
             System.out.println("\nNO STATION IN THE RECORD.\n");
         }else{
+            System.out.println("==================================================");
             System.out.printf("%-10s\t%-10s\t%10s\n", "Station ID", "Station Name", "No.of Platform");
-            System.out.println("===========================================================================");
+            System.out.println("==================================================");
         }
         for (int i=0; i< stationList.size(); i++){
-            System.out.println(stationList.get(i).toString() + "\n");
+            System.out.println(stationList.get(i).toString());
+            count++;
         }
+        System.out.println("==================================================");
+        System.out.println(count + " station(s) found.");
 
     }
 
@@ -248,7 +253,12 @@ public class TrainStation{
        if (found==true){
            System.out.println("Do you want to update the station information as shown below ?");
            System.out.println();
+           System.out.println("==================================================");
+           System.out.printf("%-10s\t%-10s\t%10s\n", "Station ID", "Station Name", "No.of Platform");
+           System.out.println("==================================================");
            System.out.println(stationList.get(index).toString());
+           System.out.println("==================================================");
+        System.out.println();
 
            System.out.print("Enter your option (Y-Yes/N-No) > ");
            userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
@@ -385,7 +395,12 @@ public void deleteStation(Scanner scanner) throws Exception {
        if(found==true){
            System.out.println("Do you want to delete the station information as shown below?");
            System.out.println();
+           System.out.println("==================================================");
+           System.out.printf("%-10s\t%-10s\t%10s\n", "Station ID", "Station Name", "No.of Platform");
+           System.out.println("==================================================");
            System.out.println(stationList.get(index).toString());
+           System.out.println("==================================================");
+           System.out.println();
            System.out.print("Enter your option (Y-Yes/N-No) > ");
            userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
            
@@ -402,13 +417,17 @@ public void deleteStation(Scanner scanner) throws Exception {
                if (hasSchedule) {
                    System.out.println("\nPLEASE THINKS CAREFULLY AS IT WILL REMOVE THE SCHEDULE BELOW AS WELL.\n");
                     System.out.println();
-                   for (int j = 0; j < scheduleList.size(); j++) {
+                    System.out.println("=================================================================================================================");
+                    System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+                    System.out.println("=================================================================================================================");
+                    for (int j = 0; j < scheduleList.size(); j++) {
                        if (scheduleList.get(j).getDepartLocation().getLocationName().equals(stationList.get(index).getLocationName()) ||
                            scheduleList.get(j).getArriveLocation().getLocationName().equals(stationList.get(index).getLocationName())) {
                            System.out.println(scheduleList.get(j).toString());
-                           System.out.println();
                        }
                    }
+                    System.out.println("=================================================================================================================");
+                    System.out.println();
                }
                System.out.print("Do you confirm to delete the station (Y-Yes/N-No)? ");
                userInput = BackendStaff.validateYNInput(scanner,"Do you confirm to delete the station (Y-Yes/N-No) ?");
