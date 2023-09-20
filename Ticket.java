@@ -396,8 +396,7 @@ public class Ticket {
     // User can delete all the added tickets or select a particular ticket to delete
     // ------------------------------------------------------------------------------------------------------------------
     public ArrayList<Ticket> dltTicket(ArrayList<Ticket> ticketList, ArrayList<Schedule> scheduleList,
-            Scanner scanner)
-            throws Exception {
+            Scanner scanner) throws Exception {
 
         int dltTicket = 0;
         char confirmDlt;
