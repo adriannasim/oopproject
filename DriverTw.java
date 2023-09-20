@@ -17,7 +17,7 @@ public class DriverTw {
         // Drinks drinks = new Drinks();
 
         
-       ArrayList<Schedule> scheduleList = Schedule.readFromFile("ScheduleFile.dat");
+       
         
         ArrayList<Train> trainList = new ArrayList<Train>();
         ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
@@ -46,7 +46,7 @@ public class DriverTw {
                 if (userInput.equals("1")) {
                     viewPurchase();
                 } else if (userInput.equals("2")) {
-                    viewSchedule(trainList, stationList, scheduleList);
+                    viewSchedule();
                 } else if (userInput.equals("3")) {
                     viewReport();
                 } else if (userInput.equals("x")) {
@@ -110,43 +110,41 @@ public class DriverTw {
         // ArrayList<String> drinkCust = Purchase.drinkCust;
         // ArrayList<Double> drinkTotalPrice = Purchase.drinkTotalPrice;
 
-        System.out.println("======================================================================");
-        System.out.println("                        F&B Purchase History");
-        System.out.println("======================================================================\n");
+        System.out.println("=============================================================================");
+        System.out.println("                            F&B Purchase History");
+        System.out.println("=============================================================================\n");
+        System.out.println("No. \t Food Name \t Purchase Quantity \t Price(RM) \t Subtotal(RM)\n");
 
         int i = 0;
             for (Snacks snack : purchaseSnack) {
-                System.out.printf("No. %d\n\n", (i + 1));
-                System.out.println(snack.displayToReport());
+                System.out.printf("%-7d %s", (i + 1), snack.displayToReport());
                 i++;
-                System.out.println("\n----------------------------------------------------------------------\n");
-            }
-        
-
-        int j = 0;
+                System.out.println();
+            } 
+            
             for (Drinks drink : purchaseDrink) {
-                System.out.printf("No. %d\n\n", (j + 1));
-                System.out.println(drink.displayToReport());
-                j++;
-                System.out.println("\n----------------------------------------------------------------------\n");
+                System.out.printf("%-7d %s", (i + 1), drink.displayToReport());
+                i++;
+                System.out.println();
             }
         
     }
 
     public static void viewTicketHistory() throws Exception{
-        // ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
-        // ArrayList<String> ticketCust = Purchase.ticketList;
+        ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
 
-        // int z = 1;
-        // for (Ticket tickets : purchaseTicket) {
-        //     System.out.println();
-        //     System.out.println(z + ".");
-        //     System.out.println(ticketCust);
-        //     z++;
-        //     System.out.println();
-        //     System.out.println("---------------------------------------------------------");
-        //     System.out.println();
-        // }
+        System.out.println("======================================================================");
+        System.out.println("                     Train Ticket Purchase History");
+        System.out.println("======================================================================\n");
+
+        int i = 0;
+        for (Ticket ticket : purchaseTicket) {
+            System.out.printf("%d. ", i + 1);
+            System.out.println(ticket);
+            i++;
+            System.out.println("------------------------------------------------");
+
+        }
     }
 
 
@@ -154,22 +152,29 @@ public class DriverTw {
     //====================================================================================================================//
     //                                             View Schedules                                                         //
     //====================================================================================================================//
-    public static void viewSchedule(ArrayList<Train> trainList, ArrayList<TrainStation> stationList, ArrayList<Schedule> scheduleList) {
+    public static void viewSchedule() throws Exception{
+        ArrayList<Schedule> scheduleList = Schedule.readFromFile("scheduleFile.dat");
         System.out.println("==================================================");
         System.out.println("                Train Schedules");
         System.out.println("==================================================\n");
-        for (int i = 0; i < scheduleList.size(); i++) {
-            System.out.println("Schedule No. " + (i+1) + "\n\n" + scheduleList.get(i).displayViewSchedule());
+
+        int i = 0;
+
+        for (Schedule schedule : scheduleList) {
+            System.out.printf("%-7d %s", (i + 1), schedule.displayToReport());
             System.out.println();
         }
+        
     }
 
     public static void viewScheduleStaff(ArrayList<Train> trainList, ArrayList<TrainStation> stationList, ArrayList<Schedule> scheduleList){
         System.out.println("==================================================");
         System.out.println("                Train Schedules");
         System.out.println("==================================================\n");
-        for (int i = 0; i < scheduleList.size(); i++) {
-            System.out.println("Schedule No. " + (i+1) + "\n\n" + scheduleList.get(i).displayViewScheduleStaff());
+
+        int i = 0;
+        for (Schedule schedule : scheduleList) {
+            System.out.printf("%-7d %s", (i + 1), schedule.displayToReportStaff());
             System.out.println();
         }
     }

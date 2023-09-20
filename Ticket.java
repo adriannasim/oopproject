@@ -51,6 +51,10 @@ public class Ticket {
                 ticketId, ticketSchedule.displayInTicket(), ticketDate);
     }
 
+    public String displayToReport(){
+        return String.format("");
+    }
+
     public void writePurchaseTicket(Ticket[] ticketList, String username) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseTicket.txt", true))) {
             for (Ticket ticket : ticketList) {

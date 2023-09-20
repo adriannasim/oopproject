@@ -144,12 +144,12 @@ public class Schedule implements Serializable{
                 "\nTicket Price          : RM" + ticketPrice;
     }
     
-    public String displayViewSchedule(){
-        return String.format("Departure Location %10s Arrival Location %10s Departure Time %10s Arrival Time %10s Ticket Price\n%20s %20s %10s %10s %.2lf",departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, ticketPrice);
+    public String displayToReport(){
+        return String.format("Departure Location \t Arrival Location \t Departure Time \t Arrival Time \t Ticket Price\n%20s %20s %10s %10s %.2lf",departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, ticketPrice);
     }
 
-    public String displayViewScheduleStaff(){
-        return String.format("Schedule ID %10s Departure Location %10s Arrival Location %10s Departure Time %10s Arrival Time %10s Train No. %10s Train Name %10s Ticket Price\n%10s %20s %20s %10s %10s %10s %10s %.2lf",scheduleId, departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime,trainOperated.getTrainNo(),trainOperated.getTrainName(), ticketPrice);
+    public String displayToReportStaff(){
+        return String.format("Departure Location \t Arrival Location \t Departure Time \t Arrival Time \t Ticket Price\n%10s %20s %20s %10s %10s %.2lf",scheduleId, departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, ticketPrice);
     }
     
     // GET SCHEDULE LIST

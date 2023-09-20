@@ -78,10 +78,8 @@ public class Drinks extends FoodAndBeverage implements Serializable {
                 "\nSize          : " + size;
     }
 
-    public String displayToReport() {
-        return String.format(
-                "Drink Name \t Purchase Quantity \t Price(RM) \t Temperature \t Size \t With Ice\t Subtotal(RM)\n\n%-24s %-15s %10s %10s %10s %6.2f %15.2f",
-                foodName, purchaseQty, temperature, size, ice, foodPrice, calculatePrice());
+    public String displayToReport(){
+        return String.format("%-24s %-15s %6.2f %17.2f\n", foodName, purchaseQty, foodPrice, calculatePrice());
     }
 
     // CALCULATION METHOD
