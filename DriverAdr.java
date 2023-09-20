@@ -10,13 +10,12 @@ public class DriverAdr {
         // Staff admin2 = new Staff("hehe", "9628", "Hehe Sim", "hehe@gmail.com", 'B');
         ArrayList<Customer> custDetails = Customer.custDetails;
         ArrayList<Staff> staffDetails = Staff.staffDetails;
-        ArrayList<Schedule> scheduleList = Schedule.readFromFile("scheduleFile.dat");
 
 
 
         //objects/instances declaration
         Scanner input = new Scanner(System.in); //scanner
-        Menu menu = new Menu(); //menu
+        Main menu = new Main(); //menu
         /*END OF HEADER*/
 
         /*START OF MAIN PROGRAM*/
@@ -38,7 +37,6 @@ public class DriverAdr {
         // System.out.printf("=================================\n");
 
         //print file contents
-        System.out.println(scheduleList);
         // Customer.readCustInfo();
         // System.out.println(custDetails);
         // Staff.readStaffInfo();
