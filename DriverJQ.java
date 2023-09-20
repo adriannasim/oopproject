@@ -8,8 +8,8 @@ public class DriverJQ {
         viewReport();
         viewReportDDrink();
         viewReportTicket();
-        
-        // Purchase.makePurchase(1, new Login("username", "password"));
+
+        Purchase.makePurchase(2, new Login("username", "password"));
     }
 
     public static void viewReport() throws Exception {
@@ -38,7 +38,7 @@ public class DriverJQ {
         int i = 0;
         for (Drinks drink : purchaseDrink) {
             System.out.printf("%d. ", i + 1);
-            System.out.println(drink.displayToReport());
+            System.out.println(drink);
             System.out.println(drinkCust.get(i));
             System.out.println(drinkTotalPrice.get(i));
             i++;

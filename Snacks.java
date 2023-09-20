@@ -72,11 +72,12 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     // WRITE PURCHASE INTO FILE
     public void writePurchaseFnB(FoodAndBeverage fnb, String username) {
+        fnb = (Snacks)fnb;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseSnack.txt", true))) {
             writer.write(username + "||" +
                     fnb.getFoodId() + "||" + fnb.getClass() + "||"
-                    + fnb.getFoodName() + "||" + fnb.calculatePrice() + "||"
-                    + fnb.getPurchaseQty() + "||" + fnb.getFoodPrice() + "||" + partyPack);
+                    + fnb.getFoodName() + "||" + fnb.getFoodPrice() + "||"
+                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice() + "||" + getPartyPack());
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();

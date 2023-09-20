@@ -38,8 +38,11 @@ public class Drinks extends FoodAndBeverage implements Serializable {
         this.ice = ice;
     }
 
-    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty) {
+    Drinks(String foodId, String foodName, double foodPrice, int purchaseQty, String size, String temperature, boolean ice ) {
         super(foodId, foodName, foodPrice, purchaseQty);
+        this.temperature = temperature;
+        this.size = size;
+        this.ice = ice;
     }
     // ------------------------------------METHOD-----------------------------------------
 
@@ -165,11 +168,13 @@ public class Drinks extends FoodAndBeverage implements Serializable {
 
     // WRITE INTO FILE 
     public void writePurchaseFnB(FoodAndBeverage fnb, String username) {
+        fnb = (Drinks)fnb;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseDrink.txt", true))) {
             writer.write(username + "||" +
                     fnb.getFoodId() + "||" + fnb.getClass() + "||"
-                    + fnb.getFoodName() + "||" + fnb.calculatePrice() + "||"
-                    + fnb.getPurchaseQty() + "||" + fnb.getFoodPrice());
+                    + fnb.getFoodName() + "||" + fnb.getFoodPrice() + "||"
+                    + fnb.getPurchaseQty() + "||" + fnb.calculatePrice() + "||" 
+                    + size + "||" + temperature + "||" + ice);
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();

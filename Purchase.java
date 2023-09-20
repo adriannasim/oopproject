@@ -156,7 +156,7 @@ public class Purchase {
 			try (Scanner inputFile = new Scanner(file)) {
 				while (inputFile.hasNext()) {
 					String[] parts = inputFile.nextLine().split("\\|\\|");
-					if (parts.length == 7) {
+					if (parts.length == 10) {
 						String username = parts[0];
 						String foodid = parts[1];
 						String className = parts[2];
@@ -164,9 +164,12 @@ public class Purchase {
 						double foodprice = Double.parseDouble(parts[4]);
 						int purchaseQty = Integer.parseInt(parts[5]);
 						double totalprice = Double.parseDouble(parts[6]);
+						String size = parts[7];
+						String temperature = parts[8];
+						boolean ice = Boolean.parseBoolean(parts[9]);
 
 						// Create a Snacks object and add it to the list
-						drinksList.add(new Drinks(foodid, foodname, foodprice, purchaseQty));
+						drinksList.add(new Drinks(foodid, foodname, foodprice, purchaseQty, size, temperature, ice));
 						drinkCust.add(username);
 						drinkTotalPrice.add(totalprice);
 					} else {
@@ -250,7 +253,7 @@ public class Purchase {
 			Ticket[] tickets = ticketList.toArray(new Ticket[ticketList.size()]);
 			userPurchase.purchaseTicket(tickets);
 
-			FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[ticketList.size()]);
+			FoodAndBeverage[] fnbs = fnbList.toArray(new FoodAndBeverage[fnbList.size()]);
 			userPurchase.purchaseFnb(fnbs);
 
 			// =================================================================================
@@ -309,9 +312,9 @@ public class Purchase {
 
 			for (FoodAndBeverage foodAndBeverage : fnbs) {
 				if (foodAndBeverage instanceof Snacks) {
-					snack.writePurchaseFnB(foodAndBeverage, staffname);
+					snack.writePurchaseFnB((Snacks)foodAndBeverage, staffname);
 				} else if (foodAndBeverage instanceof Drinks) {
-					drink.writePurchaseFnB(foodAndBeverage, staffname);
+					drink.writePurchaseFnB((Drinks)foodAndBeverage, staffname);
 				}
 			}
 
