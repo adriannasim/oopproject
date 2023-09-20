@@ -210,7 +210,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
                 System.out.println(snack.toString());
                 count++;
             }
-            System.out.println("==================================================");
+           System.out.println("===========================================================================");
             System.out.println(count + " snack(s) found.");
         }
     }

@@ -69,15 +69,19 @@ public class DriverTw {
     }
     
 
-    public static void viewFnbHistory() throws Exception{
-        
+    public static void viewFnbHistory(Login login) throws Exception{
         ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
         ArrayList<String> snackCust = Purchase.snackCust;
         
         
         ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
         ArrayList<String> drinkCust = Purchase.drinkCust;
-        
+
+        for (int i = 0; i < purchaseSnack.size(); i++) {
+            if (login.getUsername().equals(purchaseSnack.get(i).snackCust)) {
+                cust = customers.get(i);
+            }
+        }
 
         System.out.println("==============================================================================================================");
         System.out.println("                                      Food & Beverage Purchase History");
@@ -118,31 +122,40 @@ public class DriverTw {
     //====================================================================================================================//
     //                                             View Schedules                                                         //
     //====================================================================================================================//
-    public static void viewSchedule() throws Exception{
-        ArrayList<Schedule> scheduleList = Schedule.readFile("scheduleFile.txt");
-        System.out.println("==================================================");
-        System.out.println("                Train Schedules");
-        System.out.println("==================================================\n");
 
-        int i = 0;
-        for (Schedule schedule : scheduleList) {
-            System.out.printf("%-7d %s", (i + 1), schedule.displayToReport());
-            System.out.println();
+
+    public void viewSchedule() throws Exception{
+        Schedule sch = new Schedule();
+        ArrayList<Schedule> scheduleList = sch.getScheduleList();
+        if (scheduleList.size()==0){
+            System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
+        }else{
+            System.out.println("==================================================================================================");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n",  "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+            System.out.println("==================================================================================================");
         }
-        
+        for (int i=0; i< scheduleList.size(); i++){
+            System.out.println(scheduleList.get(i).custSchedule());
+        }
+        System.out.println("==================================================================================================");
+
     }
 
-    public static void viewScheduleStaff() throws Exception{
-        ArrayList<Schedule> scheduleList = Schedule.readFile("scheduleFile.txt");
-        System.out.println("==================================================");
-        System.out.println("                Train Schedules");
-        System.out.println("==================================================\n");
-
-        int i = 0;
-        for (Schedule schedule : scheduleList) {
-            System.out.printf("%-7d %s", (i + 1), schedule.displayToReportStaff());
-            System.out.println();
+    public void viewScheduleStaff() throws Exception{
+        Schedule sch = new Schedule();
+        ArrayList<Schedule> scheduleList = sch.getScheduleList();
+        if (scheduleList.size()==0){
+            System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
+        }else{
+            System.out.println("==================================================================================================");
+            System.out.printf("%-10\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n",  "Schedule ID","From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+            System.out.println("==================================================================================================");
         }
+        for (int i=0; i< scheduleList.size(); i++){
+            System.out.println(scheduleList.get(i).toString());
+        }
+        System.out.println("==================================================================================================");
+
     }
     
 
@@ -194,12 +207,14 @@ public class DriverTw {
         }
 
         FoodAndBeverage[] fnbs = purchaseFnb.toArray(new FoodAndBeverage[purchaseFnb.size()]);
-        
+        if (purchaseFnb.size()==0){
+            System.out.println("\nNO RECORDS AVAILABLE.\n");
+        }else{
         System.out.println("============================================================================================");
         System.out.println("                              Food & Beverage Sales Report");
         System.out.println("============================================================================================");
         System.out.println("\nNo. \t Food ID \t Description \t  Quantity Purchased \t Price(RM) \t SubTotal(RM)\n");
-        
+        }
         int i = 0;
             for (Snacks snack : purchaseSnack) {
                 System.out.printf("%-8d %s", (i + 1), snack.displaySalesReport());
@@ -221,11 +236,14 @@ public class DriverTw {
         Reporting report = new Reporting();
         ArrayList<Ticket> ticketList = Purchase.readFromTicketFile("purchaseTicket.txt");
         Ticket[] ticketLists = ticketList.toArray(new Ticket[ticketList.size()]);
+        if (ticketList.size()==0){
+            System.out.println("\nNO RECORDS AVAILABLE.\n");
+        }else{
         System.out.println("===============================================================================");
         System.out.println("                          Train Ticket Sales Report");
         System.out.println("===============================================================================");
         System.out.println("\n   Departure - Arrival \t\t    Ticket Price(RM) \t\t Date Purchased\n");
-
+        }
         int i = 0;
         for (Ticket ticket : ticketList) {
             System.out.printf("%s", ticket.displaySalesReport());

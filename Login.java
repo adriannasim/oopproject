@@ -121,6 +121,10 @@ public class Login{
                             cust.custMenu(login);
                         //if username and password is wrong
                         } else {
+                            //clear screen
+                            for (int i = 0; i < 100; i++) {
+                                System.out.println();
+                            }
                             System.out.printf("Incorrect username/password. Please try again.\n");
                         }
                         break;
@@ -130,13 +134,21 @@ public class Login{
                         break;
                     case 3: 
                         return;
-                    default: 
+                    default:
+                        //clear screen
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println();
+                        }
                         System.out.printf("Invalid input, please enter your choice again.\n");
                     }
                 } else {
                     if (input.next().equals("#")) {
                         return;
                     } else {
+                        //clear screen
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println();
+                        }
                         System.out.printf("Invalid input, please enter your choice again.\n");
                         //clear buffer
                         input.next();
@@ -186,6 +198,10 @@ public class Login{
                                 }
                             //if username and password is wrong
                             } else {
+                                //clear screen
+                                for (int i = 0; i < 100; i++) {
+                                    System.out.println();
+                                }
                                 System.out.printf("Incorrect username/password. Please try again.\n");
                             }
                             break;
@@ -194,12 +210,20 @@ public class Login{
                             staff.driverStaff();
                             break;
                         default: 
+                            //clear screen
+                            for (int i = 0; i < 100; i++) {
+                                System.out.println();
+                            }
                             System.out.printf("Invalid input, please enter your choice again.\n");
                     }
                 } else {
                     if (input.next().equals("#")) {
                         return;
                     } else {
+                        //clear screen
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println();
+                        }
                         System.out.printf("Invalid input, please enter your choice again.\n");
                         //clear buffer
                         input.next();
@@ -207,6 +231,5 @@ public class Login{
                 }
             } while (loop); 
         }
-        input.close();
     }
 }
