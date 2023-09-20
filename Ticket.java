@@ -52,7 +52,7 @@ public class Ticket {
     }
 
     public String displayToReport(){
-        return String.format("");
+        return String.format("Date : %s\t Ticket ID : %s\n\n--------------------------------------------- \n\t\tTrain Schedule\n---------------------------------------------\n\n%s \n\n---------------------------------------------\n", ticketDate, ticketId, ticketSchedule.displayInReport());
     }
 
     public void writePurchaseTicket(Ticket[] ticketList, String username) {

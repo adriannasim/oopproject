@@ -15,9 +15,6 @@ public class DriverTw {
         Schedule schedule = new Schedule();
         // Snacks snacks = new Snacks();
         // Drinks drinks = new Drinks();
-
-        
-       
         
         ArrayList<Train> trainList = new ArrayList<Train>();
         ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
@@ -97,7 +94,6 @@ public class DriverTw {
                 }
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("x")); 
         }while(cont == true);
-        scanner.close();
     }
 
     public static void viewFnbHistory() throws Exception{
@@ -133,17 +129,16 @@ public class DriverTw {
     public static void viewTicketHistory() throws Exception{
         ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
 
-        System.out.println("======================================================================");
-        System.out.println("                     Train Ticket Purchase History");
-        System.out.println("======================================================================\n");
+        System.out.println("=============================================");
+        System.out.println("        Train Ticket Purchase History");
+        System.out.println("=============================================\n");
 
         int i = 0;
         for (Ticket ticket : purchaseTicket) {
-            System.out.printf("%d. ", i + 1);
-            System.out.println(ticket);
+            
+            System.out.printf("No. %d\n\n", (i + 1));
+            System.out.println(ticket.displayToReport());
             i++;
-            System.out.println("------------------------------------------------");
-
         }
     }
 
@@ -210,7 +205,6 @@ public class DriverTw {
                     System.out.println("Invalid option. Please enter (1/2/x).");
                 }
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("x"));
-            scanner.close();
         } while (cont);
     }
 
