@@ -307,6 +307,7 @@ public class Purchase {
 			}
 
 			userPurchase.setPaymentType(pType);
+			userPurchase.paymentType.setPaymentStatus(true);
 
 			System.out.println("Purchase successsfully. ");
 
