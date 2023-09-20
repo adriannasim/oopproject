@@ -62,7 +62,7 @@ public class TrainStation{
 
       // TO STRING
       public String toString(){
-         return String.format("%-30s\t%-30s\t%10d", locationId, locationName, numOfPlatform);
+         return String.format("%-10s\t%-10s\t%10d", locationId, locationName, numOfPlatform);
       }
 
       // GET STATION LIST
@@ -155,7 +155,7 @@ public class TrainStation{
         if (stationList.size()==0){
             System.out.println("\nNO STATION IN THE RECORD.\n");
         }else{
-            System.out.printf("%-30s\t%-30s\t%10d\n", "Station ID", "Station Name", "No.of Platform");
+            System.out.printf("%-10s\t%-10s\t%10s\n", "Station ID", "Station Name", "No.of Platform");
             System.out.println("===========================================================================");
         }
         for (int i=0; i< stationList.size(); i++){

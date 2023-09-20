@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Staff extends User implements ReadAndWrite {
+public class Staff extends User {
     //variables declaration
     private String staffId;
     private char staffType;

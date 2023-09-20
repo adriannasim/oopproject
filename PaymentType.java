@@ -6,7 +6,7 @@ public class PaymentType {
     private boolean paymentStatus;
 
     public PaymentType(){
-
+        
     }
     
     public void setPaymentDateTime(LocalDateTime paymentDateTime){

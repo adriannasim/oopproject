@@ -240,7 +240,7 @@ public class Drinks extends FoodAndBeverage {
             System.out.println("\nNO DRINKS IN THE RECORD.\n");
         } else {
             System.out.println("\nDRINKS LIST:\n");
-            System.out.printf("%-20s\t%-50s\t%-30.2f\t%10d", "Food ID", "Food Name", "Food Price", "Stock Qty");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%10s", "Food ID", "Food Name", "Food Price", "Stock Qty");
             System.out.println("===========================================================================");
 
             for (Drinks drink : drinksList) {
