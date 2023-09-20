@@ -1,0 +1,1 @@
+username||137425||class Drinks||orange juice||20.8||4||4.0

@@ -67,6 +67,40 @@ public class Purchase {
 	public static ArrayList<String> drinkCust = new ArrayList<String>();
 	public static ArrayList<Double> drinkTotalPrice = new ArrayList<Double>();
 
+	
+	public static ArrayList<Snacks> readFromTicketFile(String filename) throws Exception {
+		File file = new File(filename);
+		ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
+
+		if (file.exists()) {
+			try (Scanner inputFile = new Scanner(file)) {
+				while (inputFile.hasNext()) {
+					String[] parts = inputFile.nextLine().split("\\|\\|");
+					if (parts.length == 8) {
+						String username = parts[0];
+						String foodid = parts[1];
+						String className = parts[2];
+						String foodname = parts[3];
+						double foodprice = Double.parseDouble(parts[4]);
+						int purchaseQty = Integer.parseInt(parts[5]);
+						double totalprice = Double.parseDouble(parts[6]);
+						boolean partyPack = Boolean.parseBoolean(parts[7]);
+
+						// Create a Snacks object and add it to the list
+						ticketList.add(new Ticket(foodid, foodname, foodprice, purchaseQty, partyPack));
+						snackCust.add(username);
+						snackTotalPrice.add(totalprice);
+					} else {
+						// Handle lines with incorrect data format, e.g., log an error
+						System.err.println("Invalid data format: " + Arrays.toString(parts));
+					}
+				}
+			}
+		}
+		return ticketList;
+	}
+	
+
 	public static ArrayList<Snacks> readFromSnackFile(String filename) throws Exception {
 		File file = new File(filename);
 		ArrayList<Snacks> snacksList = new ArrayList<Snacks>();
@@ -395,14 +429,17 @@ public class Purchase {
 			Snacks snack = new Snacks();
 			Drinks drink = new Drinks();
 
-			ticket.writePurchaseTicket(tickets, login.getUsername());
-
-			for (FoodAndBeverage foodAndBeverage : fnbs) {
+			if (ticketList.size() != 0){
+				ticket.writePurchaseTicket(tickets, login.getUsername());
+			} 
+			if (fnbList.size() != 0){
+				for (FoodAndBeverage foodAndBeverage : fnbs) {
 				if (foodAndBeverage instanceof Snacks) {
 					snack.writePurchaseFnB(foodAndBeverage, login.getUsername());
 				} else if (foodAndBeverage instanceof Drinks) {
 					drink.writePurchaseFnB(foodAndBeverage, login.getUsername());
 				}
+			}
 			}
 
 		} else {

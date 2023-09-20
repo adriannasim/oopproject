@@ -71,7 +71,7 @@ public class DriverTw {
     //====================================================================================================================//
     //                                            View Purchases                                                          //
     //====================================================================================================================//
-    public static void viewPurchase() {
+    public static void viewPurchase() throws Exception{
         Scanner scanner = new Scanner(System.in);
         boolean cont = true;
         String userInput;
@@ -87,7 +87,7 @@ public class DriverTw {
                 System.out.print("Enter your option > ");
                 userInput = scanner.nextLine();
                 if (userInput.equals("1")) {
-                    
+                    viewFnbHistory();
                 } else if (userInput.equals("2")) {
                     
                 } else if (userInput.equals("x")) {
@@ -101,6 +101,7 @@ public class DriverTw {
     }
 
     public static void viewFnbHistory() throws Exception{
+        
         ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
         ArrayList<String> snackCust = Purchase.snackCust;
         ArrayList<Double> snackTotalPrice = Purchase.snackTotalPrice;

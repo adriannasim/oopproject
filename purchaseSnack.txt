@@ -1,2 +1,4 @@
 username||192205||class Snacks||Oreo Cookies||2.5||4||10.0||false
 username||192205||class Snacks||Oreo Cookies||2.5||2||5.0||false
+username||149178||class Snacks||Sandwiches||12.0||4||3.0||false
+username||136296||class Snacks||French fries||8.0||2||4.0||false

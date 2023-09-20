@@ -58,7 +58,8 @@ public class Ticket {
                         + ticket.getTicketSchedule().getDepartLocation() + "||"
                         + ticket.getTicketSchedule().getArriveLocation() + "||"
                         + ticket.getTicketSchedule().getTicketPrice() + "||"
-                        + ticket.getTicketDate());
+                        + ticket.getTicketDate().getDayOfMonth() + "||" + ticket.getTicketDate().getMonth()
+                        + "||" + ticket.getTicketDate().getYear());
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -82,15 +83,15 @@ public class Ticket {
         boolean continueInput = true;
 
         // ------------------------------------------ScanScheduleFromFile----------------------------------------------
-        // Schedule schedule = new Schedule();
-        // ArrayList<Schedule> scheduleList = schedule.getScheduleList();
-        ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+        Schedule schedule = new Schedule();
+        ArrayList<Schedule> scheduleList = schedule.getScheduleList();
+        // ArrayList<Schedule> scheduleList = Schedule.getScheduleList();
         // ------------------------------------------------------------------------------------------------------------
 
         // ------------------------------------------ScanStationFromFile----------------------------------------------
-        // TrainStation station = new TrainStation();
-        // ArrayList<TrainStation> stationList = station.getStationList();
-        ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
+        TrainStation station = new TrainStation();
+        ArrayList<TrainStation> stationList = station.getStationList();
+        // ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
         // ------------------------------------------------------------------------------------------------------------
 
         // --------------------------------------------AddTicketsIntoArrayList-------------------------------------------
@@ -184,7 +185,7 @@ public class Ticket {
         boolean validDate = true;
 
         int scheduleNo = 0;
-        boolean validSchedule = true;
+        boolean validSchedule = false;
 
         String depart;
         String arrive;
@@ -287,7 +288,7 @@ public class Ticket {
 
             System.out.println("Depart From : " + depart);
             System.out.println("Arrive At : " + arrive);
-            System.out.println("Confirm? (Y- YES, N - NO) > ");
+            System.out.print("Confirm? (Y- YES, N - NO) > ");
             confirmSchedule = scanner.next().charAt(0);
             confirmSchedule = Character.toUpperCase(confirmSchedule);
 
