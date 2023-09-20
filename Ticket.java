@@ -51,7 +51,7 @@ public class Ticket {
                 ticketId, ticketSchedule.displayInTicket(), ticketDate);
     }
 
-    public String displayToReport(){
+    public String displayToReport() {
         return String.format("");
     }
 
@@ -59,10 +59,10 @@ public class Ticket {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("purchaseTicket.txt", true))) {
             for (Ticket ticket : ticketList) {
                 writer.write(username + "||"
-                        + ticket.getTicketSchedule().getDepartLocation() + "||"
-                        + ticket.getTicketSchedule().getArriveLocation() + "||"
+                        + ticket.getTicketSchedule().getDepartLocation().getLocationName() + "||"
+                        + ticket.getTicketSchedule().getArriveLocation().getLocationName() + "||"
                         + ticket.getTicketSchedule().getTicketPrice() + "||"
-                        + ticket.getTicketDate().getDayOfMonth() + "||" + ticket.getTicketDate().getMonth()
+                        + ticket.getTicketDate().getDayOfMonth() + "||" + ticket.getTicketDate().getMonthValue()
                         + "||" + ticket.getTicketDate().getYear());
                 writer.newLine();
             }
@@ -85,10 +85,9 @@ public class Ticket {
         int userOpt1 = 0;
 
         boolean continueInput = true;
-        
 
         // ------------------------------------------ScanScheduleFromFile----------------------------------------------
-        
+
         Schedule schedule = new Schedule();
         ArrayList<Schedule> scheduleList = schedule.getScheduleList();
         // ArrayList<Schedule> scheduleList = new ArrayList<>();
@@ -103,7 +102,7 @@ public class Ticket {
         // --------------------------------------------AddTicketsIntoArrayList-------------------------------------------
         do {
             ticketList = addTicket(ticketList, stationList, scheduleList, scanner);
-            System.out.print("Would you like to add more ticket? (Y - YES, OTHER - NO)    ");
+            System.out.print("\nWould you like to add more ticket? (Y - YES, OTHER - NO)    ");
             yesno1 = scanner.next().charAt(0);
 
         } while (yesno1 == 'y' || yesno1 == 'Y');
@@ -190,7 +189,7 @@ public class Ticket {
         int day = 0, month = 0, year = 0;
         boolean validDate = true;
 
-        int scheduleNo = 0;
+        double price = 0;
         boolean validSchedule = false;
 
         String depart;
@@ -209,6 +208,15 @@ public class Ticket {
         boolean continueInputY = true;
         boolean continueInputD = true;
         boolean continueInputM = true;
+
+        for (int i = 0; i < scheduleList.size(); i++) {
+            System.out.println();
+            System.out.printf("%d. ", i + 1);
+            System.out.println(scheduleList.get(i));
+            System.out.println();
+            System.out.println("---------------------------------------------------------");
+            System.out.println();
+        }
 
         // ---------------------------------------DisplayStation---------------------------------------------------------
         System.out.println("=========================================================");
@@ -281,16 +289,12 @@ public class Ticket {
         for (Schedule schedules : scheduleList) {
             if (depart.equalsIgnoreCase(schedules.getDepartLocation().getLocationName())
                     && arrive.equalsIgnoreCase(schedules.getArriveLocation().getLocationName())) {
+                price = schedules.getTicketPrice();
                 validSchedule = true;
             }
         }
 
         if (validSchedule) {
-
-            // Schedule found
-            // ---------------------------------------DisplaySchedule--------------------------------------------------------
-
-            // --------------------------------------------------------------------------------------------------------------
 
             System.out.println("Depart From : " + depart);
             System.out.println("Arrive At : " + arrive);
@@ -302,7 +306,6 @@ public class Ticket {
 
                 departStation = stationList.get(departNo - 1);
                 arriveStation = stationList.get(arriveNo - 1);
-                double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
 
                 ticketSchedule = new Schedule(departStation, arriveStation, price);
 
@@ -319,7 +322,7 @@ public class Ticket {
         if (validSchedule) {
 
             do {
-                System.out.println("Enter your date");
+                System.out.println("\nEnter your date");
                 System.out.println();
                 System.out.println("---------------------------------------------------------");
                 System.out.println();
@@ -339,34 +342,42 @@ public class Ticket {
 
                 // Enter month
                 do {
-                    try {
-                        System.out.print("Month > ");
-                        month = scanner.nextInt();
 
-                        continueInputM = false;
-                    } catch (InputMismatchException ex) {
-                        System.out.println("Incorrect Input. Please try agin. ");
-                        scanner.nextLine();
-                    }
-                } while (continueInputM);
+                    do {
+                        try {
+                            System.out.print("Month > ");
+                            month = scanner.nextInt();
+
+                            continueInputM = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect Input. Please try agin. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputM);
+
+                } while (month > 12 || month < 1);
 
                 // Enter day
                 do {
-                    try {
-                        System.out.print("Day > ");
-                        day = scanner.nextInt();
 
-                        continueInputD = false;
-                    } catch (InputMismatchException ex) {
-                        System.out.println("Incorrect Input. Please try agin. ");
-                        scanner.nextLine();
-                    }
-                } while (continueInputD);
+                    do {
+                        try {
+                            System.out.print("Day > ");
+                            day = scanner.nextInt();
+
+                            continueInputD = false;
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Incorrect Input. Please try agin. ");
+                            scanner.nextLine();
+                        }
+                    } while (continueInputD);
+
+                } while (day > 31 || day < 1);
 
                 ticketDate = LocalDate.of(year, month, day);
 
                 if (ticketDate.isBefore(today)) {
-                    System.out.println("Invalid Date. Please enter again.");
+                    System.out.println("\nInvalid Date. Please enter again.");
                     validDate = false;
                 } else {
                     validDate = true;
@@ -457,7 +468,7 @@ public class Ticket {
             System.out.println("             Ticket");
             System.out.println("=================================");
             System.out.println(ticketList.get(dltTicket - 1));
-            System.out.println("Are you sure to delete this ticket? (Y - YES, Other -  NO) >> ");
+            System.out.print("Are you sure to delete this ticket? (Y - YES, Other -  NO) >> ");
             confirmDlt = scanner.next().charAt(0);
             confirmDlt = Character.toUpperCase(confirmDlt);
 
@@ -499,6 +510,7 @@ public class Ticket {
         boolean validDepart = true;
         int arriveNo = 0;
         boolean validArrive = true;
+        double price = 0;
 
         LocalDate date;
         LocalDate today = LocalDate.now();
@@ -546,12 +558,12 @@ public class Ticket {
         System.out.println(ticketList.get(editTicket - 1));
         // --------------------------------------------------------------------------------------------------------------
 
-        System.out.println("Are you sure to edit this ticket? (Y - YES, Other -  NO) >> ");
+        System.out.print("Are you sure to edit this ticket? (Y - YES, Other -  NO) >> ");
         confirmEdit = scanner.next().charAt(0);
         confirmEdit = Character.toUpperCase(confirmEdit);
 
         if (confirmEdit == 'Y') {
-            System.out.println("1. Schedule");
+            System.out.println("\n1. Schedule");
             System.out.println("2. Date");
             System.out.println();
             System.out.println("* Press other to exit ");
@@ -629,20 +641,16 @@ public class Ticket {
                 for (Schedule schedules : scheduleList) {
                     if (depart.equalsIgnoreCase(schedules.getDepartLocation().getLocationName())
                             && arrive.equalsIgnoreCase(schedules.getArriveLocation().getLocationName())) {
+                        price = schedules.getTicketPrice();
                         validSchedule = true;
                     }
                 }
 
                 if (validSchedule) {
 
-                    // Schedule found
-                    // ---------------------------------------DisplaySchedule--------------------------------------------------------
-
-                    // --------------------------------------------------------------------------------------------------------------
-
                     System.out.println("Depart From : " + depart);
                     System.out.println("Arrive At : " + arrive);
-                    System.out.println("Confirm? (Y- YES, N - NO) >> ");
+                    System.out.print("Confirm? (Y- YES, N - NO) >> ");
                     confirmSchedule = scanner.next().charAt(0);
                     confirmSchedule = Character.toUpperCase(confirmSchedule);
 
@@ -650,7 +658,6 @@ public class Ticket {
 
                         departStation = stationList.get(departNo - 1);
                         arriveStation = stationList.get(arriveNo - 1);
-                        double price = scheduleList.get(scheduleNo - 1).getTicketPrice();
 
                         ticketSchedule = new Schedule(departStation, arriveStation, price);
 
@@ -668,7 +675,7 @@ public class Ticket {
 
                 // ------------------------------------------EnterDate------------------------------------------------------------
                 do {
-                    System.out.println("Enter your date ");
+                    System.out.println("\nEnter your date ");
                     System.out.println();
                     System.out.println("---------------------------------------------------------");
                     System.out.println();
@@ -715,7 +722,7 @@ public class Ticket {
                     date = LocalDate.of(year, month, day);
 
                     if (date.isBefore(today)) {
-                        System.out.println("Invalid Date. Please enter again.");
+                        System.out.println("\nInvalid Date. Please enter again.");
                         validDate = false;
                     } else {
                         validDate = true;
