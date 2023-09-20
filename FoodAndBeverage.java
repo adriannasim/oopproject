@@ -108,7 +108,7 @@ public abstract class FoodAndBeverage {
     }
 
     public String displaySalesReport(){
-        return String.format("%-15s %-24s %-14d %6.2f\n", foodId, foodName, purchaseQty, foodPrice);
+        return String.format("%-15s %-24s %-14d %6.2f %17.2f\n", foodId, foodName, purchaseQty, foodPrice, calculatePrice());
     }
 
     // CALCULATION METHOD

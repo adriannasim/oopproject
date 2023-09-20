@@ -7,9 +7,11 @@ public class DriverAdr {
         //variables declaration
         // Customer cust1 = new Customer("adr", "1628", "Adrianna Sim", "adriannasim@gmail.com", "0164121629", 'F');
         // Staff admin1 = new Staff("bri", "3428", "Brianna Sim", "briannasim@gmail.com", 'B');
-        // Staff admin2 = new Staff("hehe", "9628", "Hehe Sim", "hehe@gmail.com", 'B');
-        ArrayList<Customer> custDetails = Customer.custDetails;
-        ArrayList<Staff> staffDetails = Staff.staffDetails;
+        Staff admin = new Staff("hehe", "9628", "Hehe Sim", "hehe@gmail.com", "B1002", 'B');
+        ArrayList<Customer> custDetails =  new ArrayList<Customer>();
+        ArrayList<Staff> staffDetails = new ArrayList<Staff>();
+        Customer readWriteCust = new Customer();
+        Staff readWriteStaff = new Staff();
 
         //objects/instances declaration
         Scanner input = new Scanner(System.in); //scanner
@@ -35,7 +37,7 @@ public class DriverAdr {
         // System.out.printf("=================================\n");
 
         //print file contents
-        // Customer.readCustInfo();
+        // readWriteCust.readFile();
         // System.out.println(custDetails);
         // Staff.readStaffInfo();
         // System.out.println(staffDetails);

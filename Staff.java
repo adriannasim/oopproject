@@ -89,7 +89,7 @@ public class Staff extends User implements ReadAndWrite {
                     char staffType = parts[5].charAt(0);
                     
                     //add details from file to arraylist
-                    Staff staff = new Staff(username, password, fullname, email, staffId, staffType);
+                    new Staff(username, password, fullname, email, staffId, staffType);
                 }
             }
         } catch (IOException e) {
