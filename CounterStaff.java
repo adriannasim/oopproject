@@ -38,6 +38,9 @@ public class CounterStaff extends Staff {
             //choose user's input choice
         } else {
             if (input.next().equals("#")) {
+                for (int i = 0; i < 100; i++) {
+                    System.out.println();
+                }
                 System.out.printf("Logged out.\n\n");
                 return;
             } else {

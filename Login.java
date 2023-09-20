@@ -104,6 +104,10 @@ public class Login{
                     switch (choice2) {
                     //login
                     case 1:
+                        //clear screen
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println();
+                        }
                         System.out.println("==================================================");
                         System.out.println("                  Customer Login");
                         System.out.println("==================================================");
@@ -160,8 +164,6 @@ public class Login{
                             System.out.println();
                         }
                         System.out.printf("Invalid input, please enter your choice again.\n");
-                        //clear buffer
-                        input.next();
                     }
                 }
             } while (loop);  
@@ -240,6 +242,9 @@ public class Login{
                     }
                 } else {
                     if (input.next().equals("#")) {
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println();
+                        }
                         return;
                     } else {
                         //clear screen

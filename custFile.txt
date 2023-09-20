@@ -1,2 +1,3 @@
 adr||1628||Adrianna Sim||adriannasim@gmail.com||016-4121629||F
 bobo||7894||Bobo Lim||bobo@gmail.com||015-5446289||M
+test||test1||Testing||testing@gmail.com||012-4567892||F

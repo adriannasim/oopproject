@@ -121,10 +121,10 @@ public class Customer extends User {
                     editAccount(login);
                     break;
                 case 4:
-                    DriverTw.viewFnbHistory(login);
+                    FoodAndBeverage.viewFnbHistory(login);
                     break;
                 case 5:
-                    DriverTw.viewTicketHistory(login);
+                    Schedule.viewScheduleCust(login);
                     break;
                 default:
                     //clear screen
@@ -137,6 +137,9 @@ public class Customer extends User {
             // choose user's input choice
         } else {
             if (input.next().equals("#")) {
+                for (int i = 0; i < 100; i++) {
+                    System.out.println();
+                }
                 System.out.printf("Logged out.\n\n");
                 return;
             } else {
