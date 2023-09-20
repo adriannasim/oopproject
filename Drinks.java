@@ -83,6 +83,11 @@ public class Drinks extends FoodAndBeverage implements Serializable {
         return String.format("%-24s %-15d %6.2f %17.2f\n", foodName, purchaseQty, foodPrice, calculatePrice());
     }
 
+    public String toString(){
+        return super.toString();
+    }
+    
+
     // CALCULATION METHOD
     public double calculatePrice() {
         double sizePrice;
@@ -179,6 +184,7 @@ public class Drinks extends FoodAndBeverage implements Serializable {
         }
     }
 
+
     // DRINKS MODIFICATION (DRIVER)
     public void drinksModification(Scanner scanner) throws Exception {
         String userInput = "";
@@ -218,6 +224,23 @@ public class Drinks extends FoodAndBeverage implements Serializable {
 
             } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3")
                     && !userInput.equals("4") && !userInput.equals("#"));
+        }
+    }
+
+    public void viewDrinks() throws Exception{
+        ArrayList<Drinks> drinksList = getDrinksList();
+       
+        if (drinksList.isEmpty()) {
+            System.out.println("\nNO DRINKS IN THE RECORD.\n");
+        } else {
+            System.out.println("\nDRINKS LIST:\n");
+            System.out.printf("%-20s\t%-50s\t%-30.2f\t%10d", "Food ID", "Food Name", "Food Price", "Stock Qty");
+            System.out.println("===========================================================================");
+
+
+            for (Drinks drink : drinksList) {
+                System.out.println(drink.toString() + "\n");
+            }
         }
     }
 

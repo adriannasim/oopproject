@@ -52,7 +52,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
     // TO STRING
     public String toString() {
         String partyPackStatus = partyPack ? "true" : "false";
-        return super.toString() + "\nParty pack: " + partyPackStatus;
+        return super.toString() + String.format("\t%-30s", partyPackStatus);
     }
 
     public String displayToCust() {
@@ -197,6 +197,8 @@ public class Snacks extends FoodAndBeverage implements Serializable {
             System.out.println("\nNO SNACKS IN THE RECORD.\n");
         } else {
             System.out.println("\nSNACKS LIST:\n");
+            System.out.printf("%-20s\t%-50s\t%-30.2f\t%10d\t%-30d", "Food ID", "Food Name", "Food Price", "Stock Qty", "Party Pack?");
+            System.out.println("===========================================================================");
 
             for (Snacks snack : snacksList) {
                 System.out.println(snack.toString() + "\n");

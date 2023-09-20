@@ -1,4 +1,4 @@
 public interface ReadAndWrite {
-    void readFile();
-    void writeFile();
+    public abstract void readFile();
+    public abstract void writeFile();
 }

@@ -63,17 +63,17 @@ public class TrainStation implements Serializable{
 
       // TO STRING
       public String toString(){
-         return "Location Id : " + locationId + "\nLocation Name : " + locationName + "\nNumber of platform :" + numOfPlatform + "\n";
+         return String.format("%-30s\t%-30s\t%10d", locationId, locationName, numOfPlatform);
       }
 
       // GET STATION LIST
       public ArrayList<TrainStation> getStationList() throws Exception{
-         ArrayList<TrainStation> stationList = readFromFile("stationFile.txt");
+         ArrayList<TrainStation> stationList = readFile("stationFile.txt");
          return stationList;
      }
 
       // WRITE INTO FILE
-      public static boolean writeIntoFile(String filename, ArrayList<TrainStation> stationList) throws Exception{
+      public static boolean writeFile(String filename, ArrayList<TrainStation> stationList) throws Exception{
          boolean write = false;
 
          try {
@@ -93,7 +93,7 @@ public class TrainStation implements Serializable{
     }
 
     // READ FROM FILE
-    public static ArrayList<TrainStation> readFromFile(String filename) throws Exception {
+    public static ArrayList<TrainStation> readFile(String filename) throws Exception {
         File file = new File(filename);
         ArrayList<TrainStation> stationList = new ArrayList<TrainStation>();
 
@@ -152,8 +152,12 @@ public class TrainStation implements Serializable{
     // ----------------------------------------------VIEW STATION----------------------------------------------
     public void viewStation() throws Exception{
         ArrayList<TrainStation> stationList = getStationList();
+       
         if (stationList.size()==0){
             System.out.println("\nNO STATION IN THE RECORD.\n");
+        }else{
+            System.out.printf("%-30s\t%-30s\t%10d\n", "Station ID", "Station Name", "No.of Platform");
+            System.out.println("===========================================================================");
         }
         for (int i=0; i< stationList.size(); i++){
             System.out.println(stationList.get(i).toString() + "\n");
@@ -197,7 +201,7 @@ public class TrainStation implements Serializable{
 
       if(userInput.equalsIgnoreCase("Y")){
           stationList.add(new TrainStation(locationName, numOfPlatform));
-          added = writeIntoFile("stationFile.txt", stationList);
+          added = writeFile("stationFile.txt", stationList);
           if (added == true){
               System.out.println("\nSTATION HAS ADDED.\n");
           }else{
@@ -288,7 +292,7 @@ public class TrainStation implements Serializable{
                                    }
                                }
                                stationList.get(index).changeLocationName(locationName);
-                               updated = writeIntoFile("stationFile.txt", stationList);
+                               updated = writeFile("stationFile.txt", stationList);
                                updated2 = Schedule.writeFile(scheduleList);
                                if(updated && updated2){
                                    System.out.println("\nTHE STATION HAS UPDATED.\n");
@@ -313,7 +317,7 @@ public class TrainStation implements Serializable{
                                    }
                                }
                                stationList.get(index).changeNumOfPlatform(numOfPlatform);
-                               updated = writeIntoFile("stationfile.txt", stationList);
+                               updated = writeFile("stationfile.txt", stationList);
                                if (!scheduleList.isEmpty()){
                                     updated2 = Schedule.writeFile(scheduleList);
                                }
@@ -422,7 +426,7 @@ public void deleteStation(Scanner scanner) throws Exception {
                 }
                 
                    stationList.remove(index); 
-                   deleted = writeIntoFile("stationFile.txt", stationList);
+                   deleted = writeFile("stationFile.txt", stationList);
                    if (hasSchedule){
                         deleted2 = Schedule.writeFile(scheduleList);
                    }
