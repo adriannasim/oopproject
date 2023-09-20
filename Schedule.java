@@ -128,6 +128,10 @@ public class Schedule{
         return String.format("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10d\t%-8.2f", scheduleId, departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, trainOperated.getTrainNo(), ticketPrice);
     }
 
+    public String custSchedule(){
+        return String.format("%-10s\t%-10s\t%-10s\t%-10s\t%-10d\t%-8.2f", departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, trainOperated.getTrainNo(), ticketPrice);
+    }
+
     public String displayToCust(){
         return  "Schedule ID           : " + scheduleId + 
                 "\nDeparture Location    : " + departLocation.getLocationName() + 
@@ -252,6 +256,7 @@ public class Schedule{
                
                 if (userInput.equals("1")) {
                     viewSchedule();
+                    custSchedules();
                 } else if (userInput.equals("2")) {
                     updateScheduleInfo(scanner);
                 } else if (userInput.equals("3")) {
@@ -286,6 +291,23 @@ public class Schedule{
         System.out.println(count + " schedule(s) found.");
 
     }
+
+    public void custSchedules() throws Exception{
+        ArrayList<Schedule> scheduleList = getScheduleList();
+        if (scheduleList.size()==0){
+            System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
+        }else{
+            System.out.println("==================================================================================================");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n",  "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
+            System.out.println("==================================================================================================");
+        }
+        for (int i=0; i< scheduleList.size(); i++){
+            System.out.println(scheduleList.get(i).custSchedule());
+        }
+        System.out.println("==================================================================================================");
+
+    }
+
 
     //-----------------------------------------------ADD SCHEDULE------------------------------------------------ 
 
