@@ -257,6 +257,7 @@ public class Schedule implements Serializable{
             System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
         }else{
             System.out.printf("%-30s\t%-20s\t%-20s\t%10s\t%10s\t%10d\t%10.2f", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price");
+            System.out.println("===========================================================================");
         }
         for (int i=0; i< scheduleList.size(); i++){
             System.out.println(scheduleList.get(i).toString() + "\n");
