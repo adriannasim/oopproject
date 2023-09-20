@@ -23,7 +23,7 @@ public class DriverTw {
                 } else if (userInput.equals("2")) {
                     viewSchedule();
                 } else if (userInput.equals("3")) {
-                    viewReport();
+                    
                 } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
@@ -56,7 +56,7 @@ public class DriverTw {
                 System.out.print("Enter your option > ");
                 userInput = scanner.nextLine();
                 if (userInput.equals("1")) {
-                    viewFnbHistory();
+                    viewFnbHistory(null);
                 } else if (userInput.equals("2")) {
                     viewTicketHistory();
                 } else if (userInput.equals("#")) {
@@ -76,10 +76,11 @@ public class DriverTw {
         
         ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
         ArrayList<String> drinkCust = Purchase.drinkCust;
-
+        Customer cust = new Customer();
+        cust.readFile();
         for (int i = 0; i < purchaseSnack.size(); i++) {
-            if (login.getUsername().equals(purchaseSnack.get(i).snackCust)) {
-                cust = customers.get(i);
+            if (login.getUsername().equals(purchaseSnack.get(i).getUsername())) {
+                cust = purchaseSnack.get(i);
             }
         }
 
@@ -124,133 +125,25 @@ public class DriverTw {
     //====================================================================================================================//
 
 
-    public void viewSchedule() throws Exception{
+    public static void viewSchedule() throws Exception{
         Schedule sch = new Schedule();
         ArrayList<Schedule> scheduleList = sch.getScheduleList();
         if (scheduleList.size()==0){
             System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
         }else{
             System.out.println("==================================================================================================");
-            System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n",  "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
-            System.out.println("==================================================================================================");
+            System.out.println("                                     Train Schedules");
+            System.out.println("==================================================================================================\n");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n\n",  "From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
         }
         for (int i=0; i< scheduleList.size(); i++){
-            System.out.println(scheduleList.get(i).custSchedule());
+            System.out.println(scheduleList.get(i).custSchedule() + "\n");
         }
-        System.out.println("==================================================================================================");
-
     }
-
-    public void viewScheduleStaff() throws Exception{
-        Schedule sch = new Schedule();
-        ArrayList<Schedule> scheduleList = sch.getScheduleList();
-        if (scheduleList.size()==0){
-            System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
-        }else{
-            System.out.println("==================================================================================================");
-            System.out.printf("%-10\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n",  "Schedule ID","From", "To", "Departure Time", "Arrival Time", "Train No", "Price(RM)");
-            System.out.println("==================================================================================================");
-        }
-        for (int i=0; i< scheduleList.size(); i++){
-            System.out.println(scheduleList.get(i).toString());
-        }
-        System.out.println("==================================================================================================");
-
-    }
-    
 
 
     //====================================================================================================================//
     //                                              View Reports                                                          //
     //====================================================================================================================//
-    public static void viewReport() throws Exception {
-        Scanner scanner = new Scanner(System.in);
-        boolean cont = true;
-        String userInput;
-
-        do {
-            System.out.println("==================================================");
-            System.out.println("                 View Report Menu");
-            System.out.println("==================================================");
-            System.out.println("1. Food and Beverage Sales Report");
-            System.out.println("2. Train Ticket Sales Report");
-            System.out.println("* Press '#' to exit\n");
-
-            do {
-                System.out.print("Enter your option > ");
-                userInput = scanner.nextLine();
-                if (userInput.equals("1")) {
-                    fnbSalesReport();
-                } else if (userInput.equals("2")) {
-                    ticketSalesReport();
-                } else if (userInput.equals("#")) {
-                    cont = false;
-                } else {
-                    System.out.println("Invalid option. Please enter (1/2/#).");
-                }
-            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
-        } while (cont);
-    }
-
-    //=========================================== F&B Sales Report =======================================================//
-    public static void fnbSalesReport() throws Exception{
-        Reporting report = new Reporting();
-        ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
-        ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
-        ArrayList<FoodAndBeverage> purchaseFnb = new ArrayList<FoodAndBeverage>();
-
-        for (int i=0;i<purchaseDrink.size();i++){
-            purchaseFnb.add(purchaseDrink.get(i));
-        }
-        for (int i=0;i<purchaseSnack.size();i++){
-            purchaseFnb.add(purchaseSnack.get(i));
-        }
-
-        FoodAndBeverage[] fnbs = purchaseFnb.toArray(new FoodAndBeverage[purchaseFnb.size()]);
-        if (purchaseFnb.size()==0){
-            System.out.println("\nNO RECORDS AVAILABLE.\n");
-        }else{
-        System.out.println("============================================================================================");
-        System.out.println("                              Food & Beverage Sales Report");
-        System.out.println("============================================================================================");
-        System.out.println("\nNo. \t Food ID \t Description \t  Quantity Purchased \t Price(RM) \t SubTotal(RM)\n");
-        }
-        int i = 0;
-            for (Snacks snack : purchaseSnack) {
-                System.out.printf("%-8d %s", (i + 1), snack.displaySalesReport());
-                i++;
-                System.out.println();
-            } 
-            
-            for (Drinks drink : purchaseDrink) {
-                System.out.printf("%-8d %s", (i + 1), drink.displaySalesReport());
-                i++;
-                System.out.println();
-            }
-            
-        System.out.printf("Total Sales Amount (RM) : %.2f\n\n",report.calculateFnbSales(fnbs)); 
-    }
-
-    //========================================== Ticket Sales Report =====================================================//
-    public static void ticketSalesReport() throws Exception{
-        Reporting report = new Reporting();
-        ArrayList<Ticket> ticketList = Purchase.readFromTicketFile("purchaseTicket.txt");
-        Ticket[] ticketLists = ticketList.toArray(new Ticket[ticketList.size()]);
-        if (ticketList.size()==0){
-            System.out.println("\nNO RECORDS AVAILABLE.\n");
-        }else{
-        System.out.println("===============================================================================");
-        System.out.println("                          Train Ticket Sales Report");
-        System.out.println("===============================================================================");
-        System.out.println("\n   Departure - Arrival \t\t    Ticket Price(RM) \t\t Date Purchased\n");
-        }
-        int i = 0;
-        for (Ticket ticket : ticketList) {
-            System.out.printf("%s", ticket.displaySalesReport());
-            i++;
-            System.out.println();
-        }
-        System.out.println("Number of Tickets Sold  : "+ i); 
-        System.out.printf("\nTotal Sales Amount (RM) : %.2f\n\n",report.calculateTicketSales(ticketLists)); 
-    }
+    
 }
