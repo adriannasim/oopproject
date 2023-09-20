@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Staff extends User{
+public class Staff extends User implements ReadAndWrite {
     //variables declaration
     private String staffId;
     private char staffType;
@@ -45,15 +45,10 @@ public class Staff extends User{
         return staffType;
     }
 
-    //toString
-    // public String toString() {
-    //     return super.toString() + String.format("Staff Id: %s\nStaff Type: %c\n", staffId, staffType);
-    // }
-
     //staff menu
     public int staffMenu(Login login) {
         //read from file
-        readStaffInfo();
+        readFile();
         for (int i = 0; i < staffDetails.size(); i++) {
             if ((login.getUsername().equals(staffDetails.get(i).getUsername())) && staffDetails.get(i).getStaffType() == 'B') {
                 return 1;
@@ -65,7 +60,7 @@ public class Staff extends User{
     }
 
     //write file
-    public static void writeStaffInfo() {
+    public static void writeFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("staffFile.txt", true))) {
             for (Staff staff : staffDetails) {
                 writer.write(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.staffId + "||" + staff.staffType);
@@ -77,7 +72,7 @@ public class Staff extends User{
     }
 
     //read file
-    public static void readStaffInfo() {
+    public static void readFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("staffFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {

@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
-public class CounterStaff extends Staff{
+public class CounterStaff extends Staff {
     //variables declaration
     private static int nextCounterStaffId;
 
     //getter
     public int getCounterStaffId() {
-        readStaffInfo();
+        readFile();
         nextCounterStaffId = 1000;
         int count = 0;
         for (int i = 0; i < staffDetails.size(); i++) {
@@ -78,7 +78,7 @@ public class CounterStaff extends Staff{
             System.out.printf("Please enter your username (no spaces/special characters) > ");
             inUsername = input.nextLine();
             //check if username exist in custFile.txt
-            readStaffInfo();
+            readFile();
             for (int i = 0; i < staffDetails.size(); i++) {
                 if (inUsername.equals(staffDetails.get(i).getUsername())) {
                     System.out.printf("This username is already in used. Please login using your existing username.\n");
@@ -134,7 +134,7 @@ public class CounterStaff extends Staff{
         } while (check);
 
         Staff staff = new Staff(inUsername, inPassword, inFullname, inEmail, inStaffId, inStaffType);
-        writeStaffInfo();
+        writeFile();
         System.out.println("Registration successful. Please login now.");
         input.close();
     }

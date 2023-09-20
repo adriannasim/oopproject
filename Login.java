@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Login {
+public class Login implements ReadAndWrite{
     //variable declaration
     private String username;
     private String password;
@@ -36,7 +36,7 @@ public class Login {
     //staff
     public boolean checkStaffLogin(Login login) {
         //read from staff file
-        Staff.readStaffInfo();
+        Staff.readFile();
         //access array in staff class
         ArrayList<Staff> staffDetails = Staff.staffDetails;
 
@@ -53,7 +53,7 @@ public class Login {
     //customer
     public boolean checkCustLogin(Login login) {
         //read from cust file
-        Customer.readCustInfo();
+        Customer.readFile();
         //access array in customer class
         ArrayList<Customer> custDetails = Customer.custDetails;
 
