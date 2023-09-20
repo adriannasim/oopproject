@@ -256,7 +256,6 @@ public class Schedule{
                
                 if (userInput.equals("1")) {
                     viewSchedule();
-                    custSchedules();
                 } else if (userInput.equals("2")) {
                     updateScheduleInfo(scanner);
                 } else if (userInput.equals("3")) {

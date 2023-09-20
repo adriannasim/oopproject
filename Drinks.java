@@ -1152,7 +1152,7 @@ public class Drinks extends FoodAndBeverage {
                 if (isDrink) {
                     tempDrink = (Drinks) fnbList.get(fnbIndex);
 
-                    System.out.print("Y - ICED, other - NO ICED");
+                    System.out.print("Y - ICED, other - NO ICED > ");
                     editIce = scanner.next().charAt(0);
                     editIce = Character.toUpperCase(editIce);
 

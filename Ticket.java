@@ -51,11 +51,11 @@ public class Ticket {
                 ticketId, ticketSchedule.displayInTicket(), ticketDate);
     }
 
-    public String displayToReport(){
+    public String displayToReport() {
         return String.format("%-10s\t%8s %s\n", ticketDate, ticketId, ticketSchedule.displayInReport());
     }
 
-    public String displaySalesReport(){
+    public String displaySalesReport() {
         return String.format("%s %30s\n", ticketSchedule.displayToReport(), ticketDate);
     }
 
@@ -212,15 +212,6 @@ public class Ticket {
         boolean continueInputY = true;
         boolean continueInputD = true;
         boolean continueInputM = true;
-
-        for (int i = 0; i < scheduleList.size(); i++) {
-            System.out.println();
-            System.out.printf("%d. ", i + 1);
-            System.out.println(scheduleList.get(i));
-            System.out.println();
-            System.out.println("---------------------------------------------------------");
-            System.out.println();
-        }
 
         // ---------------------------------------DisplayStation---------------------------------------------------------
         System.out.println("=========================================================");
@@ -587,6 +578,20 @@ public class Ticket {
             } while (continueInputE);
 
             if (editOpt == 1) {
+                // ---------------------------------------DisplayStation---------------------------------------------------------
+                System.out.println("=========================================================");
+                System.out.println("                    Train Station");
+                System.out.println("=========================================================");
+                for (int i = 0; i < stationList.size(); i++) {
+                    System.out.println();
+                    System.out.printf("%d. ", i + 1);
+                    System.out.println(stationList.get(i).getLocationName());
+                    System.out.println();
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println();
+                }
+                System.out.println("=========================================================");
+                // --------------------------------------------------------------------------------------------------------------
 
                 // -----------------------------------------SelectSchedule--------------------------------------------------------
                 // Select depart station
