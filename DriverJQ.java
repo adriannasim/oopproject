@@ -2,17 +2,16 @@
 import java.util.*;
 import java.time.LocalDate;
 
-
 // Delete entire driverJQ if donee
 
 public class DriverJQ {
 
     public static void main(String[] args) throws Exception {
-        //viewReport();
-        //viewReportDDrink();
-        //viewReportTicket();
+        viewReport();
+        viewReportDDrink();
+        viewReportTicket();
 
-        Purchase.makePurchase(1, new Login("username", "password"));
+        //Purchase.makePurchase(2, new Login("username", "password"));
     }
 
     public static void viewReport() throws Exception {
@@ -20,11 +19,13 @@ public class DriverJQ {
         ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
         ArrayList<String> snackCust = Purchase.snackCust;
         ArrayList<Double> snackTotalPrice = Purchase.snackTotalPrice;
+        ArrayList<LocalDate> snackDates = Purchase.snackDates;
 
         int i = 0;
         for (Snacks snack : purchaseSnack) {
             System.out.printf("%d. ", i + 1);
-            System.out.println(snack.displayToReport());
+            System.out.println(snack.displayToCust());
+            System.out.println(snackDates.get(i));
             System.out.println(snackCust.get(i));
             System.out.println(snackTotalPrice.get(i));
             i++;
@@ -37,11 +38,13 @@ public class DriverJQ {
         ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
         ArrayList<String> drinkCust = Purchase.drinkCust;
         ArrayList<Double> drinkTotalPrice = Purchase.drinkTotalPrice;
+        ArrayList<LocalDate> drinkDates = Purchase.drinkDates;
 
         int i = 0;
         for (Drinks drink : purchaseDrink) {
             System.out.printf("%d. ", i + 1);
             System.out.println(drink);
+            System.out.println(drinkDates.get(i));
             System.out.println(drinkCust.get(i));
             System.out.println(drinkTotalPrice.get(i));
             i++;
