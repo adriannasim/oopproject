@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -102,7 +103,15 @@ public abstract class FoodAndBeverage {
                 "\nFood Name     : " + foodName +
                 "\nFood Price    : " + foodPrice;
     }
-    
+
+    public String displayToReport(){
+        return String.format("%-24s %-15s %6.2f %17.2f %20s\n", foodName, purchaseQty, foodPrice, calculatePrice(), LocalDate.now());
+    }
+
+    public String displaySalesReport(){
+        return String.format("%-15s %-24s %-14d %6.2f\n", foodId, foodName, purchaseQty, foodPrice);
+    }
+
     // CALCULATION METHOD
     public abstract double calculatePrice();
 

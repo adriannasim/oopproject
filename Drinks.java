@@ -80,7 +80,11 @@ public class Drinks extends FoodAndBeverage implements Serializable {
     }
 
     public String displayToReport(){
-        return String.format("%-24s %-15d %6.2f %17.2f\n", foodName, purchaseQty, foodPrice, calculatePrice());
+        return super.displayToReport();
+    }
+
+    public String displaySalesReport(){
+        return super.displaySalesReport();
     }
 
     // CALCULATION METHOD
