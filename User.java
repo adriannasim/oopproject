@@ -38,8 +38,4 @@ public class User {
         return email;
     }
 
-    //toString
-    // public String toString() {
-    //     return String.format("Username: %s\nPassword: %s\nName: %s\nEmail: %s\n", login.getUsername(), login.getPassword(email), fullname, email);
-    // }
 }

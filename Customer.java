@@ -49,12 +49,6 @@ public class Customer extends User {
         return gender;
     }
 
-    // toString
-    // public String toString() {
-    // return super.toString() + String.format("Contact: %s\nGender: %c", contactNo,
-    // gender);
-    // }
-
     // writing all info into file
     public static void writeCustInfo() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("custFile.txt", true))) {
