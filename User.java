@@ -1,4 +1,4 @@
-public class User {
+public abstract class User {
     //variable declaration
     private Login login;
     private String fullname;
@@ -37,5 +37,11 @@ public class User {
     public String getEmail(String username) {
         return email;
     }
+
+    //abstract methods
+    //read file
+    public abstract void readFile();
+    //write file
+    public abstract void writeFile();
 
 }
