@@ -117,6 +117,10 @@ public class Login{
                         loginSuccessful = checkCustLogin(login);
                         //if username and password is correct
                         if (loginSuccessful == true) {
+                            //clear screen
+                            for (int i = 0; i < 100; i++) {
+                                System.out.println();
+                            }
                             System.out.printf("Login Successful\n");
                             cust.custMenu(login);
                         //if username and password is wrong
@@ -130,10 +134,12 @@ public class Login{
                         break;
                     //create account
                     case 2:
+                        //clear screen
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println();
+                        }
                         cust.driverCustomer();
                         break;
-                    case 3: 
-                        return;
                     default:
                         //clear screen
                         for (int i = 0; i < 100; i++) {
@@ -143,6 +149,10 @@ public class Login{
                     }
                 } else {
                     if (input.next().equals("#")) {
+                        //clear screen
+                        for (int i = 0; i < 100; i++) {
+                            System.out.println();
+                        }
                         return;
                     } else {
                         //clear screen
@@ -173,6 +183,10 @@ public class Login{
                     switch (choice2) {
                         //login
                         case 1:
+                            //clear screen
+                            for (int i = 0; i < 100; i++) {
+                                System.out.println();
+                            }
                             System.out.println("==================================================");
                             System.out.println("                   Staff Login");
                             System.out.println("==================================================");
@@ -186,7 +200,11 @@ public class Login{
                             loginSuccessful = checkStaffLogin(login);
                             //if username and password is correct
                             if (loginSuccessful == true) {
-                                System.out.printf("Login Successful\n");
+                                //clear screen
+                                for (int i = 0; i < 100; i++) {
+                                    System.out.println();
+                                }
+                                System.out.printf("Login Successful\n\n");
                                 int menuType = staff.staffMenu(login);
                                 if (menuType == 1) {
                                     back.backendMenu();
@@ -207,6 +225,10 @@ public class Login{
                             break;
                         //create account
                         case 2:
+                            //clear screen
+                            for (int i = 0; i < 100; i++) {
+                                System.out.println();
+                            }
                             staff.driverStaff();
                             break;
                         default: 
@@ -225,8 +247,6 @@ public class Login{
                             System.out.println();
                         }
                         System.out.printf("Invalid input, please enter your choice again.\n");
-                        //clear buffer
-                        input.next();
                     }
                 }
             } while (loop); 

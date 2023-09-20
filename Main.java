@@ -53,6 +53,10 @@ public class Main {
                 //login menus
                 case 1:
                 case 2:
+                    //clear screen
+                    for (int i = 0; i < 100; i++) {
+                        System.out.println();
+                    }
                     login.driverLogin(choice);
                     break;
                 default:
@@ -110,6 +114,10 @@ public class Main {
                                 case 'N':
                                 case 'n':
                                     loop2 = false;
+                                    //clear screen
+                                    for (int i = 0; i < 100; i++) {
+                                        System.out.println();
+                                    }
                                     break;
                                 default: 
                                     //clear screen
@@ -132,8 +140,6 @@ public class Main {
                         System.out.println();
                     }
                     System.out.printf("Invalid input, please enter your choice again.\n\n");
-                    //clear buffer
-                    input.next();
                 }
             }
         } while (loop);

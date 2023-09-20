@@ -155,8 +155,6 @@ public class BackendStaff extends Staff {
                         System.out.println();
                     }
                     System.out.println("\nINVALID OPTION. PLEASE ENTER (1/2/3/4/#).\n");
-                    //clear buffer
-                    input.nextLine();
                 }
             }
         } while (loop);
@@ -206,12 +204,12 @@ public class BackendStaff extends Staff {
                 }
             }
             if (!inUsername.matches(regex2)) {
+                System.out.printf("No spaces/special characters allowed. Please try again.\n");
+            } else if (inUsername.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("No spaces/special characters allowed. Please try again.\n");
-            } else if (inUsername.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
@@ -223,12 +221,12 @@ public class BackendStaff extends Staff {
             System.out.printf("\nPlease enter your password (no spaces) > ");
             inPassword = input.nextLine();
             if (inPassword.contains(" ")) {
+                System.out.printf("No spaces allowed. Please try again.\n");
+            } else if (inPassword.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("No spaces allowed. Please try again.\n");
-            } else if (inPassword.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
@@ -240,12 +238,12 @@ public class BackendStaff extends Staff {
             System.out.printf("\nPlease enter your full name (no special characters) > ");
             inFullname = input.nextLine();
             if (!inFullname.matches(regex)) {
+                System.out.printf("No special characters allowed. Please try again.\n");
+            } else if (inFullname.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("No special characters allowed. Please try again.\n");
-            } else if (inFullname.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
@@ -257,12 +255,12 @@ public class BackendStaff extends Staff {
             System.out.printf("\nPlease enter your email (no spaces) > ");
             inEmail = input.nextLine();
             if (inEmail.contains(" ")) {
+                System.out.printf("No spaces allowed. Please try again.\n");
+            } else if (inEmail.equalsIgnoreCase("X")) {
                 //clear screen
                 for (int i = 0; i < 100; i++) {
                     System.out.println();
                 }
-                System.out.printf("No spaces allowed. Please try again.\n");
-            } else if (inEmail.equalsIgnoreCase("X")) {
                 return;
             } else {
                 check = false;
