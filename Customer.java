@@ -119,7 +119,7 @@ public class Customer extends User {
                     editAccount(login);
                     break;
                 case 4:
-                    DriverTw.viewFnBHistory(login);
+                    DriverTw.viewFnbHistory(login);
                     break;
                 case 5:
                     DriverTw.viewTicketHistory(login);
