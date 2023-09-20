@@ -125,7 +125,7 @@ public class Schedule{
 
     // DISPLAY METHOD
     public String toString(){
-        return String.format("%-30s\t%-20s\t%-20s\t%10s\t%10s\t%10d\t%10.2f", scheduleId, departLocation.getLocationName(), arriveLocation, departTime, arriveTime, trainOperated.getTrainNo(), ticketPrice);
+        return String.format("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10d\t%-8.2f", scheduleId, departLocation.getLocationName(), arriveLocation.getLocationName(), departTime, arriveTime, trainOperated.getTrainNo(), ticketPrice);
     }
 
     public String displayToCust(){
@@ -157,7 +157,7 @@ public class Schedule{
     
     
     public static boolean writeFile(ArrayList<Schedule> scheduleList) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("scheduleFile.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("scheduleFile.txt", false))) {
             for (Schedule schedule : scheduleList) {
                 writer.write(schedule.getScheduleId() + "||" + schedule.getDepartLocation().getLocationId() + "||" 
                         + schedule.getDepartLocation().getLocationName() + "||" + schedule.getDepartLocation().getNumOfPlatform() + "||"
@@ -192,6 +192,7 @@ public class Schedule{
                 String[] parts = scheduleDetails.split("\\|\\|");
     
                 if (parts.length == 13) {
+                try{
                     String scheduleId = parts[0];
                     String locationId1 = parts[1];
                     String locationName1 = parts[2];
@@ -205,12 +206,19 @@ public class Schedule{
                     String trainName = parts[10];
                     String trainModel = parts[11];
                     double cTicketPrice = Double.parseDouble(parts[12]);
+                    
     
                     TrainStation departLocation = new TrainStation(locationId1, locationName1, cNumOfPlatform1);
                     TrainStation arriveLocation = new TrainStation(locationId2, locationName2, cNumOfPlatform2);
                     Train trainOperated = new Train(cTrainNo, trainName, trainModel);
                     Schedule schedule = new Schedule(scheduleId, departLocation, arriveLocation, cDepartTime, cArriveTime, trainOperated, cTicketPrice);
                     scheduleList.add(schedule);
+                }finally{
+                    
+                }
+
+                
+                    
                 }
             }
         } catch (IOException e) {
@@ -265,8 +273,8 @@ public class Schedule{
         if (scheduleList.size()==0){
             System.out.println("\nNO SCHEDULES IN THE RECORD.\n");
         }else{
-            System.out.printf("%-30s\t%-20s\t%-20s\t%10s\t%10s\t%10d\t%10.2f", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price");
-            System.out.println("===========================================================================");
+            System.out.printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n", "Schedule ID", "From", "To", "Departure Time", "Arrival Time", "Train No", "Price");
+            System.out.println("=============================================================================================");
         }
         for (int i=0; i< scheduleList.size(); i++){
             System.out.println(scheduleList.get(i).toString() + "\n");

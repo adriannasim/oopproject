@@ -60,7 +60,7 @@ public class Train{
 
     // TOSTRING
     public String toString(){
-        return String.format("%-30s\t%-30s\t%10d", trainNo, trainName, trainModel);
+        return String.format("%-10d\t%-10s\t%10s", trainNo, trainName, trainModel);
     }
 
     // READ FROM FILE
@@ -148,16 +148,21 @@ public class Train{
     // ----------------------------------------------VIEW TRAINS----------------------------------------------
     public void viewTrain() throws Exception{
         ArrayList<Train> trainList = getTrainList();
+        int count = 0;
         
         if (trainList.size()==0){
             System.out.println("\nNO TRAINS IN THE RECORD.\n");
         }else{
-            System.out.printf("%-30s\t%-30s\t%10d\n", "Train No", "Train Name", "Train Model");
-            System.out.println("===========================================================================");
+            System.out.println("==================================================");
+            System.out.printf("%-10s\t%-10s\t%10s\n", "Train No", "Train Name", "Train Model");
+            System.out.println("==================================================");
         }
         for (int i=0; i< trainList.size(); i++){
-            System.out.println(trainList.get(i).toString() + "\n");
+            System.out.println(trainList.get(i).toString());
+            count++;
         }
+        System.out.println("==================================================");
+        System.out.println(count + " train(s) found.");
 
     }
 
@@ -230,7 +235,12 @@ public class Train{
             if (found == true){
                 System.out.println("Do you want to update the train information as shown below ?");
                 System.out.println();
+                System.out.println("==================================================");
+                System.out.printf("%-10s\t%-10s\t%10s\n", "Train No", "Train Name", "Train Model");
+                System.out.println("==================================================");
                 System.out.println(trainList.get(index).toString());
+                System.out.println("==================================================");
+                System.out.println();
                 
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
@@ -335,7 +345,11 @@ public class Train{
             if (found) {
                 System.out.println("Do you want to delete the train information as shown below ?");
                 System.out.println();
+                System.out.println("==================================================");
+                System.out.printf("%-10s\t%-10s\t%10s\n", "Train No", "Train Name", "Train Model");
+                System.out.println("==================================================");
                 System.out.println(trainList.get(index).toString());
+                System.out.println("==================================================");
                 System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
