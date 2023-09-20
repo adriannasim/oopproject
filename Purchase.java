@@ -193,7 +193,7 @@ public class Purchase {
 	// MAKE PURCHASE
 	// ============================================================================================
 	// Without Login
-	public static void makePurchase(int userOpt1, String staffname) throws Exception {
+	public static void makePurchase(int userOpt1) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
 		ArrayList<FoodAndBeverage> fnbList = new ArrayList<FoodAndBeverage>();
@@ -307,6 +307,7 @@ public class Purchase {
 			}
 
 			userPurchase.setPaymentType(pType);
+			userPurchase.paymentType.setPaymentStatus(true);
 
 			System.out.println("Purchase successsfully. ");
 
@@ -315,13 +316,13 @@ public class Purchase {
 			Snacks snack = new Snacks();
 			Drinks drink = new Drinks();
 
-			ticket.writePurchaseTicket(tickets, staffname);
+			ticket.writePurchaseTicket(tickets, "staff");
 
 			for (FoodAndBeverage foodAndBeverage : fnbs) {
 				if (foodAndBeverage instanceof Snacks) {
-					snack.writePurchaseFnB(foodAndBeverage, staffname);
+					snack.writePurchaseFnB(foodAndBeverage, "staff");
 				} else if (foodAndBeverage instanceof Drinks) {
-					drink.writePurchaseFnB(foodAndBeverage, staffname);
+					drink.writePurchaseFnB(foodAndBeverage, "staff");
 				}
 			}
 

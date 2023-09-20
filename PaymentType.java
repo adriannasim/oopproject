@@ -8,11 +8,7 @@ public class PaymentType {
     public PaymentType(){
 
     }
-
-    public void setPaymentId(String paymentId){
-        this.paymentId = paymentId;
-    }
-
+    
     public void setPaymentDateTime(LocalDateTime paymentDateTime){
         this.paymentDateTime = paymentDateTime;
     }
@@ -28,7 +24,7 @@ public class PaymentType {
     public LocalDateTime getPaymentDateTime(){
         return paymentDateTime;
     }
-    public boolean getPaymentStatus(boolean paymentStatus){
+    public boolean getPaymentStatus(){
         return paymentStatus;
     }
 

@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class DriverAdr {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         /*START OF HEADER*/
         //variables declaration
         // Customer cust1 = new Customer("adr", "1628", "Adrianna Sim", "adriannasim@gmail.com", "0164121629", 'F');
@@ -10,6 +10,7 @@ public class DriverAdr {
         // Staff admin2 = new Staff("hehe", "9628", "Hehe Sim", "hehe@gmail.com", 'B');
         ArrayList<Customer> custDetails = Customer.custDetails;
         ArrayList<Staff> staffDetails = Staff.staffDetails;
+        ArrayList<Schedule> scheduleList = Schedule.readFromFile("scheduleFile.dat");
 
 
 
@@ -37,13 +38,14 @@ public class DriverAdr {
         // System.out.printf("=================================\n");
 
         //print file contents
-        Customer.readCustInfo();
-        System.out.println(custDetails);
-        Staff.readStaffInfo();
-        System.out.println(staffDetails);
-        for (Staff staff : staffDetails) {
-            System.out.print(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.getStaffId() + "||" + staff.getStaffType() + "\n");
-        }
+        System.out.println(scheduleList);
+        // Customer.readCustInfo();
+        // System.out.println(custDetails);
+        // Staff.readStaffInfo();
+        // System.out.println(staffDetails);
+        // for (Staff staff : staffDetails) {
+        //     System.out.print(staff.getUsername() + "||" + staff.getPassword() + "||" + staff.getFullname(staff.getUsername()) + "||" + staff.getEmail(staff.getUsername()) + "||" + staff.getStaffId() + "||" + staff.getStaffType() + "\n");
+        // }
 
         /*END OF MAIN PROGRAM*/
 

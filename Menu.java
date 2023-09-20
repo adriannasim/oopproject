@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Menu{   
+public class Menu {   
     public static void main(String[] args) throws Exception{
         //variables declaration
         boolean loop = true;

@@ -5,12 +5,7 @@ import java.time.LocalDate;
 // Delete entire driverJQ if donee
 
 public class DriverJQ {
-
-    public static void main(String[] args) throws Exception {
-        //viewReport();
-        //viewReportDDrink();
-        //viewReportTicket();
-
+    public static void main(String[] args) throws Exception{
         Purchase.makePurchase(2, new Login("username", "password"));
     }
 

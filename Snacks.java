@@ -15,26 +15,26 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     // -----------------------------------CONSTRUCTOR----------------------------------------
     // NO-ARG CONSTRUCTOR
-    Snacks() {
+    public Snacks() {
 
     }
 
     // PARAMETERIZED CONSTRUCTOR
-    Snacks(boolean partyPack) {
+    public Snacks(boolean partyPack) {
 
     }
 
-    Snacks(String foodName, double foodPrice, int stockQty, boolean partyPack) {
+    public Snacks(String foodName, double foodPrice, int stockQty, boolean partyPack) {
         super(foodName, foodPrice, stockQty);
         this.partyPack = partyPack;
     }
 
-    Snacks(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty, boolean partyPack) {
+    public Snacks(String foodId, String foodName, double foodPrice, int purchaseQty, int stockQty, boolean partyPack) {
         super(foodId, foodName, foodPrice, purchaseQty, stockQty);
         this.partyPack = partyPack;
     }
 
-    Snacks(String foodId, String foodName, double foodPrice, int purchaseQty) {
+    public Snacks(String foodId, String foodName, double foodPrice, int purchaseQty) {
         super(foodId, foodName, foodPrice, purchaseQty);
     }
 

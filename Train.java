@@ -203,7 +203,6 @@ public class Train implements Serializable{
         boolean cont = true;
         boolean found = false;
         boolean updated = false;
-        boolean updated2 = false;
         Train obj = new Train();
         Schedule obj2 = new Schedule();
         ArrayList<Train> trainList = obj.getTrainList();
@@ -257,8 +256,11 @@ public class Train implements Serializable{
                                     }
                                     trainList.get(index).changeTrainName(trainName);
                                     updated = writeIntoFile("trainfile.txt", trainList);
-                                    updated2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
-                                    if (updated && updated2){
+                                    if (!scheduleList.isEmpty()){
+                                        Schedule.writeFile(scheduleList);
+                                    }
+                                    
+                                    if (updated){
                                         System.out.println("\nTRAIN INFORMATION HAS UPDATED.\n");
                                     }else{
                                         System.out.println("\nFAILED TO UPDATE THE TRAIN INFORMATION.\n");
@@ -368,7 +370,7 @@ public class Train implements Serializable{
                         }
                         trainList.remove(index);
                         deleted = writeIntoFile("trainFile.txt", trainList);
-                        deleted2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
+                        deleted2 = Schedule.writeFile(scheduleList);
 
                         if (deleted && deleted2) {
                             System.out.println("\nTRAIN INFORMATION HAS REMOVED.\n");

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Customer extends User {
+public class Customer extends User implements ReadAndWrite {
     // variables declaration
     private String contactNo;
     private char gender;
@@ -49,14 +49,8 @@ public class Customer extends User {
         return gender;
     }
 
-    // toString
-    // public String toString() {
-    // return super.toString() + String.format("Contact: %s\nGender: %c", contactNo,
-    // gender);
-    // }
-
     // writing all info into file
-    public static void writeCustInfo() {
+    public static void writeFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("custFile.txt", true))) {
             for (Customer cust : custDetails) {
                 writer.write(cust.getUsername() + "||" + cust.getPassword() + "||"
@@ -70,7 +64,7 @@ public class Customer extends User {
     }
 
     // read file
-    public static void readCustInfo() {
+    public static void readFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("custFile.txt"))) {
             String info;
             while ((info = reader.readLine()) != null) {
@@ -158,7 +152,7 @@ public class Customer extends User {
             System.out.printf("Please enter your username (no spaces/special characters) > ");
             inUsername = input.nextLine();
             // check if username exist in custFile.txt
-            readCustInfo();
+            readFile();
             for (int i = 0; i < custDetails.size(); i++) {
                 if (inUsername.equals(custDetails.get(i).getUsername())) {
                     System.out.printf("This username is already in used. Please login using your existing username.\n");
@@ -241,7 +235,7 @@ public class Customer extends User {
         } while (check);
 
         Customer cust = new Customer(inUsername, inPassword, inFullname, inEmail, inContact, inGender.charAt(0));
-        writeCustInfo();
+        writeFile();
         System.out.println("Registration successful. Please login now.");
     }
 
@@ -259,7 +253,7 @@ public class Customer extends User {
         String fullname, email, contactNo;
         char gender;
 
-        Customer.readCustInfo();
+        Customer.readFile();
         ArrayList<Customer> customers = Customer.custDetails;
         for (int i = 0; i < customers.size(); i++) {
             if (login.getUsername().equals(customers.get(i).getUsername())
