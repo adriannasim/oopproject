@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Iterator;
 
 public class Train implements Serializable{
     private int trainNo;
@@ -275,6 +276,8 @@ public class Train implements Serializable{
                 
                     }else {
                         found = false;
+                        cont = false;
+                        break;
                     }
                     System.out.print("Do you want to continue make changes? (Y-Yes/N-No) > ");
                     userInput = BackendStaff.validateYNInput(scanner, "Do you want to continue make changes? (Y-Yes/N-No) > ");
@@ -326,7 +329,9 @@ public class Train implements Serializable{
     
             if (found) {
                 System.out.println("Do you want to delete the train information as shown below ?");
+                System.out.println();
                 System.out.println(trainList.get(index).toString());
+                System.out.println();
                 System.out.print("Enter your option (Y-Yes/N-No) > ");
                 userInput = BackendStaff.validateYNInput(scanner, "Enter your option (Y-Yes/N-No) > ");
     
@@ -354,14 +359,16 @@ public class Train implements Serializable{
                     if (userInput.equalsIgnoreCase("Y")) {
                             
                         // Remove all associated schedules
-                        for (int j = scheduleList.size() - 1; j >= 0; j--) {
-                            if (scheduleList.get(j).getOperatedTrain().getTrainNo() == trainList.get(index).getTrainNo()) {
-                                scheduleList.remove(j);
+                        Iterator<Schedule> iterator = scheduleList.iterator();
+                        while (iterator.hasNext()) {
+                            Schedule schedule = iterator.next();
+                            if (schedule.getOperatedTrain().getTrainNo() == trainList.get(index).getTrainNo()) {
+                                iterator.remove();
                             }
                         }
                         trainList.remove(index);
                         deleted = writeIntoFile("trainFile.txt", trainList);
-                        deleted2 = Schedule.writeIntoFile("scheduleFile.txt", scheduleList);
+                        deleted2 = Schedule.writeIntoFile("scheduleFile.dat", scheduleList);
 
                         if (deleted && deleted2) {
                             System.out.println("\nTRAIN INFORMATION HAS REMOVED.\n");
