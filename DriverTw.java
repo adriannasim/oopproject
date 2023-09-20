@@ -79,12 +79,12 @@ public class DriverTw {
     public static void viewFnbHistory() throws Exception{
         
         ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
-        // ArrayList<String> snackCust = Purchase.snackCust;
-        // ArrayList<Double> snackTotalPrice = Purchase.snackTotalPrice;
+        ArrayList<String> snackCust = Purchase.snackCust;
+        
         
         ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
-        // ArrayList<String> drinkCust = Purchase.drinkCust;
-        // ArrayList<Double> drinkTotalPrice = Purchase.drinkTotalPrice;
+        ArrayList<String> drinkCust = Purchase.drinkCust;
+        
 
         System.out.println("==============================================================================================");
         System.out.println("                                    F&B Purchase History");
@@ -191,6 +191,7 @@ public class DriverTw {
     public static void fnbSalesReport() throws Exception{
         ArrayList<Drinks> purchaseDrink = Purchase.readFromDrinkFile("purchaseDrink.txt");
         ArrayList<Snacks> purchaseSnack = Purchase.readFromSnackFile("purchaseSnack.txt");
+        
         System.out.println("==========================================================================");
         System.out.println("                    Food and Beverage Sales Report");
         System.out.println("==========================================================================");
@@ -209,7 +210,7 @@ public class DriverTw {
                 System.out.println();
             }
             
-        System.out.println("Total Sales Amount (RM) : "); //call calc function
+        System.out.println("Total Sales Amount (RM) : " + Reporting.calculateFnbSales()); //call calc function
     }
 
     //========================================== Ticket Sales Report =====================================================//
