@@ -56,7 +56,7 @@ public class Ticket {
     }
 
     public String displaySalesReport(){
-        return String.format("%s %26s\n", ticketSchedule.displayToReport(), ticketDate);
+        return String.format("%s %30s\n", ticketSchedule.displayToReport(), ticketDate);
     }
 
     public void writePurchaseTicket(Ticket[] ticketList, String username) {

@@ -12,7 +12,7 @@ public class DriverTw {
             System.out.println("1. View Purchases");
             System.out.println("2. View Schedules");
             System.out.println("3. View Reports");
-            System.out.println("* Press 'x' to exit\n");
+            System.out.println("* Press '#' to exit\n");
 
             do {
                 
@@ -24,13 +24,13 @@ public class DriverTw {
                     viewSchedule();
                 } else if (userInput.equals("3")) {
                     viewReport();
-                } else if (userInput.equals("x")) {
+                } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/3/x).");
+                    System.out.println("Invalid option. Please enter (1/2/3/#).");
                 }
                 
-            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("x"));
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("3") && !userInput.equals("#"));
             
         } while (cont);
         scanner.close();
@@ -51,7 +51,7 @@ public class DriverTw {
             System.out.println("==================================================\n");
             System.out.println("1. View F&B Purchase History");
             System.out.println("2. View Train Ticket Purchase History");
-            System.out.println("* Press 'x' to exit\n");
+            System.out.println("* Press '#' to exit\n");
             do {
                 System.out.print("Enter your option > ");
                 userInput = scanner.nextLine();
@@ -59,12 +59,12 @@ public class DriverTw {
                     viewFnbHistory();
                 } else if (userInput.equals("2")) {
                     viewTicketHistory();
-                } else if (userInput.equals("x")) {
+                } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/x).");
+                    System.out.println("Invalid option. Please enter (1/2/#).");
                 }
-            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("x")); 
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#")); 
         }while(cont == true);
     }
     
@@ -79,9 +79,9 @@ public class DriverTw {
         ArrayList<String> drinkCust = Purchase.drinkCust;
         
 
-        System.out.println("==============================================================================================");
-        System.out.println("                                    F&B Purchase History");
-        System.out.println("==============================================================================================\n");
+        System.out.println("==============================================================================================================");
+        System.out.println("                                      Food & Beverage Purchase History");
+        System.out.println("==============================================================================================================\n");
         System.out.println("No. \t Food Name \t Purchase Quantity \t Description \t Price(RM) \t Subtotal(RM) \t   Date Bought\n\n");
 
         int i = 0;
@@ -101,10 +101,10 @@ public class DriverTw {
     public static void viewTicketHistory() throws Exception{
         ArrayList<Ticket> purchaseTicket = Purchase.readFromTicketFile("purchaseTicket.txt");
 
-        System.out.println("==================================================================================================================");
-        System.out.println("                                       Train Ticket Purchase History");
-        System.out.println("==================================================================================================================\n");
-        System.out.println("No. \t   Date \t Ticket ID \t Time (Departure - Arrival) \t   Location (From - To) \t Price(RM)\n\n");
+        System.out.println("==================================================================================");
+        System.out.println("                         Train Ticket Purchase History");
+        System.out.println("==================================================================================\n");
+        System.out.println("No. \t   Date \t Ticket ID \t   Location (From - To) \t Price(RM)\n\n");
         int i = 0;
         for (Ticket ticket : purchaseTicket) {
             System.out.printf("%-7d %s", (i + 1), ticket.displayToReport());
@@ -161,7 +161,7 @@ public class DriverTw {
             System.out.println("==================================================");
             System.out.println("1. Food and Beverage Sales Report");
             System.out.println("2. Train Ticket Sales Report");
-            System.out.println("* Press 'x' to exit\n");
+            System.out.println("* Press '#' to exit\n");
 
             do {
                 System.out.print("Enter your option > ");
@@ -170,12 +170,12 @@ public class DriverTw {
                     fnbSalesReport();
                 } else if (userInput.equals("2")) {
                     ticketSalesReport();
-                } else if (userInput.equals("x")) {
+                } else if (userInput.equals("#")) {
                     cont = false;
                 } else {
-                    System.out.println("Invalid option. Please enter (1/2/x).");
+                    System.out.println("Invalid option. Please enter (1/2/#).");
                 }
-            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("x"));
+            } while (!userInput.equals("1") && !userInput.equals("2") && !userInput.equals("#"));
         } while (cont);
     }
 
@@ -195,9 +195,9 @@ public class DriverTw {
 
         FoodAndBeverage[] fnbs = purchaseFnb.toArray(new FoodAndBeverage[purchaseFnb.size()]);
         
-        System.out.println("==================================================================================");
-        System.out.println("                        Food and Beverage Sales Report");
-        System.out.println("==================================================================================");
+        System.out.println("============================================================================================");
+        System.out.println("                              Food & Beverage Sales Report");
+        System.out.println("============================================================================================");
         System.out.println("\nNo. \t Food ID \t Description \t  Quantity Purchased \t Price(RM) \t SubTotal(RM)\n");
         
         int i = 0;
@@ -221,10 +221,10 @@ public class DriverTw {
         Reporting report = new Reporting();
         ArrayList<Ticket> ticketList = Purchase.readFromTicketFile("purchaseTicket.txt");
         Ticket[] ticketLists = ticketList.toArray(new Ticket[ticketList.size()]);
-        System.out.println("=======================================================================================================");
-        System.out.println("                                    Train Ticket Sales Report");
-        System.out.println("=======================================================================================================");
-        System.out.println("\n   Departure - Arrival \t\t Time(Departure - Arrival) \t Ticket Price(RM) \t Date Purchased\n");
+        System.out.println("===============================================================================");
+        System.out.println("                          Train Ticket Sales Report");
+        System.out.println("===============================================================================");
+        System.out.println("\n   Departure - Arrival \t\t    Ticket Price(RM) \t\t Date Purchased\n");
 
         int i = 0;
         for (Ticket ticket : ticketList) {
