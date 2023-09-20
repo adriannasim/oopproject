@@ -10,7 +10,7 @@ public class DriverAdr {
         // Staff admin2 = new Staff("hehe", "9628", "Hehe Sim", "hehe@gmail.com", 'B');
         ArrayList<Customer> custDetails = Customer.custDetails;
         ArrayList<Staff> staffDetails = Staff.staffDetails;
-        ArrayList<Schedule> scheduleList = Schedule.readFromFile("scheduleFile.dat");
+        ArrayList<Schedule> scheduleList = Schedule.readFile("scheduleFile.dat");
 
 
 

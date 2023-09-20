@@ -57,6 +57,22 @@ public class Schedule implements Serializable{
         this.ticketPrice = ticketPrice;
     }
 
+    public Schedule(TrainStation departLocation, TrainStation arriveLocation, LocalTime departTime, LocalTime arriveTime, double ticketPrice){
+        scheduleId = departLocation.getLocationName().substring(0,3) + "-" + arriveLocation.getLocationName().substring(0,3) + String.valueOf((int) (100000 + (Math.random() * (200000 - 100000 + 1))));
+        this.departLocation = departLocation;
+        this.arriveLocation = arriveLocation;
+        this.departTime = departTime;
+        this.arriveTime = arriveTime;
+        this.ticketPrice = ticketPrice;
+    }
+
+    public Schedule(TrainStation departLocation, TrainStation arriveLocation, double ticketPrice){
+        scheduleId = departLocation.getLocationName().substring(0,3) + "-" + arriveLocation.getLocationName().substring(0,3) + String.valueOf((int) (100000 + (Math.random() * (200000 - 100000 + 1))));
+        this.departLocation = departLocation;
+        this.arriveLocation = arriveLocation;
+        this.ticketPrice = ticketPrice;
+    }
+
 
     //------------------------------------METHOD-----------------------------------------
     
