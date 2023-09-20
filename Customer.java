@@ -50,7 +50,7 @@ public class Customer extends User implements ReadAndWrite {
     }
 
     // writing all info into file
-    public static void writeFile() {
+    public void writeFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("custFile.txt", true))) {
             for (Customer cust : custDetails) {
                 writer.write(cust.getUsername() + "||" + cust.getPassword() + "||"

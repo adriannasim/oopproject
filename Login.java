@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Login implements ReadAndWrite{
+public class Login{
     //variable declaration
     private String username;
     private String password;
