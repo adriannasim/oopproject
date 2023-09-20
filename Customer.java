@@ -26,9 +26,6 @@ public class Customer extends User implements ReadAndWrite {
         super(username, password, fullname, email);
         this.contactNo = contactNo;
         this.gender = gender;
-
-        // writing details to arrayList
-        custDetails.add(this);
     }
 
     // setters
@@ -81,7 +78,7 @@ public class Customer extends User implements ReadAndWrite {
                     char gender = parts[5].charAt(0);
 
                     // add details from file to arraylist
-                    Customer cust = new Customer(username, password, fullname, email, contactNo, gender);
+                    custDetails.add(new Customer(username, password, fullname, email, contactNo, gender));
                 }
             }
         } catch (IOException e) {
@@ -99,6 +96,8 @@ public class Customer extends User implements ReadAndWrite {
         System.out.printf("1. Buy Tickets\n");
         System.out.printf("2. Buy Food and Beverages\n");
         System.out.printf("3. Edit Profile\n");
+        System.out.printf("4. View FnB Purchase History\n");
+        System.out.printf("5. View Ticket Purchase History\n");
 
         System.out.println("\n* Press # to log out");
         System.out.println("==================================================");
@@ -115,8 +114,16 @@ public class Customer extends User implements ReadAndWrite {
                     break;
                 case 3:
                     editAccount(login);
+                    break;
+                case 4:
+                    DriverTw.viewFnBHistory(login);
+                    break;
+                case 5:
+                    DriverTw.viewTicketHistory(login);
+                    break;
+                default:
+                    System.out.printf("Invalid input, please enter your choice again.\n");
             }
-
             // choose user's input choice
         } else {
             if (input.next().equals("#")) {

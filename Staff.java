@@ -24,9 +24,6 @@ public class Staff extends User implements ReadAndWrite {
         super(username, password, fullname, email);
         this.staffId = staffId;
         this.staffType = staffType;
-
-        //writing details to arrayList
-        staffDetails.add(this);
     }
 
     //setters
@@ -89,7 +86,7 @@ public class Staff extends User implements ReadAndWrite {
                     char staffType = parts[5].charAt(0);
                     
                     //add details from file to arraylist
-                    Staff staff = new Staff(username, password, fullname, email, staffId, staffType);
+                    staffDetails.add(new Staff(username, password, fullname, email, staffId, staffType));
                 }
             }
         } catch (IOException e) {
