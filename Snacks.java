@@ -189,8 +189,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
-    // ----------------------------------------------VIEW
-    // SNACKS----------------------------------------------
+    // ----------------------------------------------VIEW SNACKS----------------------------------------------
     public void viewSnacks() throws Exception {
         ArrayList<Snacks> snacksList = getSnacksList();
 
@@ -205,8 +204,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
         }
     }
 
-    // ----------------------------------------------ADD
-    // SNACKS----------------------------------------------
+    // ----------------------------------------------ADD SNACKS----------------------------------------------
     public void addSnacks(Scanner scanner) throws Exception {
         String foodName;
         double foodPrice;
@@ -258,8 +256,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------UPDATE
-    // SNACKS----------------------------------------------
+    // ----------------------------------------------UPDATE SNACKS----------------------------------------------
     public void updateSnacks(Scanner scanner) throws Exception {
         String foodId;
         String foodName;
@@ -447,8 +444,7 @@ public class Snacks extends FoodAndBeverage implements Serializable {
 
     }
 
-    // ----------------------------------------------DELETE
-    // SNACKS----------------------------------------------
+    // ----------------------------------------------DELETE SNACKS----------------------------------------------
     public void deleteSnacks(Scanner scanner) throws Exception {
         boolean found = false;
         String userInput;

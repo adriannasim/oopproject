@@ -200,22 +200,22 @@ public class Schedule implements Serializable{
                     // This exception is expected when the end of the file is reached.
                     break;
                 } catch (IOException ioe) {
-                    //ioe.printStackTrace();
+                    ioe.printStackTrace();
                 } catch (ClassNotFoundException cnfe) {
-                    //cnfe.printStackTrace();
+                    cnfe.printStackTrace();
                 }
             }
         } catch (IOException ioe) {
-            //ioe.printStackTrace();
+            ioe.printStackTrace();
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         } finally {
             try {
                 if (input != null) {
                     input.close();
                 }
             } catch (IOException ioe) {
-                //ioe.printStackTrace();
+                ioe.printStackTrace();
             }
         }
     
